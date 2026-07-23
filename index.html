@@ -75,7 +75,16 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.94);backdrop-fi
 .lang{display:flex;border:1px solid var(--hairline)}
 .lang button{background:transparent;border:none;color:var(--mut);font:700 .68rem/1 var(--sans);letter-spacing:.1em;padding:8px 11px;cursor:pointer}
 .lang button.on{background:var(--gold);color:#171204}
-@media(max-width:640px){.nav-right .cta{display:none}}
+@media(max-width:640px){.nav-right .cta{display:none}.nav-right .lang{display:none}}
+.burger{display:none;background:none;border:none;cursor:pointer;padding:8px;color:var(--gold)}
+.burger svg{width:24px;height:24px}
+@media(max-width:640px){.burger{display:block}}
+.menu-ov{position:fixed;inset:0;z-index:100;background:rgba(11,10,8,.98);display:none;flex-direction:column;padding:calc(24px + env(safe-area-inset-top)) 24px 40px}
+.menu-ov.open{display:flex}
+.menu-ov .close{align-self:flex-end;background:none;border:none;color:var(--gold);font-size:1.6rem;cursor:pointer;padding:6px 10px}
+.menu-ov a.mi{font:500 1.05rem/1 var(--disp);letter-spacing:.22em;text-transform:uppercase;color:var(--text);padding:16px 0;border-bottom:1px solid var(--hairline)}
+.menu-ov .lang{margin:22px 0}
+.menu-ov .btn{margin-top:auto}
 
 /* 1 · hero */
 .hero{position:relative;min-height:clamp(560px,86vh,820px);display:flex;align-items:flex-end;overflow:hidden;padding:0}
@@ -172,9 +181,21 @@ footer .small{font-size:.7rem;margin-top:10px;opacity:.75}
     <div class="nav-right">
       <div class="lang"><button id="lang-ru" class="on" type="button">RU</button><button id="lang-uz" type="button">UZ</button></div>
       <a class="btn btn-gold cta" style="padding:12px 18px" href="#" data-i18n="cta_main">Получить консультацию</a>
+      <button class="burger" id="burger" aria-label="Меню"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </div>
 </header>
+
+<div class="menu-ov" id="menuOv">
+  <button class="close" id="menuClose" aria-label="Закрыть">✕</button>
+  <a class="mi" href="#solutions" data-i18n="s_kick">Наши решения</a>
+  <a class="mi" href="#combo" data-i18n="c_kick">Комбинированное решение DEVAGO</a>
+  <a class="mi" href="#starry" data-i18n="st_title">Звёздное небо</a>
+  <a class="mi" href="#standards" data-i18n="std_kick">Стандарты DEVAGO</a>
+  <a class="mi" href="#projects" data-i18n="p_kick">Реализованные проекты и отзывы</a>
+  <div class="lang"><button id="lang-ru2" class="on" type="button">RU</button><button id="lang-uz2" type="button">UZ</button></div>
+  <a class="btn btn-gold cta" href="#" data-i18n="cta_main">Получить консультацию</a>
+</div>
 
 <div id="top"></div>
 
@@ -191,6 +212,7 @@ footer .small{font-size:.7rem;margin-top:10px;opacity:.75}
       <a class="btn btn-gold btn-w cta" href="#" data-i18n="cta_main2">Получить консультацию</a>
       <a class="btn btn-out btn-w" href="#combo" data-i18n="cta_watch"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Смотреть проект</a>
     </div>
+    <div class="reveal" style="margin-top:20px" aria-hidden="true"><svg style="width:20px;height:26px;color:var(--gold)" viewBox="0 0 20 26" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 2v20M4 16l6 6 6-6"/></svg></div>
     <div class="hero-geo reveal" data-i18n="h_geo">Навои · Бухара · Самарканд · Кашкадарья · Ташкент</div>
   </div>
 </section>
@@ -214,7 +236,7 @@ footer .small{font-size:.7rem;margin-top:10px;opacity:.75}
 <section id="combo" style="padding-top:20px">
   <div class="wrap reveal">
     <div class="kick" data-i18n="c_kick">Комбинированное решение DEVAGO</div>
-    <h2 class="title" style="letter-spacing:.1em;text-transform:none;font-size:clamp(1.5rem,3.4vw,2.2rem)" data-i18n="c_title">Интерьер №3 · Комбинация</h2>
+    <h2 class="title" style="letter-spacing:.1em;text-transform:none;font-size:clamp(1.5rem,3.4vw,2.2rem)" data-i18n="c_title">Интерьер №3<br>Комбинация</h2>
     <div class="combo">
       <!-- STOCK: заменить рендером мокапа с этими же элементами -->
       <img src="assets/dk-combo.jpg" alt="Комбинированное потолочное решение с несколькими типами света" loading="lazy">
@@ -329,7 +351,7 @@ var I18N={
  s4_h:"Скрытые карнизы",s4_p:"Эстетика без компромиссов. Шторы «из потолка»",
  s5_h:"Звёздное небо",s5_p:"Премиальные инсталляции эффектного неба",
  s6_h:"Авторские решения",s6_p:"Индивидуальные сценарии под ваш интерьер",
- c_kick:"Комбинированное решение DEVAGO",c_title:"Интерьер №3 · Комбинация",
+ c_kick:"Комбинированное решение DEVAGO",c_title:"Интерьер №3<br>Комбинация",
  a1:"Теневой профиль",a2:"Световые линии",a3:"Магнитные трековые системы",a4:"Скрытый карниз",a5:"Парящая подсветка",
  st_kick:"Премиальное решение",st_title:"Звёздное небо",
  st_p:"Реалистичное звёздное небо для особой атмосферы в спальне, кинотеатре, SPA-зоне или лаунж-пространстве.",
@@ -365,7 +387,7 @@ var I18N={
  s4_h:"Yashirin karnizlar",s4_p:"Murosasiz estetika. Pardalar «shiftdan»",
  s5_h:"Yulduzli osmon",s5_p:"Taʼsirli osmonning premium installyatsiyalari",
  s6_h:"Mualliflik yechimlari",s6_p:"Interyeringiz uchun individual stsenariylar",
- c_kick:"DEVAGO kombinatsiyalangan yechimi",c_title:"Interyer №3 · Kombinatsiya",
+ c_kick:"DEVAGO kombinatsiyalangan yechimi",c_title:"Interyer №3<br>Kombinatsiya",
  a1:"Soya profili",a2:"Yorugʻlik chiziqlari",a3:"Magnitli trek tizimlari",a4:"Yashirin karniz",a5:"Muallaq yoritish",
  st_kick:"Premium yechim",st_title:"Yulduzli osmon",
  st_p:"Yotoqxona, kinoteatr, SPA yoki launj makonida oʻzgacha muhit uchun realistik yulduzli osmon.",
@@ -393,13 +415,17 @@ var I18N={
 (function(){
   function apply(l){document.documentElement.lang=l;var d=I18N[l];
     document.querySelectorAll("[data-i18n]").forEach(function(e){var k=e.getAttribute("data-i18n");if(d[k]!=null)e.innerHTML=d[k];});
-    document.getElementById("lang-ru").classList.toggle("on",l==="ru");
-    document.getElementById("lang-uz").classList.toggle("on",l==="uz");
+    ["lang-ru","lang-ru2"].forEach(function(id){var b=document.getElementById(id);if(b)b.classList.toggle("on",l==="ru")});
+    ["lang-uz","lang-uz2"].forEach(function(id){var b=document.getElementById(id);if(b)b.classList.toggle("on",l==="uz")});
     try{localStorage.setItem("devago-lang",l)}catch(e){}}
-  document.getElementById("lang-ru").onclick=function(){apply("ru")};
-  document.getElementById("lang-uz").onclick=function(){apply("uz")};
+  ["lang-ru","lang-ru2"].forEach(function(id){var b=document.getElementById(id);if(b)b.onclick=function(){apply("ru")}});
+  ["lang-uz","lang-uz2"].forEach(function(id){var b=document.getElementById(id);if(b)b.onclick=function(){apply("uz")}});
   try{if(localStorage.getItem("devago-lang")==="uz")apply("uz")}catch(e){}
   document.querySelectorAll("a.cta").forEach(function(a){a.setAttribute("href",CTA_TARGET)});
+  var ov=document.getElementById("menuOv");
+  document.getElementById("burger").onclick=function(){ov.classList.add("open")};
+  document.getElementById("menuClose").onclick=function(){ov.classList.remove("open")};
+  ov.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){ov.classList.remove("open")})});
   var rvs=document.querySelectorAll(".reveal");
   if("IntersectionObserver" in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.06});
     rvs.forEach(function(el){io.observe(el)});setTimeout(function(){rvs.forEach(function(el){el.classList.add("in")})},1500);}
