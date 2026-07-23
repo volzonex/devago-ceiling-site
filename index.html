@@ -4,493 +4,406 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!--
-  DEVAGO CEILING - натяжные потолки / архитектура света.
-  География: Навои, Бухара, Самарканд, Кашкадарья + филиал в Ташкенте.
-  Тир: максимальный премиум-кастом. Канал: Икром (партнёр), первый кейс, репутационно важен.
-  РАМКА: айдентика/мокап Икрома ФИНАЛЬНЫ. Этот билд - НА ПЛЕЙСХОЛДЕРАХ, точные ассеты встанут свапом.
-  Свап-точки: LOGO-PLACEHOLDER, TOKENS v1, STOCK-кадры, i18n-словарь, CTA_TARGET.
+  DEVAGO CEILING · приведение к мокапу (канон: 3 мобильных экрана Улугбека, 2026-07-23).
+  Мобайл сверяется 1-в-1, десктоп = расширение той же системы.
+  Свап-точки: LOGO-PLACEHOLDER, TOKENS v2 (пипетка с мокапа), STOCK-кадры, i18n, CTA_TARGET, PHONE-slot.
+  Фото: ТОЛЬКО тёмные интерьеры с потолочным светом. Сток временный; идеал = рендеры из мокапа (hi-res от Икрома).
   При расхождении с мокапом всегда побеждает мокап.
 -->
-<title>DEVAGO Ceiling - натяжные потолки и архитектура света | Навои, Бухара, Самарканд, Ташкент</title>
-<meta name="description" content="DEVAGO Ceiling - натяжные потолки и архитектура света: теневые системы, световые линии, магнитные треки, звёздное небо. Навои, Бухара, Самарканд, Кашкадарья, Ташкент. Проектирование, монтаж, гарантия.">
+<title>DEVAGO Ceiling - премиальные натяжные потолки | Архитектура света и пространства</title>
+<meta name="description" content="DEVAGO Ceiling - премиальные натяжные потолки: теневые системы, световые линии, магнитные треки, звёздное небо. Навои, Бухара, Самарканд, Кашкадарья, Ташкент.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="DEVAGO Ceiling - натяжные потолки и архитектура света">
-<meta property="og:description" content="Создаём не потолок, а пространство: теневые системы, световые линии, магнитные треки, звёздное небо. Навои, Бухара, Самарканд, Кашкадарья, Ташкент.">
-<!-- STOCK: заменить на реальное (лучший кадр мокапа/проекта) -->
-<meta property="og:image" content="https://devago-ceiling-site.vercel.app/assets/hero-architecture-night.jpg">
+<meta property="og:title" content="DEVAGO Ceiling - премиальные натяжные потолки. Архитектура света">
+<meta property="og:description" content="Создаём уникальные интерьеры с помощью современных потолочных решений и безупречного света. Навои, Бухара, Самарканд, Кашкадарья, Ташкент.">
+<!-- STOCK: заменить лучшим рендером мокапа -->
+<meta property="og:image" content="https://devago-ceiling-site.vercel.app/assets/dk-hero.jpg">
 <meta property="og:url" content="https://devago-ceiling-site.vercel.app/">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://devago-ceiling-site.vercel.app/">
-<meta name="theme-color" content="#111114">
-<!-- LOGO-PLACEHOLDER: favicon = временная буква D, заменить монограммой из файлов Икрома -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111114'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' fill='%23C9A24B' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#0B0A08">
+<!-- LOGO-PLACEHOLDER: временная D в золотой рамке; монограмму «световой разрыв» не перерисовываем -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0A08'/%3E%3Crect x='4' y='4' width='24' height='24' fill='none' stroke='%23C9A24B' stroke-width='1.4'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='15' fill='%23C9A24B' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Пара: Unbounded (дисплей, кириллица+латиница) + Manrope (текст). Узб. латиница с oʻ/gʻ (U+02BB) рендерится, проверено скринами. -->
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Дисплей: Cormorant (тонкий элегантный, кириллица + узб. латиница). Финал сверить по мокапу. -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   TOKENS v1, заменить точными из мокапа/Figma (CDO выдаст таблицей).
-   Пипетка с имеющейся картинки мокапа. Мокап всегда побеждает.
-   ============================================================ */
+/* ==================== TOKENS v2, пипетка с мокапа; заменить точными из Figma ==================== */
 :root{
-  --bg:#111114;          /* тёмная база */
-  --bg2:#17171B;
-  --panel:#1D1D22;
-  --gold:#C9A24B;        /* золото */
-  --gold-l:#E0BE6E;
-  --text:#EFE9DC;        /* светлый текст */
-  --t2:#B9B2A4;
-  --mut:#7E786C;
-  --line:rgba(239,233,220,.13);
-  --glow:radial-gradient(ellipse 60% 40% at 50% 0%, rgba(201,162,75,.16), transparent 70%); /* тёплый световой градиент */
-  --sans:'Manrope',system-ui,sans-serif;
-  --disp:'Unbounded',sans-serif;
+  --bg:#0B0A08; --card:#14110D; --card2:#181410;
+  --gold:#C9A24B; --gold-l:#DEBC77; --gold-dim:rgba(201,162,75,.45);
+  --text:#EDE6D6; --t2:#B0A691; --mut:#7A7160;
+  --line:rgba(201,162,75,.28); --hairline:rgba(237,230,214,.1);
+  --disp:'Cormorant',Georgia,serif; --sans:'Manrope',system-ui,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font:400 16.5px/1.7 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
-h1,h2,h3{font-family:var(--disp);font-weight:400;line-height:1.16}
-section{padding:clamp(64px,8vw,116px) 22px;position:relative}
-.wrap{max-width:1140px;margin:0 auto}
-.center{text-align:center}
-.kick{font-size:.68rem;letter-spacing:.34em;text-transform:uppercase;font-weight:700;color:var(--gold);margin-bottom:18px}
-h2.title{font-size:clamp(1.7rem,3.9vw,2.7rem);color:var(--text)}
-h2.title b{font-weight:600;color:var(--gold-l)}
-.lead{color:var(--t2);max-width:640px;font-size:1.02rem;margin-top:16px}
-.center .lead{margin-inline:auto}
-.gold-line{height:1px;background:linear-gradient(90deg,transparent,rgba(201,162,75,.7) 30%,rgba(201,162,75,.7) 70%,transparent);max-width:520px;margin:0 auto}
-.reveal{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s ease}
+h1,h2,h3{font-family:var(--disp);font-weight:400;text-transform:uppercase;line-height:1.18}
+section{padding:clamp(56px,7vw,100px) 20px;position:relative}
+.wrap{max-width:1100px;margin:0 auto}
+.kick{font-size:.66rem;letter-spacing:.32em;text-transform:uppercase;font-weight:700;color:var(--gold);margin-bottom:14px}
+h2.title{font-size:clamp(1.6rem,3.6vw,2.5rem);letter-spacing:.14em;color:var(--text)}
+.lead{color:var(--t2);font-size:.98rem;margin-top:14px;max-width:60ch}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}html{scroll-behavior:auto}}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:none;border-radius:4px;
-  padding:17px 32px;font-family:var(--sans);font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  cursor:pointer;transition:.22s;line-height:1}
-.btn svg{width:17px;height:17px;flex:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:3px;
+  padding:16px 28px;font:700 .74rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:.22s;border:none}
+.btn svg{width:15px;height:15px;flex:none}
 .btn-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#171204}
-.btn-gold:hover{filter:brightness(1.07);transform:translateY(-2px)}
-.btn-ghost{background:transparent;border:1px solid rgba(239,233,220,.3);color:var(--text)}
-.btn-ghost:hover{border-color:var(--gold);color:var(--gold-l)}
+.btn-gold:hover{filter:brightness(1.08)}
+.btn-out{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn-out:hover{border-color:var(--gold);color:var(--gold-l)}
+.btn-w{width:100%;max-width:420px}
 
-/* ---------- header: static on mobile, no blur (Telegram lesson) ---------- */
-header{position:sticky;top:0;z-index:60;background:rgba(17,17,20,.92);backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+/* header */
+header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--hairline);padding-top:env(safe-area-inset-top)}
 @media(max-width:760px){header{position:static;background:var(--bg);backdrop-filter:none}}
-.nav{max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:15px 22px;gap:14px}
-/* LOGO-PLACEHOLDER: типографический вордмарк. Монограмму D «световой разрыв» НЕ перерисовываем,
-   реальные файлы Икрома встанут сюда свапом. */
-.brand{display:flex;flex-direction:column;line-height:1.15}
-.brand b{font-family:var(--disp);font-weight:400;font-size:1.15rem;letter-spacing:.3em;color:var(--text)}
-.brand small{font-size:.56rem;letter-spacing:.52em;text-transform:uppercase;color:var(--gold);font-weight:700}
-.nav-right{display:flex;align-items:center;gap:16px}
-.lang{display:flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
-.lang button{background:transparent;border:none;color:var(--mut);font:700 .72rem/1 var(--sans);letter-spacing:.1em;
-  padding:9px 12px;cursor:pointer;transition:.2s}
+.nav{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:13px 20px;gap:12px}
+.brand{display:flex;align-items:center;gap:11px}
+/* LOGO-PLACEHOLDER: D в золотой рамке + лок-ап капсом */
+.brand .mono{width:34px;height:34px;border:1.2px solid var(--gold);display:grid;place-items:center;font-family:var(--disp);font-size:1.15rem;color:var(--gold)}
+.brand .bt{display:flex;flex-direction:column;line-height:1.12}
+.brand .bt b{font:500 .98rem/1 var(--disp);letter-spacing:.34em;color:var(--text)}
+.brand .bt small{font:700 .5rem/1 var(--sans);letter-spacing:.52em;color:var(--gold);margin-top:4px}
+.nav-right{display:flex;align-items:center;gap:12px}
+.lang{display:flex;border:1px solid var(--hairline)}
+.lang button{background:transparent;border:none;color:var(--mut);font:700 .68rem/1 var(--sans);letter-spacing:.1em;padding:8px 11px;cursor:pointer}
 .lang button.on{background:var(--gold);color:#171204}
-.hdr-cta{padding:12px 22px}
-@media(max-width:560px){.hdr-cta{display:none}}
+@media(max-width:640px){.nav-right .cta{display:none}}
 
-/* ---------- 1 · HERO ---------- */
-.hero{position:relative;height:clamp(620px,88vh,900px);display:flex;align-items:flex-end;overflow:hidden;padding:0}
+/* 1 · hero */
+.hero{position:relative;min-height:clamp(560px,86vh,820px);display:flex;align-items:flex-end;overflow:hidden;padding:0}
 .hero-bg{position:absolute;inset:0}
 .hero-bg img{width:100%;height:100%;object-fit:cover}
-.hero-bg::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(17,17,20,.55) 0%,rgba(17,17,20,.15) 40%,rgba(17,17,20,.9) 80%,var(--bg) 100%)}
-.hero-inner{position:relative;z-index:2;max-width:1140px;margin:0 auto;padding:0 22px clamp(48px,7vw,84px);width:100%}
-.hero .kick,.hero .sub,.hero-geo{text-shadow:0 1px 14px rgba(17,17,20,.85)}
-.hero h1{font-size:clamp(1.9rem,5vw,3.6rem);color:#fff;max-width:21ch}
-.hero h1 b{font-weight:600;color:var(--gold-l)}
-.hero .sub{color:var(--t2);font-size:1.05rem;margin-top:18px;max-width:52ch}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
-.hero-geo{margin-top:26px;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,10,8,.6),rgba(11,10,8,.25) 40%,rgba(11,10,8,.94) 82%,var(--bg))}
+.hero-in{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:0 20px clamp(44px,6vw,72px);width:100%}
+.hero .kick{background:rgba(11,10,8,.55);display:inline-block;padding:6px 10px}
+.hero h1{font-size:clamp(2.1rem,6vw,3.8rem);letter-spacing:.18em;color:#fff;font-weight:300}
+.hero .sub2{font:700 .66rem/1.7 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-top:12px}
+.hero .sub{color:var(--t2);font-size:.96rem;margin-top:16px;max-width:46ch;text-shadow:0 1px 12px rgba(11,10,8,.9)}
+.hero-btns{display:flex;flex-direction:column;gap:12px;margin-top:26px;max-width:420px}
+@media(min-width:761px){.hero-btns{flex-direction:row;max-width:none}}
+.hero-geo{margin-top:22px;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mut)}
 
-/* ---------- 2 · solutions ---------- */
-#solutions{background:var(--bg);}
-#solutions::before{content:"";position:absolute;inset:0 0 auto 0;height:340px;background:var(--glow);pointer-events:none}
-.sol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:46px}
-@media(max-width:960px){.sol-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.sol-grid{grid-template-columns:1fr}}
-.sol{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:30px 28px;transition:border-color .25s,transform .25s}
-.sol:hover{border-color:rgba(201,162,75,.5);transform:translateY(-3px)}
-.sol .scheme{height:86px;margin-bottom:22px;color:var(--gold)}
-.sol .scheme svg{width:100%;height:100%}
-.sol h3{font-size:1.02rem;letter-spacing:.04em;color:var(--text);margin-bottom:9px}
-.sol p{color:var(--t2);font-size:.94rem}
+/* 2 · solutions: vertical rows */
+.sol-list{margin-top:34px;display:flex;flex-direction:column;gap:10px;max-width:760px}
+.sol{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--hairline);padding:18px 18px;transition:border-color .25s}
+.sol:hover{border-color:var(--gold-dim)}
+.sol .ic{width:44px;height:44px;flex:none;color:var(--gold)}
+.sol .ic svg{width:100%;height:100%}
+.sol .tx{flex:1;min-width:0}
+.sol .tx b{display:block;font:500 .86rem/1.3 var(--disp);letter-spacing:.22em;text-transform:uppercase;color:var(--text)}
+.sol .tx span{display:block;font-size:.8rem;color:var(--mut);margin-top:3px}
+.sol .arr{color:var(--gold);flex:none;width:18px;height:18px}
 
-/* ---------- 3 · combined ---------- */
-#combo{padding:0}
-.combo{position:relative;min-height:520px;display:flex;align-items:center;overflow:hidden}
-.combo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.combo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(17,17,20,.92) 0%,rgba(17,17,20,.55) 55%,rgba(17,17,20,.25) 100%)}
-.combo-inner{position:relative;z-index:2;max-width:1140px;margin:0 auto;padding:80px 22px;width:100%}
-.combo-inner .box{max-width:520px}
-.combo-inner .lead{margin-bottom:26px}
+/* 3 · combo with annotations (signature) */
+.combo{position:relative;margin-top:34px;border:1px solid var(--hairline)}
+.combo img{width:100%;aspect-ratio:4/4.4;object-fit:cover}
+@media(min-width:761px){.combo img{aspect-ratio:16/9}}
+.ann{position:absolute;font:700 .56rem/1.35 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--text);text-shadow:0 1px 8px rgba(11,10,8,.95)}
+.ann::before{content:"";position:absolute;background:var(--gold);opacity:.85}
+.ann.up::before{left:8px;bottom:100%;width:1px;height:26px}
+.ann.dn::before{left:8px;top:100%;width:1px;height:26px}
+.ann i{font-style:normal;display:inline-block;width:5px;height:5px;background:var(--gold);border-radius:50%;margin-right:6px;vertical-align:1px}
 
-/* ---------- 4 · starry sky ---------- */
-#starry{padding:0}
-.star{position:relative;min-height:560px;display:flex;align-items:flex-end;overflow:hidden}
-.star img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.star::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(17,17,20,.3),rgba(17,17,20,.92) 88%)}
-.star-inner{position:relative;z-index:2;max-width:1140px;margin:0 auto;padding:80px 22px 64px;width:100%}
-.star-inner .box{max-width:560px}
-.star-inner .lead{margin-bottom:26px}
+/* 4 · starry */
+#starry .feats{display:grid;grid-template-columns:1fr 1fr;gap:22px 18px;margin:28px 0 30px;max-width:560px}
+.feat{display:flex;gap:12px;align-items:flex-start}
+.feat svg{width:30px;height:30px;flex:none;color:var(--gold)}
+.feat span{font-size:.8rem;color:var(--t2);line-height:1.45}
+#starry .ph{border:1px solid var(--hairline)}
+#starry .ph img{width:100%;aspect-ratio:4/4.6;object-fit:cover}
+@media(min-width:761px){
+  #starry .grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+  #starry .ph img{aspect-ratio:4/4.2}
+}
 
-/* ---------- 5 · process ---------- */
-#process{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:48px;counter-reset:st}
-@media(max-width:900px){.steps{grid-template-columns:1fr;max-width:460px;margin-inline:auto}}
-.step{position:relative;padding:8px 22px 26px;border-left:1px solid var(--line)}
-@media(max-width:900px){.step{padding:8px 0 30px 30px}}
-.step::before{counter-increment:st;content:"0" counter(st);font-family:var(--disp);font-weight:300;font-size:1.9rem;color:var(--gold);display:block;margin-bottom:12px}
-.step h3{font-size:.9rem;letter-spacing:.06em;margin-bottom:8px}
-.step p{color:var(--t2);font-size:.88rem}
+/* 5 · standards: 6 steps with thumbs */
+.steps{margin-top:34px;display:flex;flex-direction:column;gap:12px;max-width:760px}
+.step{display:flex;gap:16px;background:var(--card);border:1px solid var(--hairline);padding:16px}
+.step .no{font:300 1.5rem/1 var(--disp);color:var(--gold);flex:none;width:44px;padding-top:4px}
+.step .tx{flex:1;min-width:0}
+.step .tx b{display:block;font:500 .8rem/1.35 var(--disp);letter-spacing:.22em;text-transform:uppercase}
+.step .tx span{display:block;font-size:.78rem;color:var(--mut);margin-top:3px}
+.step .th{width:86px;height:64px;flex:none;overflow:hidden;border:1px solid var(--hairline)}
+.step .th img{width:100%;height:100%;object-fit:cover}
+@media(min-width:900px){.steps{display:grid;grid-template-columns:1fr 1fr;max-width:none}}
 
-/* ---------- 6 · projects + reviews (STOCK, свап целиком) ---------- */
-.projects{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:230px;gap:12px;margin-top:46px}
-@media(max-width:860px){.projects{grid-template-columns:1fr 1fr;grid-auto-rows:180px}}
-.projects figure{margin:0;overflow:hidden;border-radius:8px;position:relative;border:1px solid var(--line)}
-.projects img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease}
-.projects figure:hover img{transform:scale(1.04)}
-.projects .wide{grid-column:span 2}
-.projects figcaption{position:absolute;left:0;right:0;bottom:0;padding:12px 16px;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text);background:linear-gradient(0deg,rgba(17,17,20,.85),transparent)}
-.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}
-@media(max-width:860px){.rev-grid{grid-template-columns:1fr}}
-.rev{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:26px 24px;text-align:left}
-.rev .st{color:var(--gold);letter-spacing:2px;font-size:.85rem}
-.rev p{font-size:.94rem;margin:12px 0 16px;color:var(--text)}
-.rev .who{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-l);font-weight:700}
+/* 6 · projects + reviews */
+.prj-grid{margin-top:34px;display:flex;flex-direction:column;gap:14px}
+@media(min-width:860px){.prj-grid{display:grid;grid-template-columns:1fr 1fr}}
+.prj{background:var(--card);border:1px solid var(--hairline)}
+.prj img{width:100%;aspect-ratio:16/10;object-fit:cover}
+.prj .bx{padding:18px}
+.prj .obj{font:500 .84rem/1.3 var(--disp);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-l)}
+.prj .city{font-size:.74rem;color:var(--mut);margin-top:2px}
+.prj q{display:block;font-size:.88rem;color:var(--t2);margin:12px 0 10px;quotes:"«" "»"}
+.prj .who{font:700 .68rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--text)}
+/* why */
+.why{margin-top:44px;display:flex;flex-direction:column;gap:16px;max-width:560px}
+.why .row{display:flex;gap:14px;align-items:flex-start}
+.why svg{width:26px;height:26px;flex:none;color:var(--gold)}
+.why span{font-size:.86rem;color:var(--t2)}
 
-/* ---------- 7 · contacts ---------- */
-#contact{background:radial-gradient(ellipse 70% 90% at 50% 100%,rgba(201,162,75,.13),transparent 65%),var(--bg)}
-.cities{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:30px 0 36px}
-.city{border:1px solid var(--line);border-radius:100px;padding:9px 20px;font-size:.82rem;color:var(--t2);letter-spacing:.06em}
-.city b{color:var(--gold-l);font-weight:700}
+/* 7 · final */
+#final{background:radial-gradient(ellipse 70% 80% at 50% 100%,rgba(201,162,75,.12),transparent 65%),var(--bg);text-align:left}
+#final .btn{margin-top:24px}
+.contact-row{margin-top:22px;display:flex;flex-direction:column;gap:10px;font-size:.9rem;color:var(--t2)}
+.contact-row svg{width:16px;height:16px;color:var(--gold);vertical-align:-3px;margin-right:8px}
 
-footer{background:#0C0C0F;color:var(--mut);text-align:center;padding:46px 22px calc(30px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
-footer .brand{align-items:center;margin-bottom:12px}
-footer .small{font-size:.72rem;margin-top:16px;opacity:.7}
+footer{background:#080706;color:var(--mut);padding:36px 20px calc(26px + env(safe-area-inset-bottom));border-top:1px solid var(--hairline);text-align:center}
+footer .small{font-size:.7rem;margin-top:10px;opacity:.75}
 </style>
 </head>
 <body>
 
 <header>
   <div class="nav">
-    <!-- LOGO-PLACEHOLDER -->
     <a class="brand" href="#top" aria-label="DEVAGO Ceiling">
-      <b>DEVAGO</b><small>ceiling</small>
+      <span class="mono">D</span>
+      <span class="bt"><b>DEVAGO</b><small>CEILING</small></span>
     </a>
     <div class="nav-right">
-      <div class="lang" role="group" aria-label="Язык">
-        <button id="lang-ru" class="on" type="button">RU</button>
-        <button id="lang-uz" type="button">UZ</button>
-      </div>
-      <a class="btn btn-gold hdr-cta cta" href="#" data-i18n="cta_short">Консультация</a>
+      <div class="lang"><button id="lang-ru" class="on" type="button">RU</button><button id="lang-uz" type="button">UZ</button></div>
+      <a class="btn btn-gold cta" style="padding:12px 18px" href="#" data-i18n="cta_main">Получить консультацию</a>
     </div>
   </div>
 </header>
 
 <div id="top"></div>
 
-<!-- ============ 1 · HERO ============ -->
+<!-- 1 · HERO -->
 <section class="hero">
-  <!-- STOCK: заменить на реальное (кадр мокапа / реальный проект / видео архитектурного света) -->
-  <div class="hero-bg"><img src="assets/hero-architecture-night.jpg" alt="Архитектурный свет в тёмном интерьере" width="1600" height="1066"></div>
-  <div class="hero-inner">
-    <div class="kick reveal" data-i18n="hero_kick">Натяжные потолки · архитектура света</div>
-    <h1 class="reveal" data-i18n="hero_h1">Мы создаём не потолок, <b>а пространство</b></h1>
-    <p class="sub reveal" data-i18n="hero_sub">Теневые системы, световые линии и звёздное небо: свет, спроектированный под вашу архитектуру, а не наклеенный сверху.</p>
+  <!-- STOCK: заменить рендером мокапа (тёмный интерьер, световые линии) -->
+  <div class="hero-bg"><img src="assets/dk-hero.jpg" alt="Тёмный интерьер с тёплым потолочным светом" width="1600" height="1066"></div>
+  <div class="hero-in">
+    <div class="kick reveal" data-i18n="h_kick">Премиальные</div>
+    <h1 class="reveal" data-i18n="h_h1">Натяжные потолки</h1>
+    <div class="sub2 reveal" data-i18n="h_sub2">Архитектура света и пространства</div>
+    <p class="sub reveal" data-i18n="h_sub">Создаём уникальные интерьеры с помощью современных потолочных решений и безупречного света.</p>
     <div class="hero-btns reveal">
-      <a class="btn btn-gold cta" href="#" data-i18n="cta_main">Получить консультацию и расчёт</a>
-      <a class="btn btn-ghost" href="#solutions" data-i18n="cta_solutions">Наши решения</a>
+      <a class="btn btn-gold btn-w cta" href="#" data-i18n="cta_main2">Получить консультацию</a>
+      <a class="btn btn-out btn-w" href="#combo" data-i18n="cta_watch"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Смотреть проект</a>
     </div>
-    <div class="hero-geo reveal" data-i18n="geo_line">Навои · Бухара · Самарканд · Кашкадарья · Ташкент</div>
+    <div class="hero-geo reveal" data-i18n="h_geo">Навои · Бухара · Самарканд · Кашкадарья · Ташкент</div>
   </div>
 </section>
 
-<!-- ============ 2 · SOLUTIONS ============ -->
+<!-- 2 · SOLUTIONS -->
 <section id="solutions">
-  <div class="wrap center reveal">
-    <div class="kick" data-i18n="sol_kick">Наши решения</div>
-    <h2 class="title" data-i18n="sol_title">Шесть способов <b>зажечь пространство</b></h2>
-    <div class="sol-grid reveal" style="text-align:left">
-      <div class="sol">
-        <div class="scheme" aria-hidden="true"><svg viewBox="0 0 200 86" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 22h180M10 22v10h26v-10" stroke-opacity=".9"/><path d="M36 32h144" stroke-opacity=".4"/><path d="M10 70h180" stroke-opacity=".18"/><path d="M20 40l8 22M180 40l-8 22" stroke-opacity=".25" stroke-dasharray="2 4"/></svg></div>
-        <h3 data-i18n="sol1_h">Теневые системы</h3><p data-i18n="sol1_p">Потолок отрывается от стены тонкой теневой линией: архитектурная глубина без карнизов.</p>
-      </div>
-      <div class="sol">
-        <div class="scheme" aria-hidden="true"><svg viewBox="0 0 200 86" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 26h180" stroke-opacity=".35"/><path d="M40 26h50M120 26h46" stroke-width="3" stroke-linecap="round"/><path d="M45 34l10 30M85 34l6 30M126 34l8 30M158 34l4 30" stroke-opacity=".25" stroke-dasharray="2 4"/></svg></div>
-        <h3 data-i18n="sol2_h">Световые линии</h3><p data-i18n="sol2_p">Чистые линии света в полотне: графика потолка, которая ведёт взгляд и зонирует пространство.</p>
-      </div>
-      <div class="sol">
-        <div class="scheme" aria-hidden="true"><svg viewBox="0 0 200 86" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 24h180" stroke-opacity=".35"/><rect x="52" y="20" width="96" height="8" rx="2" stroke-opacity=".9"/><circle cx="72" cy="42" r="5"/><circle cx="100" cy="42" r="5"/><circle cx="128" cy="42" r="5"/><path d="M72 47l-6 20M100 47v20M128 47l6 20" stroke-opacity=".25" stroke-dasharray="2 4"/></svg></div>
-        <h3 data-i18n="sol3_h">Магнитные треки</h3><p data-i18n="sol3_p">Светильники переставляются одним движением: свет следует за жизнью комнаты.</p>
-      </div>
-      <div class="sol">
-        <div class="scheme" aria-hidden="true"><svg viewBox="0 0 200 86" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 22h180" stroke-opacity=".35"/><path d="M150 22v14h40" stroke-opacity=".9"/><path d="M150 36c14 10 28 12 40 12" stroke-opacity=".5"/><path d="M156 40l-4 26M176 46l-2 20" stroke-opacity=".25" stroke-dasharray="2 4"/></svg></div>
-        <h3 data-i18n="sol4_h">Скрытые карнизы</h3><p data-i18n="sol4_p">Шторы выходят прямо из потолка: ниша спрятана, линия окна остаётся чистой.</p>
-      </div>
-      <div class="sol">
-        <div class="scheme" aria-hidden="true"><svg viewBox="0 0 200 86" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 24h180" stroke-opacity=".35"/><g fill="currentColor" stroke="none"><circle cx="40" cy="44" r="1.6"/><circle cx="66" cy="34" r="1.2"/><circle cx="88" cy="52" r="1.8"/><circle cx="112" cy="38" r="1.3"/><circle cx="134" cy="56" r="1.5"/><circle cx="156" cy="40" r="1.9"/><circle cx="74" cy="64" r="1.2"/><circle cx="122" cy="66" r="1.4"/><circle cx="52" cy="58" r="1.1"/><circle cx="146" cy="68" r="1.1"/></g></svg></div>
-        <h3 data-i18n="sol5_h">Звёздное небо</h3><p data-i18n="sol5_p">Сотни точек света над головой: спальня и детская превращаются в планетарий.</p>
-      </div>
-      <div class="sol">
-        <div class="scheme" aria-hidden="true"><svg viewBox="0 0 200 86" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 26h60l14 12h42l14-12h50" stroke-opacity=".9"/><path d="M84 38h42" stroke-width="3" stroke-linecap="round"/><path d="M30 26v-8M170 26v-8" stroke-opacity=".5"/></svg></div>
-        <h3 data-i18n="sol6_h">Авторские решения</h3><p data-i18n="sol6_p">Многоуровневые сценарии под ваш проект: считаем свет, а не просто натягиваем полотно.</p>
-      </div>
+  <div class="wrap reveal">
+    <div class="kick" data-i18n="s_kick">Наши решения</div>
+    <div class="sol-list">
+      <div class="sol"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 12h28M8 12v8h9v-8" /><path d="M17 20h19" stroke-opacity=".5"/></svg></span><span class="tx"><b data-i18n="s1_h">Теневые системы</b><span data-i18n="s1_p">Идеально ровные стыки и чистая геометрия</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="sol"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14h28" stroke-opacity=".4"/><path d="M12 14h9M27 14h8" stroke-width="2.4" stroke-linecap="round"/><path d="M14 20l3 12M30 20l2 12" stroke-opacity=".3" stroke-dasharray="2 3"/></svg></span><span class="tx"><b data-i18n="s2_h">Световые линии</b><span data-i18n="s2_p">Чистый свет. Любые конфигурации</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="sol"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="10" y="12" width="24" height="5" rx="1"/><circle cx="16" cy="26" r="3"/><circle cx="28" cy="26" r="3"/><path d="M16 29v6M28 29v6" stroke-opacity=".3" stroke-dasharray="2 3"/></svg></span><span class="tx"><b data-i18n="s3_h">Магнитные треки</b><span data-i18n="s3_p">Гибкое освещение под ваши задачи</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="sol"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 12h28M30 12v7h6" /><path d="M14 16v16M19 16v13M24 16v16" stroke-opacity=".5"/></svg></span><span class="tx"><b data-i18n="s4_h">Скрытые карнизы</b><span data-i18n="s4_p">Эстетика без компромиссов. Шторы «из потолка»</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="sol"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M22 8v6M22 30v6M8 22h6M30 22h6M12 12l4 4M28 28l4 4M32 12l-4 4M16 28l-4 4" stroke-linecap="round"/><circle cx="22" cy="22" r="3.4"/></svg></span><span class="tx"><b data-i18n="s5_h">Звёздное небо</b><span data-i18n="s5_p">Премиальные инсталляции эффектного неба</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="sol"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M22 8l12 7v14l-12 7-12-7V15z"/><path d="M22 8v14M10 15l12 7 12-7M22 36V22" stroke-opacity=".5"/></svg></span><span class="tx"><b data-i18n="s6_h">Авторские решения</b><span data-i18n="s6_p">Индивидуальные сценарии под ваш интерьер</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
     </div>
   </div>
 </section>
 
-<!-- ============ 3 · COMBINED ============ -->
-<section id="combo">
-  <div class="combo">
-    <!-- STOCK: заменить на реальное -->
-    <img src="assets/combo-villa-night.jpg" alt="Целостная система света в вечернем интерьере" loading="lazy">
-    <div class="combo-inner">
-      <div class="box reveal">
-        <div class="kick" data-i18n="combo_kick">Комбинированное решение</div>
-        <h2 class="title" data-i18n="combo_title">Один потолок, <b>одна система света</b></h2>
-        <p class="lead" data-i18n="combo_p">Теневой профиль по периметру, световые линии в зонах, треки над рабочими поверхностями: собираем приёмы в единый сценарий, где каждый источник на своём месте.</p>
-        <a class="btn btn-gold cta" href="#" data-i18n="cta_main2">Получить консультацию и расчёт</a>
-      </div>
+<!-- 3 · COMBO with annotations (signature) -->
+<section id="combo" style="padding-top:20px">
+  <div class="wrap reveal">
+    <div class="kick" data-i18n="c_kick">Комбинированное решение DEVAGO</div>
+    <h2 class="title" style="letter-spacing:.1em;text-transform:none;font-size:clamp(1.5rem,3.4vw,2.2rem)" data-i18n="c_title">Интерьер №3 · Комбинация</h2>
+    <div class="combo">
+      <!-- STOCK: заменить рендером мокапа с этими же элементами -->
+      <img src="assets/dk-combo.jpg" alt="Комбинированное потолочное решение с несколькими типами света" loading="lazy">
+      <span class="ann dn" style="left:6%;top:8%"><i></i><span data-i18n="a1">Теневой профиль</span></span>
+      <span class="ann dn" style="right:8%;top:14%"><i></i><span data-i18n="a2">Световые линии</span></span>
+      <span class="ann up" style="left:34%;top:38%"><i></i><span data-i18n="a3">Магнитные трековые системы</span></span>
+      <span class="ann up" style="right:10%;bottom:16%"><i></i><span data-i18n="a4">Скрытый карниз</span></span>
+      <span class="ann up" style="left:8%;bottom:8%"><i></i><span data-i18n="a5">Парящая подсветка</span></span>
     </div>
+    <a class="btn btn-out btn-w cta" style="margin-top:18px" href="#" data-i18n="cta_prj">Смотреть проект</a>
   </div>
 </section>
 
-<!-- ============ 4 · STARRY SKY ============ -->
+<!-- 4 · STARRY -->
 <section id="starry">
-  <div class="star">
-    <!-- STOCK: заменить на реальное -->
-    <img src="assets/starry-sky.jpg" alt="Звёздное небо" loading="lazy">
-    <div class="star-inner">
-      <div class="box reveal">
-        <div class="kick" data-i18n="star_kick">Фирменное решение</div>
-        <h2 class="title" data-i18n="star_title">Звёздное небо <b>у вас дома</b></h2>
-        <p class="lead" data-i18n="star_p">Оптоволоконные точки, мерцание и падающие звёзды: настоящая глубина ночного неба в спальне, детской или домашнем кинотеатре.</p>
-        <a class="btn btn-ghost cta" href="#" data-i18n="cta_star">Рассчитать звёздное небо</a>
+  <div class="wrap reveal">
+    <div class="grid">
+      <div>
+        <div class="kick" data-i18n="st_kick">Премиальное решение</div>
+        <h2 class="title" data-i18n="st_title">Звёздное небо</h2>
+        <p class="lead" data-i18n="st_p">Реалистичное звёздное небо для особой атмосферы в спальне, кинотеатре, SPA-зоне или лаунж-пространстве.</p>
+        <div class="feats">
+          <div class="feat"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="15" cy="15" r="3"/><path d="M15 4v5M15 21v5M4 15h5M21 15h5" stroke-linecap="round"/></svg><span data-i18n="f1">Оптоволоконные технологии</span></div>
+          <div class="feat"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="15" cy="15" r="9"/><circle cx="15" cy="15" r="3.6" stroke-opacity=".6"/></svg><span data-i18n="f2">Полная интеграция с освещением</span></div>
+          <div class="feat"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M15 5l2.4 6.4L24 14l-6.6 2.6L15 23l-2.4-6.4L6 14l6.6-2.6z"/></svg><span data-i18n="f3">Любые сценарии мерцания</span></div>
+          <div class="feat"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M15 4l9 4v7c0 6-4 9-9 11-5-2-9-5-9-11V8z"/></svg><span data-i18n="f4">Долговечность и безопасность</span></div>
+        </div>
       </div>
+      <!-- STOCK: заменить рендером спальни со звёздным потолком из мокапа -->
+      <div class="ph"><img src="assets/dk-star.jpg" alt="Звёздный потолок" loading="lazy"></div>
     </div>
   </div>
 </section>
 
-<!-- ============ 5 · PROCESS ============ -->
-<section id="process">
-  <div class="wrap center reveal">
-    <div class="kick" data-i18n="pr_kick">Стандарты работы</div>
-    <h2 class="title" data-i18n="pr_title">От эскиза <b>до гарантии</b></h2>
-    <div class="steps reveal" style="text-align:left">
-      <div class="step"><h3 data-i18n="pr1_h">Проектирование</h3><p data-i18n="pr1_p">Свет считаем на плане: сценарии, зоны, температура света.</p></div>
-      <div class="step"><h3 data-i18n="pr2_h">Замеры</h3><p data-i18n="pr2_p">Точная геометрия помещения и всех примыканий.</p></div>
-      <div class="step"><h3 data-i18n="pr3_h">Монтаж</h3><p data-i18n="pr3_p">Чисто и в срок: профили, полотно, свет, автоматика.</p></div>
-      <div class="step"><h3 data-i18n="pr4_h">Контроль качества</h3><p data-i18n="pr4_p">Проверяем каждую линию и каждый стык при сдаче.</p></div>
-      <div class="step"><h3 data-i18n="pr5_h">Гарантия</h3><p data-i18n="pr5_p">Договор и гарантия на полотно, профиль и свет.</p></div>
+<!-- 5 · STANDARDS -->
+<section id="standards" style="background:var(--card2)">
+  <div class="wrap reveal">
+    <div class="kick" data-i18n="std_kick">Стандарты DEVAGO</div>
+    <div class="steps">
+      <div class="step"><span class="no">01</span><span class="tx"><b data-i18n="std1_h">Проектирование</b><span data-i18n="std1_p">Детальная проработка световых сценариев</span></span><span class="th"><img src="assets/dk-warm.jpg" alt="" loading="lazy"></span></div>
+      <div class="step"><span class="no">02</span><span class="tx"><b data-i18n="std2_h">Точные замеры</b><span data-i18n="std2_p">Миллиметровая точность для идеального результата</span></span><span class="th"><img src="assets/dk-pendant.jpg" alt="" loading="lazy"></span></div>
+      <div class="step"><span class="no">03</span><span class="tx"><b data-i18n="std3_h">Подготовка объекта</b><span data-i18n="std3_p">Чистота и защита вашего интерьера</span></span><span class="th"><img src="assets/dk-coffer.jpg" alt="" loading="lazy"></span></div>
+      <div class="step"><span class="no">04</span><span class="tx"><b data-i18n="std4_h">Профессиональный монтаж</b><span data-i18n="std4_p">Опытные мастера и качественные материалы</span></span><span class="th"><img src="assets/dk-hero.jpg" alt="" loading="lazy"></span></div>
+      <div class="step"><span class="no">05</span><span class="tx"><b data-i18n="std5_h">Контроль качества</b><span data-i18n="std5_p">Многоступенчатая проверка на каждом этапе</span></span><span class="th"><img src="assets/dk-combo.jpg" alt="" loading="lazy"></span></div>
+      <div class="step"><span class="no">06</span><span class="tx"><b data-i18n="std6_h">Гарантия результата</b><span data-i18n="std6_p">Гарантия до 10 лет на все работы и материалы</span></span><span class="th"><img src="assets/dk-star.jpg" alt="" loading="lazy"></span></div>
     </div>
+    <a class="btn btn-gold btn-w cta" style="margin-top:26px" href="#" data-i18n="cta_main3">Получить консультацию</a>
   </div>
 </section>
 
-<!-- ============ 6 · PROJECTS + REVIEWS ============ -->
+<!-- 6 · PROJECTS + REVIEWS -->
 <section id="projects">
-  <div class="wrap center reveal">
-    <div class="kick" data-i18n="prj_kick">Реализованные проекты</div>
-    <h2 class="title" data-i18n="prj_title">Свет, который <b>уже работает</b></h2>
-    <!-- ⚠️ ВСЯ СЕКЦИЯ НА STOCK-ПЛЕЙСХОЛДЕРАХ: только для демо-показа Икрому.
-         На публичный запуск заменить реальными работами и отзывами клиента (свап 1-в-1 по разметке). -->
-    <div class="projects reveal">
-      <figure class="wide"><img src="assets/project-bedroom-brass.jpg" alt="Проект: спальня с латунным светом" loading="lazy"><figcaption data-i18n="prj1_c">спальня · теневой периметр</figcaption></figure>
-      <figure><img src="assets/edison-warm.jpg" alt="Проект: тёплые подвесные светильники" loading="lazy"><figcaption data-i18n="prj2_c">свет · тёплые сценарии</figcaption></figure>
-      <figure><img src="assets/project-coffered.jpg" alt="Проект: кессонный потолок" loading="lazy"><figcaption data-i18n="prj3_c">гостиная · уровни</figcaption></figure>
-      <figure><img src="assets/project-warm-bedroom.jpg" alt="Проект: тёплая спальня" loading="lazy"><figcaption data-i18n="prj4_c">спальня · мягкий контур</figcaption></figure>
-      <figure><img src="assets/starry-dusk.jpg" alt="Проект: звёздное небо" loading="lazy"><figcaption data-i18n="prj5_c">детская · звёздное небо</figcaption></figure>
+  <div class="wrap reveal">
+    <div class="kick" data-i18n="p_kick">Реализованные проекты и отзывы</div>
+    <!-- ⚠️ ПЛЕЙСХОЛДЕРЫ ИЗ МОКАПА: заменить реальными проектами и отзывами клиента -->
+    <div class="prj-grid">
+      <div class="prj"><img src="assets/dk-combo.jpg" alt="Проект: пентхаус" loading="lazy"><div class="bx"><div class="obj" data-i18n="p1_o">Пентхаус 240 м²</div><div class="city" data-i18n="p1_c">Tashkent City</div><q data-i18n="p1_q">Искали подрядчика, который сможет объединить световые решения в единую концепцию. Результат превзошёл ожидания.</q><div class="who" data-i18n="p1_w">Александр и Мария</div></div></div>
+      <div class="prj"><img src="assets/dk-star.jpg" alt="Проект: домашний кинотеатр" loading="lazy"><div class="bx"><div class="obj" data-i18n="p2_o">Домашний кинотеатр</div><div class="city" data-i18n="p2_c">Частный проект</div><q data-i18n="p2_q">Звёздное небо от DEVAGO, это нечто! Атмосфера как в настоящем кинотеатре. Реализовали нашу мечту.</q><div class="who" data-i18n="p2_w">Тимур А.</div></div></div>
+      <div class="prj"><img src="assets/dk-pendant.jpg" alt="Проект: квартира" loading="lazy"><div class="bx"><div class="obj" data-i18n="p3_o">Квартира 180 м²</div><div class="city" data-i18n="p3_c">Tashkent City</div><q data-i18n="p3_q">Безупречное качество, внимательность к деталям и идеальная реализация архитектурной идеи.</q><div class="who" data-i18n="p3_w">Дильноза К.</div></div></div>
+      <div class="prj"><img src="assets/dk-warm.jpg" alt="Проект: SPA-зона" loading="lazy"><div class="bx"><div class="obj" data-i18n="p4_o">SPA-зона 150 м²</div><div class="city" data-i18n="p4_c">Частный проект</div><q data-i18n="p4_q">Световые линии и скрытый карниз создали идеальную атмосферу релакса и уюта.</q><div class="who" data-i18n="p4_w">Бахром Р.</div></div></div>
     </div>
-    <div class="rev-grid reveal">
-      <!-- STOCK-отзывы: интент-плейсхолдеры, заменить реальными -->
-      <div class="rev"><div class="st">★★★★★</div><p data-i18n="rev1_p">«Сделали теневой потолок со световыми линиями: комната стала выглядеть вдвое дороже ремонта.»</p><div class="who" data-i18n="rev1_w">Плейсхолдер · Навои</div></div>
-      <div class="rev"><div class="st">★★★★★</div><p data-i18n="rev2_p">«Монтаж за один день, ни пылинки. Звёздное небо в детской: дети выключают свет сами.»</p><div class="who" data-i18n="rev2_w">Плейсхолдер · Бухара</div></div>
-      <div class="rev"><div class="st">★★★★★</div><p data-i18n="rev3_p">«Проект света сделали до ремонта, всё сошлось до сантиметра. Рекомендуем как инженеров, а не просто монтажников.»</p><div class="who" data-i18n="rev3_w">Плейсхолдер · Ташкент</div></div>
+    <a class="btn btn-out btn-w" style="margin-top:18px" href="#projects" data-i18n="cta_all">Смотреть все проекты</a>
+    <div class="why">
+      <div class="kick" style="margin-bottom:2px" data-i18n="w_kick">Почему выбирают DEVAGO</div>
+      <div class="row"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 22V10l9-6 9 6v12"/><path d="M10 22v-7h6v7"/></svg><span data-i18n="w1">Архитектурный подход к каждому проекту</span></div>
+      <div class="row"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M13 3l9 5v10l-9 5-9-5V8z"/><path d="M13 3v10M4 8l9 5 9-5"/></svg><span data-i18n="w2">Премиальные материалы и комплектующие</span></div>
+      <div class="row"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="9" cy="9" r="3.4"/><path d="M3 21a6 6 0 0 1 12 0M16 6.6a3 3 0 0 1 0 5M17.5 21a5.4 5.4 0 0 0-3.4-5"/></svg><span data-i18n="w3">Опытная команда и собственные монтажные бригады</span></div>
+      <div class="row"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M13 3l8 3.6v6.2c0 5.3-3.5 8-8 10-4.5-2-8-4.7-8-10V6.6z"/><path d="M9.5 13l2.4 2.4 4.6-4.8"/></svg><span data-i18n="w4">Гарантия до 10 лет на работы и материалы</span></div>
     </div>
   </div>
 </section>
 
-<!-- ============ 7 · CONTACTS ============ -->
-<section id="contact">
-  <div class="wrap center reveal">
-    <div class="gold-line" style="margin-bottom:56px"></div>
-    <div class="kick" data-i18n="ct_kick">Контакты</div>
-    <h2 class="title" data-i18n="ct_title">Обсудим <b>ваш потолок?</b></h2>
-    <p class="lead" data-i18n="ct_p">Расскажите о помещении: предложим решение, посчитаем свет и назовём сроки.</p>
-    <div class="cities">
-      <span class="city"><b data-i18n="c1">Навои</b></span>
-      <span class="city" data-i18n="c2">Бухара</span>
-      <span class="city" data-i18n="c3">Самарканд</span>
-      <span class="city" data-i18n="c4">Кашкадарья</span>
-      <span class="city" data-i18n="c5">Ташкент · филиал</span>
+<!-- 7 · FINAL -->
+<section id="final">
+  <div class="wrap reveal">
+    <h2 class="title" style="max-width:16ch" data-i18n="fin_title">Создадим пространство, которое вдохновляет</h2>
+    <p class="lead" data-i18n="fin_p">Получите консультацию специалиста и расчёт стоимости вашего проекта.</p>
+    <a class="btn btn-gold btn-w cta" href="#" data-i18n="cta_call">Вызвать специалиста</a>
+    <div class="contact-row">
+      <!-- PHONE-slot: плейсхолдер из мокапа, заменить реальным номером клиента -->
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg><b>+998 90 123 45 67</b></span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10Z"/><circle cx="12" cy="11" r="2.2"/></svg><span data-i18n="fin_city">Ташкент, Узбекистан</span></span>
     </div>
-    <a class="btn btn-gold cta" style="font-size:.84rem;padding:19px 40px" href="#" data-i18n="cta_final">Получить консультацию и расчёт</a>
   </div>
 </section>
 
 <footer>
-  <div class="brand"><b style="font-family:var(--disp);letter-spacing:.3em">DEVAGO</b><small style="font-size:.56rem;letter-spacing:.52em;text-transform:uppercase;color:var(--gold);font-weight:700">ceiling</small></div>
-  <div style="font-size:.85rem" data-i18n="f_line">Натяжные потолки и архитектура света · Навои · Бухара · Самарканд · Кашкадарья · Ташкент</div>
-  <div class="small" data-i18n="f_small">© DEVAGO Ceiling. Демонстрационная сборка: фото-плейсхолдеры будут заменены реальными проектами.</div>
+  <div class="brand" style="justify-content:center"><span class="mono">D</span><span class="bt"><b>DEVAGO</b><small>CEILING</small></span></div>
+  <div class="small" data-i18n="f_line">Премиальные натяжные потолки · Навои · Бухара · Самарканд · Кашкадарья · Ташкент</div>
+  <div class="small" data-i18n="f_small">© DEVAGO Ceiling. Демонстрационная сборка: плейсхолдеры будут заменены материалами клиента.</div>
 </footer>
 
 <script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"HomeAndConstructionBusiness",
-  "name":"DEVAGO Ceiling",
-  "image":"https://devago-ceiling-site.vercel.app/assets/hero-architecture-night.jpg",
-  "url":"https://devago-ceiling-site.vercel.app/",
-  "description":"Натяжные потолки и архитектура света: теневые системы, световые линии, магнитные треки, звёздное небо.",
-  "areaServed":[
-    {"@type":"City","name":"Навои"},
-    {"@type":"City","name":"Бухара"},
-    {"@type":"City","name":"Самарканд"},
-    {"@type":"AdministrativeArea","name":"Кашкадарьинская область"},
-    {"@type":"City","name":"Ташкент"}
-  ]
-}
+{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"DEVAGO Ceiling",
+"image":"https://devago-ceiling-site.vercel.app/assets/dk-hero.jpg","url":"https://devago-ceiling-site.vercel.app/",
+"description":"Премиальные натяжные потолки и архитектура света.",
+"areaServed":[{"@type":"City","name":"Навои"},{"@type":"City","name":"Бухара"},{"@type":"City","name":"Самарканд"},{"@type":"AdministrativeArea","name":"Кашкадарьинская область"},{"@type":"City","name":"Ташкент"}]}
 </script>
 
 <script>
-/* ============================================================
-   CTA_TARGET: ЕДИНАЯ константа. Когда решится WhatsApp/TG/форма,
-   замена ЗДЕСЬ в один клик разводит все кнопки сайта.
-   ============================================================ */
-var CTA_TARGET = "#contact";   /* PLACEHOLDER: заменить на wa.me/... | t.me/... | ссылку формы */
-
-/* ============================================================
-   i18n RU/UZ · словарь-плейсхолдеры (финальные тексты от копирайтера).
-   Узбекская латиница использует oʻ gʻ с U+02BB.
-   ============================================================ */
-var I18N = {
-  ru: {
-    cta_short:"Консультация",
-    hero_kick:"Натяжные потолки · архитектура света",
-    hero_h1:"Мы создаём не потолок, <b>а пространство</b>",
-    hero_sub:"Теневые системы, световые линии и звёздное небо: свет, спроектированный под вашу архитектуру, а не наклеенный сверху.",
-    cta_main:"Получить консультацию и расчёт",
-    cta_solutions:"Наши решения",
-    geo_line:"Навои · Бухара · Самарканд · Кашкадарья · Ташкент",
-    sol_kick:"Наши решения",
-    sol_title:"Шесть способов <b>зажечь пространство</b>",
-    sol1_h:"Теневые системы", sol1_p:"Потолок отрывается от стены тонкой теневой линией: архитектурная глубина без карнизов.",
-    sol2_h:"Световые линии", sol2_p:"Чистые линии света в полотне: графика потолка, которая ведёт взгляд и зонирует пространство.",
-    sol3_h:"Магнитные треки", sol3_p:"Светильники переставляются одним движением: свет следует за жизнью комнаты.",
-    sol4_h:"Скрытые карнизы", sol4_p:"Шторы выходят прямо из потолка: ниша спрятана, линия окна остаётся чистой.",
-    sol5_h:"Звёздное небо", sol5_p:"Сотни точек света над головой: спальня и детская превращаются в планетарий.",
-    sol6_h:"Авторские решения", sol6_p:"Многоуровневые сценарии под ваш проект: считаем свет, а не просто натягиваем полотно.",
-    combo_kick:"Комбинированное решение",
-    combo_title:"Один потолок, <b>одна система света</b>",
-    combo_p:"Теневой профиль по периметру, световые линии в зонах, треки над рабочими поверхностями: собираем приёмы в единый сценарий, где каждый источник на своём месте.",
-    cta_main2:"Получить консультацию и расчёт",
-    star_kick:"Фирменное решение",
-    star_title:"Звёздное небо <b>у вас дома</b>",
-    star_p:"Оптоволоконные точки, мерцание и падающие звёзды: настоящая глубина ночного неба в спальне, детской или домашнем кинотеатре.",
-    cta_star:"Рассчитать звёздное небо",
-    pr_kick:"Стандарты работы",
-    pr_title:"От эскиза <b>до гарантии</b>",
-    pr1_h:"Проектирование", pr1_p:"Свет считаем на плане: сценарии, зоны, температура света.",
-    pr2_h:"Замеры", pr2_p:"Точная геометрия помещения и всех примыканий.",
-    pr3_h:"Монтаж", pr3_p:"Чисто и в срок: профили, полотно, свет, автоматика.",
-    pr4_h:"Контроль качества", pr4_p:"Проверяем каждую линию и каждый стык при сдаче.",
-    pr5_h:"Гарантия", pr5_p:"Договор и гарантия на полотно, профиль и свет.",
-    prj_kick:"Реализованные проекты",
-    prj_title:"Свет, который <b>уже работает</b>",
-    prj1_c:"спальня · теневой периметр", prj2_c:"свет · тёплые сценарии", prj3_c:"гостиная · уровни",
-    prj4_c:"спальня · мягкий контур", prj5_c:"детская · звёздное небо",
-    rev1_p:"«Сделали теневой потолок со световыми линиями: комната стала выглядеть вдвое дороже ремонта.»", rev1_w:"Плейсхолдер · Навои",
-    rev2_p:"«Монтаж за один день, ни пылинки. Звёздное небо в детской: дети выключают свет сами.»", rev2_w:"Плейсхолдер · Бухара",
-    rev3_p:"«Проект света сделали до ремонта, всё сошлось до сантиметра. Рекомендуем как инженеров, а не просто монтажников.»", rev3_w:"Плейсхолдер · Ташкент",
-    ct_kick:"Контакты",
-    ct_title:"Обсудим <b>ваш потолок?</b>",
-    ct_p:"Расскажите о помещении: предложим решение, посчитаем свет и назовём сроки.",
-    c1:"Навои", c2:"Бухара", c3:"Самарканд", c4:"Кашкадарья", c5:"Ташкент · филиал",
-    cta_final:"Получить консультацию и расчёт",
-    f_line:"Натяжные потолки и архитектура света · Навои · Бухара · Самарканд · Кашкадарья · Ташкент",
-    f_small:"© DEVAGO Ceiling. Демонстрационная сборка: фото-плейсхолдеры будут заменены реальными проектами."
-  },
-  uz: {
-    cta_short:"Konsultatsiya",
-    hero_kick:"Tarang shiftlar · yorugʻlik arxitekturasi",
-    hero_h1:"Biz shift emas, <b>makon yaratamiz</b>",
-    hero_sub:"Soya tizimlari, yorugʻlik chiziqlari va yulduzli osmon: yorugʻlik sizning arxitekturangiz uchun loyihalanadi, shunchaki yopishtirilmaydi.",
-    cta_main:"Konsultatsiya va hisob-kitob olish",
-    cta_solutions:"Bizning yechimlar",
-    geo_line:"Navoiy · Buxoro · Samarqand · Qashqadaryo · Toshkent",
-    sol_kick:"Bizning yechimlar",
-    sol_title:"Makonni yoritishning <b>olti usuli</b>",
-    sol1_h:"Soya tizimlari", sol1_p:"Shift devordan nozik soya chizigʻi bilan ajraladi: karnizsiz arxitektura chuqurligi.",
-    sol2_h:"Yorugʻlik chiziqlari", sol2_p:"Matodagi toza yorugʻlik chiziqlari: nigohni yetaklaydigan va makonni boʻluvchi shift grafikasi.",
-    sol3_h:"Magnitli treklar", sol3_p:"Chiroqlar bir harakat bilan koʻchiriladi: yorugʻlik xona hayotiga ergashadi.",
-    sol4_h:"Yashirin karnizlar", sol4_p:"Pardalar toʻgʻridan-toʻgʻri shiftdan tushadi: tokcha yashiringan, deraza chizigʻi toza qoladi.",
-    sol5_h:"Yulduzli osmon", sol5_p:"Bosh uzra yuzlab yorugʻlik nuqtalari: yotoqxona va bolalar xonasi planetariyga aylanadi.",
-    sol6_h:"Mualliflik yechimlari", sol6_p:"Loyihangiz uchun koʻp bosqichli stsenariylar: biz yorugʻlikni hisoblaymiz, shunchaki mato tortmaymiz.",
-    combo_kick:"Kombinatsiyalangan yechim",
-    combo_title:"Bitta shift, <b>bitta yorugʻlik tizimi</b>",
-    combo_p:"Perimetr boʻylab soya profili, zonalarda yorugʻlik chiziqlari, ish yuzalari ustida treklar: har bir manba oʻz oʻrnida boʻlgan yagona stsenariy yigʻamiz.",
-    cta_main2:"Konsultatsiya va hisob-kitob olish",
-    star_kick:"Firma yechimi",
-    star_title:"Yulduzli osmon <b>uyingizda</b>",
-    star_p:"Optik tolali nuqtalar, jimirlash va uchar yulduzlar: yotoqxona, bolalar xonasi yoki uy kinoteatrida tungi osmonning haqiqiy chuqurligi.",
-    cta_star:"Yulduzli osmonni hisoblash",
-    pr_kick:"Ish standartlari",
-    pr_title:"Eskizdan <b>kafolatgacha</b>",
-    pr1_h:"Loyihalash", pr1_p:"Yorugʻlikni rejada hisoblaymiz: stsenariylar, zonalar, yorugʻlik harorati.",
-    pr2_h:"Oʻlchov", pr2_p:"Xona va barcha tutashuvlarning aniq geometriyasi.",
-    pr3_h:"Montaj", pr3_p:"Toza va oʻz vaqtida: profillar, mato, yorugʻlik, avtomatika.",
-    pr4_h:"Sifat nazorati", pr4_p:"Topshirishda har bir chiziq va choklarni tekshiramiz.",
-    pr5_h:"Kafolat", pr5_p:"Shartnoma hamda mato, profil va yorugʻlikka kafolat.",
-    prj_kick:"Amalga oshirilgan loyihalar",
-    prj_title:"Allaqachon ishlayotgan <b>yorugʻlik</b>",
-    prj1_c:"yotoqxona · soya perimetri", prj2_c:"yorugʻlik · iliq stsenariylar", prj3_c:"mehmonxona · darajalar",
-    prj4_c:"yotoqxona · yumshoq kontur", prj5_c:"bolalar xonasi · yulduzli osmon",
-    rev1_p:"«Yorugʻlik chiziqlari bilan soya shift qildik: xona taʼmirdan ikki barobar qimmat koʻrinadi.»", rev1_w:"Pleysxolder · Navoiy",
-    rev2_p:"«Montaj bir kunda, chang ham yoʻq. Bolalar xonasida yulduzli osmon: bolalar chiroqni oʻzlari oʻchirishadi.»", rev2_w:"Pleysxolder · Buxoro",
-    rev3_p:"«Yorugʻlik loyihasi taʼmirdan oldin qilindi, hammasi santimetrgacha toʻgʻri keldi. Muhandis sifatida tavsiya qilamiz.»", rev3_w:"Pleysxolder · Toshkent",
-    ct_kick:"Bogʻlanish",
-    ct_title:"Shiftingizni <b>muhokama qilamizmi?</b>",
-    ct_p:"Xona haqida aytib bering: yechim taklif qilamiz, yorugʻlikni hisoblaymiz va muddatni aytamiz.",
-    c1:"Navoiy", c2:"Buxoro", c3:"Samarqand", c4:"Qashqadaryo", c5:"Toshkent · filial",
-    cta_final:"Konsultatsiya va hisob-kitob olish",
-    f_line:"Tarang shiftlar va yorugʻlik arxitekturasi · Navoiy · Buxoro · Samarqand · Qashqadaryo · Toshkent",
-    f_small:"© DEVAGO Ceiling. Namoyish yigʻmasi: foto-pleysxolderlar haqiqiy loyihalar bilan almashtiriladi."
-  }
+var CTA_TARGET="#final"; /* PLACEHOLDER: wa.me / t.me / форма, замена одной строкой */
+var I18N={
+ ru:{cta_main:"Получить консультацию",cta_main2:"Получить консультацию",cta_main3:"Получить консультацию",
+ cta_watch:"Смотреть видео",cta_prj:"Смотреть проект",cta_all:"Смотреть все проекты",cta_call:"Вызвать специалиста",
+ h_kick:"Премиальные",h_h1:"Натяжные потолки",h_sub2:"Архитектура света и пространства",
+ h_sub:"Создаём уникальные интерьеры с помощью современных потолочных решений и безупречного света.",
+ h_geo:"Навои · Бухара · Самарканд · Кашкадарья · Ташкент",
+ s_kick:"Наши решения",
+ s1_h:"Теневые системы",s1_p:"Идеально ровные стыки и чистая геометрия",
+ s2_h:"Световые линии",s2_p:"Чистый свет. Любые конфигурации",
+ s3_h:"Магнитные треки",s3_p:"Гибкое освещение под ваши задачи",
+ s4_h:"Скрытые карнизы",s4_p:"Эстетика без компромиссов. Шторы «из потолка»",
+ s5_h:"Звёздное небо",s5_p:"Премиальные инсталляции эффектного неба",
+ s6_h:"Авторские решения",s6_p:"Индивидуальные сценарии под ваш интерьер",
+ c_kick:"Комбинированное решение DEVAGO",c_title:"Интерьер №3 · Комбинация",
+ a1:"Теневой профиль",a2:"Световые линии",a3:"Магнитные трековые системы",a4:"Скрытый карниз",a5:"Парящая подсветка",
+ st_kick:"Премиальное решение",st_title:"Звёздное небо",
+ st_p:"Реалистичное звёздное небо для особой атмосферы в спальне, кинотеатре, SPA-зоне или лаунж-пространстве.",
+ f1:"Оптоволоконные технологии",f2:"Полная интеграция с освещением",f3:"Любые сценарии мерцания",f4:"Долговечность и безопасность",
+ std_kick:"Стандарты DEVAGO",
+ std1_h:"Проектирование",std1_p:"Детальная проработка световых сценариев",
+ std2_h:"Точные замеры",std2_p:"Миллиметровая точность для идеального результата",
+ std3_h:"Подготовка объекта",std3_p:"Чистота и защита вашего интерьера",
+ std4_h:"Профессиональный монтаж",std4_p:"Опытные мастера и качественные материалы",
+ std5_h:"Контроль качества",std5_p:"Многоступенчатая проверка на каждом этапе",
+ std6_h:"Гарантия результата",std6_p:"Гарантия до 10 лет на все работы и материалы",
+ p_kick:"Реализованные проекты и отзывы",
+ p1_o:"Пентхаус 240 м²",p1_c:"Tashkent City",p1_q:"Искали подрядчика, который сможет объединить световые решения в единую концепцию. Результат превзошёл ожидания.",p1_w:"Александр и Мария",
+ p2_o:"Домашний кинотеатр",p2_c:"Частный проект",p2_q:"Звёздное небо от DEVAGO, это нечто! Атмосфера как в настоящем кинотеатре. Реализовали нашу мечту.",p2_w:"Тимур А.",
+ p3_o:"Квартира 180 м²",p3_c:"Tashkent City",p3_q:"Безупречное качество, внимательность к деталям и идеальная реализация архитектурной идеи.",p3_w:"Дильноза К.",
+ p4_o:"SPA-зона 150 м²",p4_c:"Частный проект",p4_q:"Световые линии и скрытый карниз создали идеальную атмосферу релакса и уюта.",p4_w:"Бахром Р.",
+ w_kick:"Почему выбирают DEVAGO",
+ w1:"Архитектурный подход к каждому проекту",w2:"Премиальные материалы и комплектующие",
+ w3:"Опытная команда и собственные монтажные бригады",w4:"Гарантия до 10 лет на работы и материалы",
+ fin_title:"Создадим пространство, которое вдохновляет",
+ fin_p:"Получите консультацию специалиста и расчёт стоимости вашего проекта.",fin_city:"Ташкент, Узбекистан",
+ f_line:"Премиальные натяжные потолки · Навои · Бухара · Самарканд · Кашкадарья · Ташкент",
+ f_small:"© DEVAGO Ceiling. Демонстрационная сборка: плейсхолдеры будут заменены материалами клиента."},
+ uz:{cta_main:"Konsultatsiya olish",cta_main2:"Konsultatsiya olish",cta_main3:"Konsultatsiya olish",
+ cta_watch:"Video koʻrish",cta_prj:"Loyihani koʻrish",cta_all:"Barcha loyihalar",cta_call:"Mutaxassis chaqirish",
+ h_kick:"Premium",h_h1:"Tarang shiftlar",h_sub2:"Yorugʻlik va makon arxitekturasi",
+ h_sub:"Zamonaviy shift yechimlari va benuqson yorugʻlik bilan betakror interyerlar yaratamiz.",
+ h_geo:"Navoiy · Buxoro · Samarqand · Qashqadaryo · Toshkent",
+ s_kick:"Bizning yechimlar",
+ s1_h:"Soya tizimlari",s1_p:"Mukammal tekis choklar va toza geometriya",
+ s2_h:"Yorugʻlik chiziqlari",s2_p:"Toza yorugʻlik. Istalgan konfiguratsiya",
+ s3_h:"Magnitli treklar",s3_p:"Vazifangizga mos moslashuvchan yoritish",
+ s4_h:"Yashirin karnizlar",s4_p:"Murosasiz estetika. Pardalar «shiftdan»",
+ s5_h:"Yulduzli osmon",s5_p:"Taʼsirli osmonning premium installyatsiyalari",
+ s6_h:"Mualliflik yechimlari",s6_p:"Interyeringiz uchun individual stsenariylar",
+ c_kick:"DEVAGO kombinatsiyalangan yechimi",c_title:"Interyer №3 · Kombinatsiya",
+ a1:"Soya profili",a2:"Yorugʻlik chiziqlari",a3:"Magnitli trek tizimlari",a4:"Yashirin karniz",a5:"Muallaq yoritish",
+ st_kick:"Premium yechim",st_title:"Yulduzli osmon",
+ st_p:"Yotoqxona, kinoteatr, SPA yoki launj makonida oʻzgacha muhit uchun realistik yulduzli osmon.",
+ f1:"Optik tolali texnologiyalar",f2:"Yoritish bilan toʻliq integratsiya",f3:"Istalgan jimirlash stsenariylari",f4:"Uzoq umr va xavfsizlik",
+ std_kick:"DEVAGO standartlari",
+ std1_h:"Loyihalash",std1_p:"Yorugʻlik stsenariylarini batafsil ishlab chiqish",
+ std2_h:"Aniq oʻlchovlar",std2_p:"Ideal natija uchun millimetr aniqligi",
+ std3_h:"Obyektni tayyorlash",std3_p:"Interyeringiz tozaligi va himoyasi",
+ std4_h:"Professional montaj",std4_p:"Tajribali ustalar va sifatli materiallar",
+ std5_h:"Sifat nazorati",std5_p:"Har bosqichda koʻp pogʻonali tekshiruv",
+ std6_h:"Natija kafolati",std6_p:"Barcha ish va materiallarga 10 yilgacha kafolat",
+ p_kick:"Amalga oshirilgan loyihalar va fikrlar",
+ p1_o:"Pentxaus 240 m²",p1_c:"Tashkent City",p1_q:"Yorugʻlik yechimlarini yagona konsepsiyaga birlashtira oladigan pudratchi izladik. Natija kutilganidan oshdi.",p1_w:"Aleksandr va Mariya",
+ p2_o:"Uy kinoteatri",p2_c:"Xususiy loyiha",p2_q:"DEVAGO yulduzli osmoni, bu ajoyib! Muhit xuddi haqiqiy kinoteatrdagidek. Orzuimizni amalga oshirdik.",p2_w:"Timur A.",
+ p3_o:"Kvartira 180 m²",p3_c:"Tashkent City",p3_q:"Benuqson sifat, detallarga eʼtibor va arxitektura gʻoyasining ideal ijrosi.",p3_w:"Dilnoza K.",
+ p4_o:"SPA-zona 150 m²",p4_c:"Xususiy loyiha",p4_q:"Yorugʻlik chiziqlari va yashirin karniz relaks va shinamlik muhitini yaratdi.",p4_w:"Bahrom R.",
+ w_kick:"Nega DEVAGO tanlanadi",
+ w1:"Har bir loyihaga arxitektura yondashuvi",w2:"Premium materiallar va butlovchilar",
+ w3:"Tajribali jamoa va oʻz montaj brigadalari",w4:"Ish va materiallarga 10 yilgacha kafolat",
+ fin_title:"Ilhomlantiruvchi makon yaratamiz",
+ fin_p:"Mutaxassis konsultatsiyasi va loyihangiz narxining hisob-kitobini oling.",fin_city:"Toshkent, Oʻzbekiston",
+ f_line:"Premium tarang shiftlar · Navoiy · Buxoro · Samarqand · Qashqadaryo · Toshkent",
+ f_small:"© DEVAGO Ceiling. Namoyish yigʻmasi: pleysxolderlar mijoz materiallari bilan almashtiriladi."}
 };
-
 (function(){
-  var cur="ru";
-  function apply(lang){
-    cur=lang;
-    document.documentElement.lang=lang;
-    var dict=I18N[lang];
-    document.querySelectorAll("[data-i18n]").forEach(function(el){
-      var k=el.getAttribute("data-i18n");
-      if(dict[k]!=null)el.innerHTML=dict[k];
-    });
-    document.getElementById("lang-ru").classList.toggle("on",lang==="ru");
-    document.getElementById("lang-uz").classList.toggle("on",lang==="uz");
-    try{localStorage.setItem("devago-lang",lang)}catch(e){}
-  }
-  document.getElementById("lang-ru").addEventListener("click",function(){apply("ru")});
-  document.getElementById("lang-uz").addEventListener("click",function(){apply("uz")});
-  try{var saved=localStorage.getItem("devago-lang");if(saved==="uz")apply("uz")}catch(e){}
-
-  /* CTA: все кнопки из одной константы */
+  function apply(l){document.documentElement.lang=l;var d=I18N[l];
+    document.querySelectorAll("[data-i18n]").forEach(function(e){var k=e.getAttribute("data-i18n");if(d[k]!=null)e.innerHTML=d[k];});
+    document.getElementById("lang-ru").classList.toggle("on",l==="ru");
+    document.getElementById("lang-uz").classList.toggle("on",l==="uz");
+    try{localStorage.setItem("devago-lang",l)}catch(e){}}
+  document.getElementById("lang-ru").onclick=function(){apply("ru")};
+  document.getElementById("lang-uz").onclick=function(){apply("uz")};
+  try{if(localStorage.getItem("devago-lang")==="uz")apply("uz")}catch(e){}
   document.querySelectorAll("a.cta").forEach(function(a){a.setAttribute("href",CTA_TARGET)});
-
-  /* reveal */
   var rvs=document.querySelectorAll(".reveal");
-  if("IntersectionObserver" in window){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.08});
-    rvs.forEach(function(el){io.observe(el);});
-    setTimeout(function(){rvs.forEach(function(el){el.classList.add("in");});},1600);
-  }else{rvs.forEach(function(el){el.classList.add("in");});}
+  if("IntersectionObserver" in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.06});
+    rvs.forEach(function(el){io.observe(el)});setTimeout(function(){rvs.forEach(function(el){el.classList.add("in")})},1500);}
+  else rvs.forEach(function(el){el.classList.add("in")});
 })();
 </script>
 </body>
