@@ -6,8 +6,11 @@
 <!--
   DEVAGO CEILING · рестайл REBEL (v5.1): оболочка = examples/photo_...945 (сайт) + ..._942 (лист фотопечати),
   контент = DEVAGO (тексты, услуги, проекты, гарантия 10 лет, бренд гекс-V). REBEL-тексты не используются.
-  Типографика: Manrope на всё (заголовки капсом 600 + трекинг, текст 400, кикеры 500 капсом);
-  Cormorant только на вордмарк DEVAGO (бренд-локап канона).
+  Типографика (правка CDO, пара A, утверждена Тахиром 03.08): заголовки h1/h2/h3 в сериф
+  Prata (единственный вес, поэтому у ВСЕХ заголовков font-weight:400, любой 500/600 даст
+  синтетический жирный и испортит рисунок); весь интерфейс на Golos Text 400/500/600/700
+  (навигация, кикеры, кнопки, подписи карточек, заголовок модалки, имена в отзывах);
+  Cormorant только на вордмарк DEVAGO (бренд-локап канона), подключён подмножеством, см. link.
   Свап-точки: PHONE (+998 90 123 45 67), TG_URL, FORM_ENDPOINT, EMAIL (не ставить до реального),
   REVIEWS (массив, замена на реальные отзывы Икрома), hi-res рендеры, TOKENS.
   Флаги: ENABLE_PHOTOPRINT=true (Икром подтвердил), ENABLE_STICKY_CTA=false.
@@ -29,7 +32,16 @@
 <link rel="apple-touch-icon" href="assets/apple-touch.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- ДВА ЗАПРОСА, И ЭТО ОБЯЗАТЕЛЬНО. Параметр &text= в Google Fonts применяется КО ВСЕМ
+     семействам запроса, а не к последнему: в одном общем запросе Prata и Golos Text
+     тоже приезжали бы обрезанными до букв DEVAGOCEILN, и весь русский с узбекским
+     выпал бы в системный шрифт. Проверено ответом API: unicode-range у всех трёх
+     семейств схлопывался до U+41,43-45,47,49,4C,4E-4F,56. Сливать обратно в один link НЕЛЬЗЯ. -->
+<link href="https://fonts.googleapis.com/css2?family=Prata&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Cormorant ТОЛЬКО на вордмарке, поэтому подмножеством: 1.9 КБ вместо 14 КБ (замерено).
+     Доступны лишь буквы D E V A G O C I L N. Появятся в вордмарке другие символы,
+     надо расширить text=, иначе они молча выпадут в системный шрифт. -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500&text=DEVAGOCEILN&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/cn-hero.webp" type="image/webp" fetchpriority="high">
 
 <!-- МЕТРИКА (Артур): плейсхолдеры, инициализация только при реальных ID -->
@@ -65,7 +77,9 @@ function devagoTrack(goal){
   --gold:#C9A24B; --gold-l:#DEBC77; --gold-dim:rgba(201,162,75,.45);
   --text:#EDE6D6; --t2:#B0A691; --mut:#8D8373;
   --line:rgba(201,162,75,.28); --hairline:rgba(237,230,214,.1);
-  --serif:'Cormorant',Georgia,serif; --sans:'Manrope',system-ui,sans-serif;
+  --serif:'Prata',Georgia,serif;
+  --sans:'Golos Text',system-ui,sans-serif;
+  --wordmark:'Cormorant',Georgia,serif;
   --maxw:1200px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -75,11 +89,11 @@ img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--gold);color:#171204}
 :focus-visible{outline:2px solid var(--gold-l);outline-offset:3px}
-h1,h2,h3{font-family:var(--sans);line-height:1.16}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.16}
 section{padding:clamp(52px,6vw,88px) 20px;position:relative}
 .wrap{max-width:var(--maxw);margin:0 auto}
 .kick{font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;font-weight:500;color:var(--gold)}
-h2.title{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text)}
+h2.title{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--text)}
 .lead{color:var(--t2);font-size:.96rem;margin-top:14px;max-width:60ch}
 .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}
@@ -111,7 +125,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .brand{display:flex;align-items:center;gap:11px;flex:none}
 .brand img{width:38px;height:38px}
 .brand .bt{display:flex;flex-direction:column;line-height:1.1}
-.brand .bt b{font:500 1rem/1 var(--serif);letter-spacing:.32em;color:var(--text)}
+.brand .bt b{font:500 1rem/1 var(--wordmark);letter-spacing:.32em;color:var(--text)}
 .brand .bt small{font:700 .48rem/1 var(--sans);letter-spacing:.5em;color:var(--gold);margin-top:4px}
 .dnav{display:none;gap:20px;margin:0 auto}
 .dnav a{font:600 .64rem/1 var(--sans);letter-spacing:.13em;text-transform:uppercase;color:var(--t2);padding:8px 0}
@@ -141,7 +155,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .hero-grid{max-width:1280px;margin:0 auto;display:flex;flex-direction:column}
 .hero-txt{padding:clamp(40px,6vw,80px) 20px 34px;position:relative;z-index:2}
 .hero-txt .kick{letter-spacing:.34em}
-.hero-txt h1{font-size:clamp(2.1rem,4.6vw,3.4rem);letter-spacing:.1em;text-transform:uppercase;color:#fff;font-weight:500;margin-top:12px}
+.hero-txt h1{font-size:clamp(2.1rem,4.6vw,3.4rem);letter-spacing:.1em;text-transform:uppercase;color:#fff;font-weight:400;margin-top:12px}
 .hero-txt h1 .g{color:var(--gold-l)}
 .hero-txt .sub2{font:600 .7rem/1.7 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--text);margin-top:12px}
 .hero-txt .sub{color:var(--t2);font-size:.96rem;margin-top:16px;max-width:44ch}
@@ -185,7 +199,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 #combo{background:var(--card2)}
 .combo-wrap{margin-top:6px}
 .combo-text .kick{margin-bottom:12px}
-.combo-t{font-weight:300;letter-spacing:.02em;font-size:clamp(1.7rem,3.2vw,2.6rem);color:var(--text)}
+.combo-t{font-weight:400;letter-spacing:.02em;font-size:clamp(1.7rem,3.2vw,2.6rem);color:var(--text)}
 .combo-p{color:var(--t2);font-size:.96rem;margin-top:16px;max-width:46ch}
 .combo{position:relative;margin-top:22px;border:1px solid var(--hairline)}
 .combo img{width:100%;aspect-ratio:16/10.5;object-fit:cover;height:auto;object-position:35% 20%}
@@ -241,7 +255,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .step .ph img{width:100%;height:100%;object-fit:cover}
 .step .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,var(--card))}
 .step .bx{padding:12px;display:flex;flex-direction:column;gap:6px;flex:1}
-.step .no{font:300 .95rem/1 var(--sans);letter-spacing:.08em;color:var(--gold)}
+.step .no{font:400 .95rem/1 var(--sans);letter-spacing:.08em;color:var(--gold)}
 .step .bx b{font:600 .66rem/1.4 var(--sans);letter-spacing:.13em;text-transform:uppercase;color:var(--text)}
 .step .bx > span{font-size:.72rem;color:var(--t2)}
 .step.badge{align-items:center;justify-content:center;text-align:center;padding:22px 14px;gap:10px}
@@ -280,7 +294,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 /* ==================== 9 · FINAL CTA (REBEL: текст | кнопки | контакты) ==================== */
 #final{background:radial-gradient(ellipse 70% 80% at 50% 100%,rgba(201,162,75,.12),transparent 65%),var(--bg)}
 .final-wrap{display:flex;flex-direction:column;gap:26px}
-.final-l h2{font-weight:600;letter-spacing:.08em;color:var(--gold-l)}
+.final-l h2{font-weight:400;letter-spacing:.08em;color:var(--gold-l)}
 .final-btns{display:flex;flex-direction:column;gap:12px;margin-top:4px}
 .contact-col{display:flex;flex-direction:column;gap:6px;font-size:.94rem;color:var(--t2)}
 .contact-col a{display:inline-flex;align-items:center;min-height:44px}
