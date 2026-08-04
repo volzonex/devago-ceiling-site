@@ -24,15 +24,31 @@
 <meta name="theme-color" content="#0B0A08">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/apple-touch.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- ОДНОЙ ССЫЛКОЙ МОЖНО, потому что &text= больше не используется: Cormorant убран,
-     вордмарк теперь набирается тем же Jost, что и весь интерфейс.
-     НИКОГДА не добавлять &text= в общий link: параметр применяется КО ВСЕМ семействам
-     запроса, а не к тому, рядом с которым написан, и обрежет кириллицу до букв вордмарка.
-     Проверено ответом API: unicode-range схлопывался до U+41,43-45,47,49,4C,4E-4F,56. -->
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Tenor+Sans&display=swap" rel="stylesheet">
+<!-- ШРИФТЫ ЛЕЖАТ У НАС, а не грузятся с Google. Решение Тахира 04.08, причина замерена:
+     пять внешних запросов к Google Fonts (CSS 329 мс плюс четыре файла по 310-440 мс)
+     держали LCP на 3.7 c и не давали взять порог производительности. Теперь ноль
+     внешних запросов и ноль соединений к чужим доменам.
+     Поднаборы и unicode-range повторяют раскладку Google один в один, поэтому браузер
+     качает только нужное: для русской версии латиницу и кириллицу, latin-ext только
+     если он реально встретится в тексте.
+     Jost переменный, поэтому 400 и 500 берутся из ОДНОГО файла, это не опечатка. -->
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/jost-400-cyrillic.woff2" crossorigin>
 <link rel="preload" as="image" href="assets/cn-hero.webp" type="image/webp" fetchpriority="high">
+<style>
+@font-face{font-family:'Jost';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/jost-400-cyrillic.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:'Jost';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/jost-400-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Jost';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/jost-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Jost';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/jost-400-cyrillic.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:'Jost';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/jost-400-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Jost';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/jost-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+/* УЗБЕКСКИЙ АПОСТРОФ. Глифа ʻ (U+02BB) НЕТ ни в Jost, ни в Tenor Sans: проверено не по
+   unicode-range (он шаблонный и врёт), а по таблице cmap внутри самих файлов шрифтов.
+   Его не было также в Manrope, Golos Text и Prata, то есть весь узбекский текст всё
+   время рисовал этот знак случайным системным шрифтом устройства.
+   Здесь лежит донор: один символ, вырезанный из Work Sans, 444 байта.
+   Диапазон сужен до одного символа намеренно, чтобы шрифт не перехватывал ничего сверх. */
+@font-face{font-family:'UzApos';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/uz-apostrophe.woff2) format('woff2');unicode-range:U+02BB}
+</style>
 
 <!-- МЕТРИКА (просьба Артура): плейсхолдеры, инициализация только при реальных ID -->
 <script>
@@ -67,12 +83,20 @@ function devagoTrack(goal){
   --gold:#C9A24B; --gold-l:#DEBC77; --gold-dim:rgba(201,162,75,.45);
   --text:#EDE6D6; --t2:#B0A691; --mut:#8D8373;
   --line:rgba(201,162,75,.28); --hairline:rgba(237,230,214,.1);
-  /* ГАРНИТУРЫ (CDO v2). У Tenor Sans ОДИН вес: везде, где он стоит, font-weight строго
-     400. Любой 500/600 даст синтетический жирный и испортит рисунок заголовка.
-     Вордмарк набирается тем же Jost, что и интерфейс, как в оригинальном знаке клиента. */
-  --display:'Tenor Sans',Georgia,sans-serif;
-  --sans:'Jost',system-ui,sans-serif;
-  --wordmark:'Jost',system-ui,sans-serif;
+  /* ОДНА ГАРНИТУРА НА ВЕСЬ САЙТ: Jost. Решение Тахира 04.08, формулировка дословно:
+     «весь шрифт такой же, как ты сделал шрифт на лого». В локапе DEVAGO CEILING набран
+     Jost, значит и заголовки идут им же. Tenor Sans снят полностью вместе с тремя
+     файлами, поэтому страница стала легче ещё на 23 КБ и потеряла три возможных запроса.
+     Следствие, которое надо держать в голове: метрики заголовков (трекинг, межстрочный)
+     подбирались CDO под Tenor Sans, а он ЗАМЕТНО ШИРЕ Jost, поэтому набор капсом теперь
+     плотнее задуманного. Пересчёт метрик под Jost это задача CDO, выдана 04.08.
+     'UzApos' стоит ВТОРЫМ во всех стеках: подмена работает по символам, поэтому из него
+     берётся только узбекский ʻ, которого в Jost физически нет (проверено по cmap).
+     Убрать его значит вернуть случайный системный шрифт на этот знак во всей узбекской
+     версии, как было до 04.08. */
+  --display:'Jost','UzApos',system-ui,sans-serif;
+  --sans:'Jost','UzApos',system-ui,sans-serif;
+  --wordmark:'Jost','UzApos',system-ui,sans-serif;
   --maxw:1200px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -164,6 +188,17 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .pc svg{width:12px;height:12px;margin-left:2px}
 .hero-arrow{margin-top:22px;text-align:center;max-width:440px}
 .hero-arrow svg{width:14px;height:30px;color:var(--gold)}
+/* Стрелка живая (задание Тахира 04.08). Движение намеренно медленное и с паузой:
+   цикл 2.6 c, из которых больше половины стрелка стоит на месте. Дёрганый пульс на
+   премиум-сайте читается как баннер. Двигается и слегка гаснет на возврате, поэтому
+   заметна периферийным зрением, но не тянет внимание на себя.
+   Отключается системной настройкой «меньше движения», общее правило ниже по файлу. */
+@keyframes devagoArrow{
+  0%,60%,100%{transform:translateY(0);opacity:.75}
+  25%{transform:translateY(7px);opacity:1}
+  45%{transform:translateY(0);opacity:.75}
+}
+.hero-arrow svg{animation:devagoArrow 2.6s cubic-bezier(.4,0,.2,1) infinite;will-change:transform}
 @media(min-width:900px){
   .hero{align-items:center}
   .hero-bg::after{background:linear-gradient(90deg,rgba(11,10,8,.96) 0%,rgba(11,10,8,.74) 30%,rgba(11,10,8,.16) 60%,rgba(11,10,8,0) 100%),linear-gradient(180deg,transparent 60%,rgba(11,10,8,.7) 100%)}
