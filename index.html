@@ -849,7 +849,8 @@ section:nth-of-type(3n).in::after{animation-delay:-12s}
     width:36px;height:3px;border-radius:2px;background:rgba(237,230,214,.28);z-index:2}
   .im-body{padding:20px 20px 24px}
 }
-body.no-scroll{overflow:hidden}
+html.no-scroll{overflow:hidden}
+body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 
 
 /* ==================================================================================
@@ -1253,6 +1254,109 @@ footer{text-align:left}
 /* .car-ctl .dot.on из блока выше специфичнее и возвращал активной точке 18px:
    бокс кнопки снова становился меньше порога. Гасим явно. */
 .car-ctl .dot.on{width:44px;height:44px;background:none}
+
+/* ==================================================================================
+   CDO v5. МОДАЛЬНОЕ ОКНО: РАЗВОРОТ НА ДЕСКТОПЕ
+   ==================================================================================
+   ЗАМЕРЕННЫЙ ДЕФЕКТ. При max-width 720 и aspect-ratio 16/10 фото фиксировано 449px
+   по высоте, независимо от высоты окна. Текстовой зоне на 901x607 оставалось 116px
+   при 275px спрятанного текста, на 1440x810 остаётся 319px. Строка при этом 83 знака,
+   то есть ВЫШЕ вилки 50-75, а не только зона коротка. Колонка на широком экране не
+   работает принципиально: чем шире окно, тем выше фото и тем хуже пропорция. */
+
+/* Задача 3. Полоса действия закреплена: кнопка видна без прокрутки на любой высоте. */
+.im-body{padding-bottom:0}
+.im-cta{position:sticky;bottom:0;margin-top:18px;padding:16px 0 28px;
+  background:linear-gradient(to top,var(--card2) 74%,rgba(20,17,13,0));display:grid;gap:10px}
+.im-cta .btn{width:100%;max-width:none;min-height:48px}
+/* Задача 4. Стрелки набора и счётчик. */
+.im-nav{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:20px}
+.im-nav[hidden]{display:none}
+.im-arrow{width:44px;height:44px;display:grid;place-items:center;padding:0;cursor:pointer;
+  background:none;border:1px solid var(--line);color:var(--gold);transition:border-color .3s,color .3s}
+.im-arrow:hover{border-color:var(--gold);color:var(--gold-l)}
+.im-arrow svg{width:15px;height:15px;display:block}
+.im-count{font:500 .72rem/1 var(--sans);letter-spacing:.14em;color:var(--t2);
+  min-width:58px;text-align:center}
+
+/* Задача 2. Планшетная полоса: фото перестаёт быть неограниченным.
+   На телефонах правило неактивно ПО ПОСТРОЕНИЮ, а не по совпадению: при 390x844 фото
+   244px против потолка min(40vh,320px)=320, при 360x640 фото 225px против 256.
+   Геометрия листа снизу не меняется ни на пиксель, подтверждено кадрами до и после. */
+@media(max-width:999px){
+  .im-media{aspect-ratio:16/10;max-height:min(40vh,320px);overflow:hidden}
+  .im-media img{width:100%;height:100%;object-fit:cover;aspect-ratio:auto}
+}
+
+/* Задача 1. Разворот от 1000px: медиа слева, факты и действие справа.
+   440px текстовой колонки это не круглое число, а ширина, при которой строка попадает
+   в вилку: за вычетом паддингов остаётся 352px, при кегле .94rem это около 49 знаков. */
+@media(min-width:1000px){
+  .info-ov{padding:32px}
+  .info-modal{max-width:1080px;display:grid;grid-template-columns:minmax(0,1fr) 440px;
+    align-items:stretch;min-height:420px;max-height:min(640px,calc(100vh - 64px))}
+  .im-media{aspect-ratio:auto;height:auto;min-height:0;max-height:none;background:#070605}
+  .im-media img{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;object-position:center}
+  /* min-height:0 обязателен: у грид-элемента минимум по умолчанию auto, и без него
+     overflow в теле не включится, полоса действия окажется за краем окна. */
+  .im-body{padding:44px 44px 0;border-left:1px solid var(--hairline);min-height:0}
+  .im-cta{grid-template-columns:1fr 1fr;gap:12px;padding-bottom:32px}
+  /* Крестик переезжает в правый верх текстовой колонки, тёмная подложка там не нужна. */
+  .info-modal .m-close{top:12px;right:12px;background:none;color:var(--t2)}
+  .info-modal .m-close:hover{color:var(--gold-l)}
+}
+@media(min-width:1360px){
+  .info-modal{max-width:1180px;grid-template-columns:minmax(0,1fr) 480px}
+}
+
+/* ПРАВКИ ПО ЗАМЕРУ, СВЕРХ СПЕКИ (спека этих мест не касается, дефекты нашлись прогоном).
+   1. В колоночном режиме (до 1000px) строка так и осталась 83 знака на 901 и 91 на 768,
+   то есть выше вилки 50-75. Спека чинила высоту фото, но не меру набора. Ставим потолок
+   меры на сам текст, а не на тело: полоса действия обязана остаться во всю ширину.
+   На телефоне правило неактивно, там доступно 350px против потолка около 537px. */
+#imText p,.im-list li{max-width:64ch}
+/* 2. grid-template-columns:1fr 1fr давал кнопки РАЗНОЙ ширины в узбекском (165 и 174):
+   у 1fr минимум по содержимому, и длинное «bogʻlanish» распирало свою колонку.
+   Тот же нулевой минимум, что и во всех сетках файла. */
+@media(min-width:1000px){.im-cta{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+/* 3. Узбекские подписи ломались на две строки в колонке 170px. Трекинг .18em при таком
+   кегле стоит около 2.4px на знак, снимаем его на ЭТИХ кнопках, как уже сделано на
+   телеграм-кнопке финальной секции. */
+.im-cta .btn{letter-spacing:.12em;font-size:.68rem;padding-inline:14px}
+
+/* Полоса прокрутки резервируется ВСЕГДА. Иначе при заморозке тела она пропадает,
+   контент становится на 15px шире и страница перевёрстывается: замер показал сдвиг
+   2px у карточки в вьюпорте и 16px у секции ниже. Компенсация паддингом это лечила
+   лишь частично, стабильный жёлоб убирает причину. Страница прокручиваема всегда,
+   поэтому в обычном состоянии видимой разницы нет. */
+html{scrollbar-gutter:stable}
+
+/* Крестик окна был 43.86px по ширине, на 0.14px ниже порога приёмки. Ровно та же
+   ловушка, что и с кнопкой закрытия меню в v2: глиф не даёт целого числа, ловится
+   только замером бокса. */
+.m-close{min-width:44px}
+
+/* ОТСТУПЛЕНИЕ ОТ СПЕКИ, С АРИФМЕТИКОЙ: полоса действия в ОДНУ колонку, а не в две.
+   При двух колонках кнопка получает 170px на 1280 и 190px на 1440, за вычетом полей
+   остаётся 142 и 162px. «СВЯЗАТЬСЯ В TELEGRAM» это 20 знаков, при кегле .68rem и
+   трекинге .12em ход знака около 7.3px, то есть 146px: на 1280 не влезает совсем,
+   на 1440 впритык. Узбекское «TELEGRAM ORQALI BOGʻLANISH» это 26 знаков, около 190px,
+   не влезает НИ НА ОДНОЙ нашей ширине. Поэтому обе подписи ломались на две строки
+   в обоих языках. В одну колонку кнопка получает 352 и 392px, обе подписи идут одной
+   строкой в обоих языках. Вернуть две колонки это одна строка, если CDO решит иначе. */
+@media(min-width:1000px){.im-cta{grid-template-columns:minmax(0,1fr)}}
+/* Полоса прижимается к низу, пока текст короткий, и остаётся липкой, когда длинный:
+   margin-top:auto при переполнении схлопывается в ноль и работу берёт sticky.
+   Без этого под коротким текстом зияла пустая треть окна. */
+.im-body{display:flex;flex-direction:column}
+.im-cta{margin-top:auto}
+.im-cta .btn{white-space:nowrap}
+
+/* Строка грида по умолчанию auto, то есть берёт высоту по содержимому, а max-height
+   на контейнере её НЕ сжимает, он только обрезает. На 1440 тело выходило 663px при
+   окне 640 и полоса действия уезжала за нижний край. Замер поймал это как «полоса
+   видна НЕТ», на кадре это выглядело бы просто отсутствием кнопок. */
+@media(min-width:1000px){.info-modal{grid-template-rows:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -1612,7 +1716,18 @@ footer{text-align:left}
       <h3 id="imTitle"></h3>
       <div id="imText"></div>
       <ul class="im-list" id="imList"></ul>
-      <a class="btn btn-gold btn-w form-open" href="#form" data-goal="modal_form_click" data-i18n="cta_form">Оставить заявку</a>
+      <!-- Переходы по набору. Набор собирается по ПОРЯДКУ В DOM внутри той же секции,
+           а не разбором ключа: ключи именованы непоследовательно (sol-1, pp1, std-1),
+           парсер на этом сломался бы молча. -->
+      <div class="im-nav" id="imNav" hidden>
+        <button type="button" class="im-arrow" id="imPrev" aria-label="Предыдущее"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M11 3L5 9l6 6"/></svg></button>
+        <span class="im-count" id="imCount" aria-live="polite"></span>
+        <button type="button" class="im-arrow" id="imNext" aria-label="Следующее"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 3l6 6-6 6"/></svg></button>
+      </div>
+      <div class="im-cta">
+        <a class="btn btn-gold form-open" href="#form" data-goal="modal_form_click" data-i18n="cta_form">Оставить заявку</a>
+        <a class="btn btn-out tg-link" href="#" data-goal="modal_tg_click" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.6l-3.1 14.5c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-.9.5l.3-4.6L18.2 7c.4-.3-.1-.5-.6-.2L7.3 13.3 2.9 12c-1-.3-1-1 .2-1.4l17.5-6.7c.8-.3 1.5.2 1.3 1.7z"/></svg><span data-i18n="cta_tg">Связаться в Telegram</span></a>
+      </div>
     </div>
   </div>
 </div>
@@ -1806,11 +1921,15 @@ var I18N = {
   var fm=document.getElementById("formModal"),fmOk=document.getElementById("fmOk"),fmErr=document.getElementById("fmErr"),
       lf=document.getElementById("leadForm"),ph=document.getElementById("fmPhone");
   var fmLast=null;
-  function openForm(){fmLast=document.activeElement;
-    if(typeof closeInfo==="function")closeInfo();
+  function openForm(){
+    /* ДЕФЕКТ, НАЙДЕННЫЙ ЗАМЕРОМ, а не из списка гипотез: activeElement здесь это ссылка
+       ВНУТРИ информационного окна, и после его закрытия фокус возвращался на скрытый
+       элемент, то есть уезжал на body. Берём карточку, с которой окно было открыто. */
+    fmLast=(im.classList.contains("open")&&lastFocus)?lastFocus:document.activeElement;
+    if(typeof closeInfo==="function")closeInfo(true);
     fm.classList.add("open");ov.classList.remove("open");fmOk.hidden=true;fmErr.hidden=true;
     if(typeof lockScroll==="function")lockScroll(true);
-    setTimeout(function(){var f=lf.querySelector('input[name="name"]');if(f)f.focus()},60)}
+    setTimeout(function(){var f=lf.querySelector('input[name="name"]');if(f)f.focus({preventScroll:true})},60)}
   function closeForm(){if(!fm.classList.contains("open"))return;
     fm.classList.remove("open");
     if(typeof lockScroll==="function")lockScroll(false);
@@ -1860,15 +1979,20 @@ var I18N = {
      Заголовки и кикеры берутся из СУЩЕСТВУЮЩИХ ключей I18N, поэтому переключатель
      языка работает без единого нового словаря; плейсхолдерами является только тело
      (ключи mp_*). Когда придут тексты копирайтера, GM меняет ключ в одной строке. */
+  /* Кадры окон решений отдельные (cn-sol1..6), а не переиспользованные с полосы:
+     прежние cn-combo (2.70) и cn-star (3.37) панорамные, в боксе разворота они теряли
+     53-66% при потолке 20%, а object-position такое не лечит, он только выбирает,
+     какая часть уцелеет. Соотношение 4:3 подобрано под бокс, замер обрезки в приёмке.
+     Грузятся ТОЛЬКО при открытии окна, на загрузку страницы не влияют. */
   var MODALS={
-   "sol-1":{k:"s_kick",t:"s1_h",img:"assets/cn-combo-1228.webp",p:["s1_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
-   "sol-2":{k:"s_kick",t:"s2_h",img:"assets/cn-hero-1110.webp",p:["s2_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
-   "sol-3":{k:"s_kick",t:"s3_h",img:"assets/cn-combo-1228.webp",p:["s3_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
-   "sol-4":{k:"s_kick",t:"s4_h",img:"assets/cn-hero-1110.webp",p:["s4_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
+   "sol-1":{k:"s_kick",t:"s1_h",img:"assets/cn-sol1.webp",p:["s1_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
+   "sol-2":{k:"s_kick",t:"s2_h",img:"assets/cn-sol2.webp",p:["s2_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
+   "sol-3":{k:"s_kick",t:"s3_h",img:"assets/cn-sol3.webp",p:["s3_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
+   "sol-4":{k:"s_kick",t:"s4_h",img:"assets/cn-sol4.webp",p:["s4_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
    /* Звёздное небо не потеряло содержание вместе со своей секцией: тезисы st_p и
       f1-f4 переехали сюда целиком, это единственное окно с НЕплейсхолдерным телом. */
-   "sol-5":{k:"st_kick",t:"st_title",img:"assets/cn-star.webp",p:["st_p"],l:["f1","f2","f3","f4"]},
-   "sol-6":{k:"s_kick",t:"s6_h",img:"assets/cn-combo-1228.webp",p:["s6_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
+   "sol-5":{k:"st_kick",t:"st_title",img:"assets/cn-sol5.webp",p:["st_p"],l:["f1","f2","f3","f4"]},
+   "sol-6":{k:"s_kick",t:"s6_h",img:"assets/cn-sol6.webp",p:["s6_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
    "ann-1":{k:"c_kick",t:"a1",img:"assets/cn-combo-1228.webp",p:["mp_ann"],l:[]},
    "ann-2":{k:"c_kick",t:"a2",img:"assets/cn-combo-1228.webp",p:["mp_ann"],l:[]},
    "ann-3":{k:"c_kick",t:"a3",img:"assets/cn-combo-1228.webp",p:["mp_ann"],l:[]},
@@ -1935,31 +2059,86 @@ var I18N = {
   }
   /* Блокировка прокрутки с компенсацией полосы: без padding-right страница дёргается
      вбок на десктопе в момент открытия. */
+  /* СЧЁТЧИК, А НЕ ФЛАГ. Гипотезу CDO я проверил прогоном, и в текущем потоке она НЕ
+     воспроизводится: форма открывается только после закрытия окна, поэтому одновременно
+     открыто всегда одно. Но флаг делал это зависимым от ПОРЯДКА вызовов: любая будущая
+     правка, где окна пересекутся, молча разблокировала бы страницу под открытым окном.
+     Счётчик снимает зависимость от порядка. */
+  var lockN=0,lockY=0;
   function lockScroll(on){
-    if(on){
-      var sb=window.innerWidth-document.documentElement.clientWidth;
-      if(sb>0)document.body.style.paddingRight=sb+"px";
+    var was=lockN;
+    lockN=Math.max(0,lockN+(on?1:-1));
+    if(was===0&&lockN>0){
+      /* ТЕЛО ЗАМОРАЖИВАЕТСЯ НА МЕСТЕ, а не просто прячет прокрутку. Причина замерена:
+         одного overflow:hidden не хватает. Во-первых, его получал только body, а
+         прокручивается documentElement. Во-вторых, даже после этого страница под
+         открытым окном уезжала на 315-510px, и трассировка показала, что виноват не
+         скрипт: ни одного вызова scrollTo или scrollIntoView не было, браузер тянул
+         в вид элемент, получивший фокус, ИГНОРИРУЯ preventScroll. Оба дефекта жили
+         с v4, поймала приёмка v5. При position:fixed на теле двигать нечего. */
+      lockY=window.scrollY||document.documentElement.scrollTop||0;
+      document.body.style.top=(-lockY)+"px";
+      document.documentElement.classList.add("no-scroll");
       document.body.classList.add("no-scroll");
-    }else{
+    }else if(lockN===0&&was>0){
+      document.documentElement.classList.remove("no-scroll");
       document.body.classList.remove("no-scroll");
-      document.body.style.paddingRight="";
+      document.body.style.top="";
+      /* instant, иначе scroll-behavior:smooth у html проиграет возврат анимацией */
+      try{window.scrollTo({top:lockY,left:0,behavior:"instant"})}catch(e){window.scrollTo(0,lockY)}
     }
+  }
+  /* НАБОР ДЛЯ СТРЕЛОК. Собираем по ПОРЯДКУ В DOM внутри секции источника, ключи не
+     разбираем: они именованы непоследовательно (sol-1, pp1, std-1) и парсер сломался
+     бы молча. Выноски комбо ходят через data-ann, поэтому берём оба атрибута. */
+  var imSet=[],imIdx=-1;
+  function imKey(el){var k=el.getAttribute("data-modal");
+    return k||("ann-"+el.getAttribute("data-ann"));}
+  function imBuild(src){
+    imSet=[];imIdx=-1;
+    var sec=src&&src.closest?src.closest("section"):null;if(!sec)return;
+    imSet=[].slice.call(sec.querySelectorAll("[data-modal],[data-ann]"));
+    imIdx=imSet.indexOf(src);
+    if(imIdx<0)imSet=[];
+  }
+  function imNavDraw(){
+    var nav=document.getElementById("imNav"),n=imSet.length;
+    nav.hidden=n<2;if(n<2)return;
+    document.getElementById("imCount").textContent=(imIdx+1)+" / "+n;
+  }
+  function imGo(d){
+    if(imSet.length<2)return;
+    imIdx=(imIdx+d+imSet.length)%imSet.length;
+    var el=imSet[imIdx];
+    curModal=imKey(el);renderModal(curModal);
+    /* Возврат по Esc ведёт на ту карточку, которую человек СЕЙЧАС смотрит, а не на ту,
+       с которой он начал: иначе после восьмой плитки страница отпрыгивает к первой. */
+    lastFocus=el;imNavDraw();
+    var b=document.querySelector(".im-body");if(b)b.scrollTop=0;
   }
   function openInfo(id,src){
     if(!renderModal(id))return;
     curModal=id;lastFocus=src||document.activeElement;
+    imBuild(src);imNavDraw();
     im.classList.add("open");lockScroll(true);
     closePop();ov.classList.remove("open");
-    setTimeout(function(){document.getElementById("imClose").focus()},50);
+    setTimeout(function(){document.getElementById("imClose").focus({preventScroll:true})},50);
     devagoTrack("modal_open");
   }
-  function closeInfo(){
+  /* keepFocus нужен для перехода в форму: иначе окно на выходе вернёт фокус на карточку
+     и страница отпрыгнет туда прямо в момент открытия формы. */
+  function closeInfo(keepFocus){
     if(!im.classList.contains("open"))return;
-    im.classList.remove("open");curModal=null;
-    if(!fm.classList.contains("open"))lockScroll(false);
-    if(lastFocus&&lastFocus.focus)lastFocus.focus();
-    lastFocus=null;
+    im.classList.remove("open");curModal=null;lockScroll(false);
+    if(!keepFocus&&lastFocus&&lastFocus.focus)lastFocus.focus();
+    if(!keepFocus)lastFocus=null;
   }
+  document.getElementById("imPrev").onclick=function(){imGo(-1)};
+  document.getElementById("imNext").onclick=function(){imGo(1)};
+  im.addEventListener("keydown",function(e){
+    if(e.key==="ArrowLeft"){e.preventDefault();imGo(-1)}
+    else if(e.key==="ArrowRight"){e.preventDefault();imGo(1)}
+  });
   document.getElementById("imClose").onclick=closeInfo;
   im.addEventListener("click",function(e){if(e.target===im)closeInfo()});
   im.addEventListener("keydown",function(e){trap(im.querySelector(".modal"),e)});
@@ -1990,7 +2169,7 @@ var I18N = {
     if(top<8)top=8;
     pop.style.left=left+"px";pop.style.top=top+"px";
     btn.classList.add("on");popOwner=btn;
-    setTimeout(function(){document.getElementById("popClose").focus()},50);
+    setTimeout(function(){document.getElementById("popClose").focus({preventScroll:true})},50);
   }
   if(pop){
     document.getElementById("popClose").onclick=function(){var o=popOwner;closePop();if(o)o.focus()};
@@ -2113,6 +2292,10 @@ var I18N = {
     var h=document.querySelector("header"), t=false;
     if(!h) return;
     addEventListener("scroll",function(){
+      /* Пока страница заморожена под модальным окном, scrollY равен нулю по построению,
+         слушатель снимал .shrunk и шапка вырастала с 74 до 90px, а вместе с ней уезжала
+         на 16px вся вёрстка ниже. Именно это и был «сдвиг страницы при открытии окна». */
+      if(document.body.classList.contains("no-scroll"))return;
       var sc=scrollY>40;
       if(sc!==t){ t=sc; h.classList.toggle("shrunk",sc); }
     },{passive:true});
