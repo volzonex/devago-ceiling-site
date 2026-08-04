@@ -26,16 +26,12 @@
 <link rel="apple-touch-icon" href="assets/apple-touch.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- ДВА ЗАПРОСА, И ЭТО ОБЯЗАТЕЛЬНО. Параметр &text= в Google Fonts применяется КО ВСЕМ
-     семействам запроса, а не к тому, рядом с которым написан: в одном общем link Prata
-     и Golos Text приехали бы обрезанными до букв вордмарка, и весь русский с узбекским
-     выпал бы в системный шрифт. Проверено ответом API (unicode-range схлопывался до
-     U+41,43-45,47,49,4C,4E-4F,56). Сливать обратно в один link НЕЛЬЗЯ. -->
-<link href="https://fonts.googleapis.com/css2?family=Prata&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
-<!-- Cormorant ТОЛЬКО на вордмарке, поэтому подмножеством: 1.9 КБ вместо 14 КБ (замерено).
-     Доступны лишь буквы D E V A G O C I L N. Появятся в вордмарке другие символы,
-     надо расширить text=, иначе они молча выпадут в системный шрифт. -->
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500&text=DEVAGOCEILN&display=swap" rel="stylesheet">
+<!-- ОДНОЙ ССЫЛКОЙ МОЖНО, потому что &text= больше не используется: Cormorant убран,
+     вордмарк теперь набирается тем же Jost, что и весь интерфейс.
+     НИКОГДА не добавлять &text= в общий link: параметр применяется КО ВСЕМ семействам
+     запроса, а не к тому, рядом с которым написан, и обрежет кириллицу до букв вордмарка.
+     Проверено ответом API: unicode-range схлопывался до U+41,43-45,47,49,4C,4E-4F,56. -->
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Tenor+Sans&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/cn-hero.webp" type="image/webp" fetchpriority="high">
 
 <!-- МЕТРИКА (просьба Артура): плейсхолдеры, инициализация только при реальных ID -->
@@ -71,13 +67,12 @@ function devagoTrack(goal){
   --gold:#C9A24B; --gold-l:#DEBC77; --gold-dim:rgba(201,162,75,.45);
   --text:#EDE6D6; --t2:#B0A691; --mut:#8D8373;
   --line:rgba(201,162,75,.28); --hairline:rgba(237,230,214,.1);
-  /* ВНИМАНИЕ: --serif теперь Prata и стоит на ЗАГОЛОВКАХ. Вордмарк DEVAGO живёт на
-     отдельной --wordmark, потому что он единственное место, где остаётся Cormorant.
-     Не подставлять --serif обратно в .brand .bt b, иначе бренд-локап молча сменит
-     гарнитуру, без ошибки и без предупреждения. */
-  --serif:'Prata',Georgia,serif;
-  --sans:'Golos Text',system-ui,sans-serif;
-  --wordmark:'Cormorant',Georgia,serif;
+  /* ГАРНИТУРЫ (CDO v2). У Tenor Sans ОДИН вес: везде, где он стоит, font-weight строго
+     400. Любой 500/600 даст синтетический жирный и испортит рисунок заголовка.
+     Вордмарк набирается тем же Jost, что и интерфейс, как в оригинальном знаке клиента. */
+  --display:'Tenor Sans',Georgia,sans-serif;
+  --sans:'Jost',system-ui,sans-serif;
+  --wordmark:'Jost',system-ui,sans-serif;
   --maxw:1200px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -87,10 +82,10 @@ img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--gold);color:#171204}
 :focus-visible{outline:2px solid var(--gold-l);outline-offset:3px}
-h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.16}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.16}
 section{padding:clamp(52px,6vw,88px) 20px;position:relative}
 .wrap{max-width:var(--maxw);margin:0 auto}
-.kick{font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.kick{font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;font-weight:400;color:var(--gold)}
 h2.title{font-size:clamp(1.6rem,3.4vw,2.4rem);font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--text)}
 .lead{color:var(--t2);font-size:.98rem;margin-top:14px;max-width:60ch}
 /* responsive text swap: .dt = только десктоп, .mb = только мобайл (тексты канона расходятся) */
@@ -103,7 +98,7 @@ h2.title{font-size:clamp(1.6rem,3.4vw,2.4rem);font-weight:400;letter-spacing:.14
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:3px;padding:15px 26px;font:700 .73rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:filter .2s,border-color .2s,color .2s;border:none;min-height:44px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:3px;padding:15px 26px;font:500 .73rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:filter .2s,border-color .2s,color .2s;border:none;min-height:44px}
 .btn svg{width:15px;height:15px;flex:none}
 .btn-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#171204}
 .btn-gold:hover{filter:brightness(.92)}
@@ -129,12 +124,12 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 @media(max-width:760px){header{position:static;background:var(--bg)}}
 .nav{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;gap:16px}
 .brand{display:flex;align-items:center;gap:12px;flex:none}
-.brand img{width:40px;height:40px}
+.brand img{width:40px;height:40px;object-fit:contain}
 .brand .bt{display:flex;flex-direction:column;line-height:1.1}
 .brand .bt b{font:500 1.02rem/1 var(--wordmark);letter-spacing:.34em;color:var(--text)}
-.brand .bt small{font:700 .5rem/1 var(--sans);letter-spacing:.52em;color:var(--gold);margin-top:4px}
+.brand .bt small{font:500 .5rem/1 var(--sans);letter-spacing:.52em;color:var(--gold);margin-top:4px}
 .dnav{display:none;gap:26px;margin-left:auto}
-.dnav a{font:600 .68rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--t2);padding:8px 0}
+.dnav a{font:500 .68rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--t2);padding:8px 0}
 .dnav a:hover{color:var(--gold-l)}
 @media(min-width:1000px){.dnav{display:flex}}
 .nav-right{display:flex;align-items:center;gap:14px}
@@ -149,7 +144,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .menu-ov .lang{margin:22px 0}
 .menu-ov .btn{margin-top:auto}
 .lang{display:flex;border:1px solid var(--hairline)}
-.lang button{background:transparent;border:none;color:var(--mut);font:700 .68rem/1 var(--sans);letter-spacing:.1em;padding:10px 13px;cursor:pointer;min-height:38px}
+.lang button{background:transparent;border:none;color:var(--mut);font:500 .68rem/1 var(--sans);letter-spacing:.1em;padding:10px 13px;cursor:pointer;min-height:38px}
 .lang button.on{background:var(--gold);color:#171204}
 
 /* ==================== 1 · HERO ==================== */
@@ -159,10 +154,10 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 @media(min-width:900px){.hero-bg img{object-position:center}}
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,10,8,.55),rgba(11,10,8,.22) 40%,rgba(11,10,8,.94) 82%,var(--bg))}
 .hero-in{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:0 20px clamp(44px,6vw,64px);width:100%}
-.hero .kick{font-weight:600;letter-spacing:.34em}
+.hero .kick{font-weight:400;letter-spacing:.34em}
 .hero h1{font-size:clamp(2.15rem,5.6vw,3.7rem);letter-spacing:.15em;text-transform:uppercase;color:#fff;font-weight:400;margin-top:10px}
 .hero h1 .g{color:var(--gold-l)}
-.hero .sub2{font:600 .7rem/1.7 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--text);margin-top:12px}
+.hero .sub2{font:500 .7rem/1.7 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--text);margin-top:12px}
 .hero .sub{color:var(--t2);font-size:.96rem;margin-top:16px;max-width:44ch;text-shadow:0 1px 12px rgba(11,10,8,.9)}
 .hero-btns{display:flex;flex-direction:column;gap:12px;margin-top:26px;max-width:440px}
 .pc{width:34px;height:34px;flex:none;border:1px solid var(--gold);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:var(--gold)}
@@ -186,7 +181,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .sol .ic{width:44px;height:44px;flex:none;color:var(--gold)}
 .sol .ic svg{width:100%;height:100%}
 .sol .tx{flex:1;min-width:0}
-.sol .tx b{display:block;font:600 .8rem/1.35 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--text)}
+.sol .tx b{display:block;font:500 .8rem/1.35 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--text)}
 .sol .tx > span{display:block;font-size:.8rem;color:var(--t2);margin-top:4px}
 .sol .arr{color:var(--gold);flex:none;width:16px;height:16px}
 .sol .arr .ad{display:none}
@@ -204,11 +199,11 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 /* ==================== 3 · COMBO ==================== */
 .combo-wrap{margin-top:10px}
 .combo-text .kick{margin-bottom:12px}
-.combo-t-mob{font-weight:300;letter-spacing:.02em;font-size:clamp(1.7rem,4.4vw,2.2rem);color:var(--text)}
+.combo-t-mob{font-weight:400;letter-spacing:.02em;font-size:clamp(1.7rem,4.4vw,2.2rem);color:var(--text)}
 .combo-t-desk,.combo-p{display:none}
 .combo{position:relative;margin-top:22px;border:1px solid var(--hairline)}
 .combo img{width:100%;aspect-ratio:16/10.5;object-fit:cover;height:auto;object-position:35% 20%}
-.ann{position:absolute;font:700 .55rem/1.35 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text);text-shadow:0 1px 8px rgba(11,10,8,.95)}
+.ann{position:absolute;font:500 .55rem/1.35 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text);text-shadow:0 1px 8px rgba(11,10,8,.95)}
 .ann::before{content:"";position:absolute;background:var(--gold);opacity:.85}
 .ann.up::before{left:8px;bottom:100%;width:1px;height:26px}
 .ann.dn::before{left:8px;top:100%;width:1px;height:26px}
@@ -220,7 +215,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
   .combo{grid-column:2;grid-row:1/3}
   .combo-btn{grid-column:1;grid-row:2;align-self:start;margin-top:24px}
   .combo-t-mob{display:none}
-  .combo-t-desk{display:block;font-weight:300;letter-spacing:.02em;font-size:clamp(2rem,3.2vw,2.7rem);color:var(--text)}
+  .combo-t-desk{display:block;font-weight:400;letter-spacing:.02em;font-size:clamp(2rem,3.2vw,2.7rem);color:var(--text)}
   .combo-p{display:block;color:var(--t2);font-size:.98rem;margin-top:18px;max-width:44ch}
   .combo{margin-top:0}
   .combo img{aspect-ratio:16/10}
@@ -249,7 +244,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .step{display:grid;grid-template-columns:1fr 42%;gap:14px;background:var(--card);border:1px solid var(--line);padding:14px;overflow:hidden}
 .step .tx{min-width:0;padding:4px 0 4px 4px}
 .step .no{display:inline-block;font:400 1.05rem/1 var(--sans);letter-spacing:.08em;color:var(--gold);margin-right:10px;vertical-align:1px}
-.step .tx b{display:inline;font:600 .78rem/1.4 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text)}
+.step .tx b{display:inline;font:500 .78rem/1.4 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text)}
 .step .tx .sp{display:block;font-size:.78rem;color:var(--t2);margin-top:8px}
 .step .th{margin:-14px -14px -14px 0;overflow:hidden;position:relative}
 .step .th img{width:100%;height:100%;object-fit:cover}
@@ -274,10 +269,10 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .prj .ph{position:relative}
 .prj .ph img{width:100%;height:100%;object-fit:cover}
 .prj .bx{padding:18px;min-width:0}
-.prj .obj{font:600 .8rem/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-l)}
+.prj .obj{font:500 .8rem/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-l)}
 .prj .city{font-size:.76rem;color:var(--t2);margin-top:3px}
 .prj q{display:block;font-size:.84rem;color:var(--t2);margin:12px 0 12px;quotes:"«" "»"}
-.prj .who{font:700 .7rem/1.3 var(--sans);letter-spacing:.1em;color:var(--gold-l)}
+.prj .who{font:500 .7rem/1.3 var(--sans);letter-spacing:.1em;color:var(--gold-l)}
 .prj .role{display:none;font-size:.68rem;color:var(--mut);margin-top:3px}
 /* мобайл-канон: Пентхаус (фото сверху), Кинотеатр (текст|фото), Квартира (фото|текст), SPA (текст|фото); Частный дом скрыт */
 .p-pent{order:1}
@@ -352,7 +347,7 @@ footer .small{font-size:.72rem}
 .modal{position:relative;background:var(--card2);border:1px solid var(--line);padding:34px 28px 30px;width:100%;max-width:430px}
 .modal h3{font:400 1.35rem/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--text);margin:10px 0 20px}
 .m-close{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--gold);font-size:1.3rem;cursor:pointer;padding:10px 14px;min-height:44px}
-.modal label{display:block;margin-bottom:14px;font:600 .68rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--t2)}
+.modal label{display:block;margin-bottom:14px;font:500 .68rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--t2)}
 .modal label i{color:var(--gold-l);font-style:normal;margin-left:3px}
 .modal input{display:block;width:100%;margin-top:7px;background:var(--card);border:1px solid var(--hairline);color:var(--text);font:400 16px/1.4 var(--sans);padding:12px 13px;border-radius:2px}
 .modal input:focus{outline:none;border-color:var(--gold)}
@@ -387,19 +382,21 @@ body.sticky-on .sticky-cta{display:flex}
 }
 @media(min-width:900px){:root{--gutter:40px}}
 section{padding:clamp(76px,10vw,152px) var(--gutter)}
-/* метрики под Prata: прежние 1.16 и .15em были подобраны под Manrope */
-h1,h2,h3{line-height:1.14}
-body{line-height:1.7}
-.hero h1{letter-spacing:.14em;line-height:1.1}
-h2.title{letter-spacing:.12em;line-height:1.2}
-/* В спеке CDO стоял селектор .combo-t, такого класса в разметке НЕТ (есть combo-t-mob
-   и combo-t-desk), поэтому правило не применялось ни у него, ни здесь. Исправлено GM. */
-.combo-t-mob,.combo-t-desk{line-height:1.28}
-.lead{max-width:62ch;margin-top:var(--s4)}
-.kick{font-weight:600;letter-spacing:.32em}
+/* МЕТРИКИ ПОД ГРОТЕСК (CDO v2). Значения пересчитаны после Prata: у Tenor Sans другая
+   ширина знака и другой оптический ритм, прежние трекинги под сериф здесь разваливаются. */
+body{font-size:1.02rem;line-height:1.72}
+.hero h1{letter-spacing:.16em;line-height:1.12}
+h2.title{letter-spacing:.18em;line-height:1.26}
+/* В спеке CDO v1 стоял селектор .combo-t, такого класса в разметке НЕТ (есть combo-t-mob
+   и combo-t-desk), поэтому правило не применялось ни у него, ни здесь. Исправлено GM,
+   в v2 селектор сразу правильный. */
+.combo-t-mob,.combo-t-desk{letter-spacing:.14em;line-height:1.3}
+.kick{font-weight:400;letter-spacing:.34em}
+.lead{line-height:1.75;max-width:60ch;margin-top:var(--s4)}
+.sub{line-height:1.7}
 @media(min-width:900px){
-  .hero h1{letter-spacing:.10em;line-height:1.06}
-  h2.title{letter-spacing:.09em}
+  .hero h1{letter-spacing:.13em;line-height:1.06}
+  h2.title{letter-spacing:.16em;line-height:1.22}
 }
 .sec-head{gap:var(--s4);margin-bottom:var(--s7)}
 .sec-head::before,.sec-head::after{background:linear-gradient(90deg,transparent,rgba(201,162,75,.45) 35%,rgba(201,162,75,.45) 65%,transparent)}
@@ -456,6 +453,87 @@ header{border-bottom:1px solid rgba(237,230,214,.08)}
 @media(max-width:400px){
   .final-l h2{letter-spacing:.06em;overflow-wrap:anywhere}
 }
+
+/* ================= CDO v2: локап, золото как материал, состояния =================
+   Блок стоит последним намеренно: он перекрывает прежние значения ритма по каскаду,
+   специально не трогая шкалу отступов и композицию. Источник значений:
+   review/exec-v2/v2.css. */
+
+/* --- 3. Локап логотипа по обмеру оригинального знака клиента ---
+   DEVAGO по ширине = 2.594 высоты знака, золотая волосинка выключена по ширине
+   DEVAGO, CEILING отцентровано и равно 0.733 ширины DEVAGO.
+   ДВА МЕСТА, ГДЕ ЛОКАП ОБЫЧНО РАЗВАЛИВАЕТСЯ, ЗАКРЫТЫ СОЗНАТЕЛЬНО, НЕ УБИРАТЬ:
+   margin-right:-.34em у DEVAGO снимает хвостовой пробел трекинга, иначе золотая
+   линия торчит за букву O; text-indent у CEILING равен ВСЕМУ letter-spacing,
+   а не половине, иначе слово визуально уезжает влево. */
+/* тап-цель логотипа-ссылки была 128x32, приёмка требует не меньше 44 по обеим
+   сторонам. Добираем высоту паддингом, а не размером знака: локап не меняется. */
+.brand{gap:15px;align-items:center;min-height:44px}
+.brand img{width:40px;height:40px;object-fit:contain}
+/* object-fit ОБЯЗАТЕЛЕН: после обрезки по видимым краям знак 164x186, то есть не
+   квадрат, а бокс в спеке квадратный. Без contain знак растягивается по ширине. */
+.brand .bt{align-items:flex-start;line-height:1}
+.brand .bt b{font:400 1.12rem/1 var(--wordmark);letter-spacing:.34em;color:var(--text);
+  margin-right:-.34em;padding-bottom:5px;border-bottom:1px solid var(--gold)}
+.brand .bt small{align-self:stretch;text-align:center;text-indent:.88em;
+  font:400 .5rem/1 var(--sans);letter-spacing:.88em;color:var(--gold);margin-top:5px}
+@media(max-width:760px){
+  .brand{gap:12px}
+  .brand img{width:32px;height:32px}
+  .brand .bt b{font-size:.92rem;padding-bottom:4px}
+  .brand .bt small{font-size:.46rem;letter-spacing:.74em;text-indent:.74em;margin-top:4px}
+}
+.final-r .brand img{width:60px;height:60px}
+.final-r .brand .bt b{font-size:1.62rem;padding-bottom:7px;border-bottom-width:2px}
+.final-r .brand .bt small{font-size:.72rem;margin-top:7px}
+
+/* --- 5. Золото как материал: градиент едет, а не гаснет фильтром --- */
+.btn-gold{background:linear-gradient(135deg,#E7CB8E 0%,var(--gold-l) 28%,var(--gold) 62%,#A8823A 100%);
+  background-size:180% 180%;background-position:0% 50%;
+  transition:background-position .6s cubic-bezier(.22,.61,.36,1),filter .25s,transform .25s}
+.btn-gold:hover{filter:none;background-position:100% 50%}
+.btn-gold:active{filter:brightness(.94);transform:translateY(1px)}
+.btn-out{border-color:rgba(201,162,75,.30);transition:border-color .3s,color .3s,background-color .3s}
+.btn-out:hover{border-color:var(--gold);color:var(--gold-l);background-color:rgba(201,162,75,.06)}
+.btn-out:active{transform:translateY(1px)}
+.sec-head::before,.sec-head::after{height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,162,75,.55) 30%,rgba(201,162,75,.55) 70%,transparent)}
+
+/* --- 6. Границы и разделители --- */
+.sol,.step,.prj{border-color:rgba(201,162,75,.16);
+  transition:border-color .35s ease,transform .35s cubic-bezier(.22,.61,.36,1)}
+.sol:hover,.step:hover,.prj:hover{border-color:rgba(201,162,75,.42)}
+header{border-bottom:1px solid rgba(237,230,214,.07)}
+
+/* --- 7. Состояния, фокус, тап-цели --- */
+.dnav a{position:relative;transition:color .3s}
+.dnav a::after{content:"";position:absolute;left:0;right:100%;bottom:2px;height:1px;background:var(--gold);
+  transition:right .35s cubic-bezier(.22,.61,.36,1)}
+.dnav a:hover::after,.dnav a:focus-visible::after{right:0}
+:focus-visible{outline:2px solid var(--gold-l);outline-offset:4px}
+.sol,.prj,.btn,.dnav a,.lang button{-webkit-tap-highlight-color:rgba(201,162,75,.18)}
+.lang button{min-height:44px;padding:13px 16px}
+/* кнопка закрытия меню была 43.5 px по ширине, то есть на полпикселя не дотягивала
+   до порога приёмки. Ловится только замером с ОТКРЫТЫМ меню. */
+.close{min-width:44px}
+/* Курсора grab и grabbing на карусели НЕТ намеренно: перетаскивания и свайпа у неё
+   нет ни на одном устройстве, ладонь обещала бы жест, которого не существует. */
+
+/* --- 8. Шапка при прокрутке, ТОЛЬКО десктоп. На мобильном шапка остаётся нелипкой
+       и без размытия: принятое решение из-за браузера Telegram, не отменять. --- */
+@media(min-width:900px){
+  header{transition:background-color .35s ease,box-shadow .35s ease}
+  .nav{transition:padding .35s cubic-bezier(.22,.61,.36,1)}
+  header.shrunk{background:rgba(11,10,8,.92);box-shadow:0 1px 0 rgba(201,162,75,.22)}
+  header.shrunk .nav{padding-top:12px;padding-bottom:12px}
+}
+
+/* --- 9. Появления при прокрутке: без масштаба, без размытия, без повторов --- */
+.reveal{transform:translateY(12px);
+  transition:opacity .9s cubic-bezier(.22,.61,.36,1),transform .9s cubic-bezier(.22,.61,.36,1)}
+
+/* --- 10. Узкий телефон: длинное узбекское Ilhomlantiruvchi в финальном заголовке --- */
+@media(max-width:400px){.final-l h2{letter-spacing:.10em;overflow-wrap:anywhere}}
 </style>
 </head>
 <body>
@@ -463,7 +541,7 @@ header{border-bottom:1px solid rgba(237,230,214,.08)}
 <header>
   <div class="nav">
     <a class="brand" href="#top" aria-label="DEVAGO Ceiling">
-      <img src="assets/logo-96.png" alt="Логотип DEVAGO: золотая монограмма в виде буквы D" width="192" height="192">
+      <img src="assets/logo-96.png" alt="Логотип DEVAGO: золотая монограмма в виде буквы D" width="96" height="96">
       <span class="bt"><b>DEVAGO</b><small>CEILING</small></span>
     </a>
     <nav class="dnav" aria-label="Разделы">
@@ -666,7 +744,7 @@ header{border-bottom:1px solid rgba(237,230,214,.08)}
       </div>
     </div>
     <div class="final-r">
-      <div class="brand"><img src="assets/logo.png" alt="Логотип DEVAGO: золотая монограмма в виде буквы D" width="192" height="192" loading="lazy"><span class="bt"><b>DEVAGO</b><small>CEILING</small></span></div>
+      <div class="brand"><img src="assets/logo.png" alt="Логотип DEVAGO: золотая монограмма в виде буквы D" width="164" height="186" loading="lazy"><span class="bt"><b>DEVAGO</b><small>CEILING</small></span></div>
       <div class="tag" data-i18n="fin_tag">Архитектура света и пространства</div>
     </div>
   </div>
@@ -902,11 +980,43 @@ var I18N = {
   if(nx)nx.onclick=function(){setPage(page+1)};
   window.addEventListener("resize",function(){setPage(page)});
 
-  /* появление секций: один лёгкий fade/rise */
+  /* ПОЯВЛЕНИЕ СЕКЦИЙ (CDO v2): порог .15, rootMargin -8% снизу, лесенка 60 мс
+     максимум на четыре элемента подряд. Ни масштаба, ни размытия, ни повторов при
+     обратной прокрутке: сработавший элемент снимается с наблюдения.
+     Страховка от невидимого контента ОСТАЛАСЬ, но теперь срабатывает только если
+     наблюдатель не отработал ни разу. Прежняя безусловная страховка через 1.5 с
+     показывала разом всё, включая то, что ниже экрана, и обнуляла весь эффект. */
   var rvs=document.querySelectorAll(".reveal");
-  if("IntersectionObserver" in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.05});
-    rvs.forEach(function(el){io.observe(el)});setTimeout(function(){rvs.forEach(function(el){el.classList.add("in")})},1500);}
+  if("IntersectionObserver" in window){
+    var ioWorked=false;
+    var io=new IntersectionObserver(function(es){
+      var n=0;
+      es.forEach(function(e){
+        if(!e.isIntersecting) return;
+        ioWorked=true;
+        var d=Math.min(n,3)*60; n++;
+        var el=e.target;
+        if(d) setTimeout(function(){el.classList.add("in")},d);
+        else el.classList.add("in");
+        io.unobserve(el);
+      });
+    },{threshold:.15,rootMargin:"0px 0px -8% 0px"});
+    rvs.forEach(function(el){io.observe(el)});
+    setTimeout(function(){ if(!ioWorked) rvs.forEach(function(el){el.classList.add("in")}); },1800);
+  }
   else rvs.forEach(function(el){el.classList.add("in")});
+
+  /* ШАПКА ПРИ ПРОКРУТКЕ, только десктоп: сам класс вешаем всегда, но всё оформление
+     .shrunk живёт внутри @media(min-width:900px), поэтому на телефоне ничего не
+     меняется и шапка остаётся нелипкой и без размытия. */
+  (function(){
+    var h=document.querySelector("header"), t=false;
+    if(!h) return;
+    addEventListener("scroll",function(){
+      var sc=scrollY>40;
+      if(sc!==t){ t=sc; h.classList.toggle("shrunk",sc); }
+    },{passive:true});
+  })();
 })();
 </script>
 </body>
