@@ -1,0 +1,49 @@
+<!doctype html><html><head><meta charset="utf-8"><title>ждёт</title></head>
+<body style="margin:0;background:#333">
+<!-- Стенд приёмки GM. Параметры: ?w=390&lang=uz
+     Меряет ПРОГРАММНО, а не на глаз: горизонтальное переполнение, реальные гарнитуры
+     в computed-стилях, загруженные шрифты, отрисовку узбекских знаков.
+     Язык выставляется в localStorage ДО загрузки страницы, поэтому apply(lang0)
+     подхватывает его сам, без клика и без гонки. -->
+<script>
+var q=new URLSearchParams(location.search), W=+(q.get('w')||390), L=q.get('lang')||'ru';
+try{localStorage.setItem('devago-lang',L)}catch(e){}
+var f=document.createElement('iframe');
+f.style.cssText='width:'+W+'px;height:9200px;border:0;display:block';
+f.src='../../index.html?_='+W+L;
+document.body.appendChild(f);
+f.onload=function(){
+  setTimeout(function(){
+    var d=f.contentDocument, w=f.contentWindow, out=[];
+    function fam(sel){var e=d.querySelector(sel);return e?w.getComputedStyle(e).fontFamily.split(',')[0].replace(/["']/g,''):'НЕТ ЭЛЕМЕНТА'}
+    function wt(sel){var e=d.querySelector(sel);return e?w.getComputedStyle(e).fontWeight:'-'}
+    var de=d.documentElement;
+    var over=de.scrollWidth-de.clientWidth;
+    out.push('ШИРИНА='+W+' ЯЗЫК='+d.documentElement.lang);
+    out.push('ПЕРЕПОЛНЕНИЕ='+over+'px (scrollWidth '+de.scrollWidth+' против clientWidth '+de.clientWidth+')');
+    // самый широкий элемент, если переполнение есть
+    if(over>0){var worst='',ww=0;d.querySelectorAll('*').forEach(function(el){var r=el.getBoundingClientRect();if(r.right>ww){ww=r.right;worst=el.tagName+'.'+el.className}});out.push('ШИРЕ ВСЕХ: '+worst+' правый край '+Math.round(ww));}
+    out.push('h1='+fam('h1')+' вес '+wt('h1'));
+    out.push('h2.title='+fam('h2.title')+' вес '+wt('h2.title'));
+    out.push('combo='+fam('.combo-t-mob')+' вес '+wt('.combo-t-mob'));
+    out.push('вордмарк='+fam('.brand .bt b'));
+    out.push('body='+fam('body'));
+    out.push('модалка h3='+fam('.modal h3'));
+    var fonts=[];w.document.fonts.forEach(function(ff){if(ff.status==='loaded')fonts.push(ff.family+' '+ff.weight)});
+    out.push('ЗАГРУЖЕНО: '+fonts.sort().join(' | '));
+    // ВНИМАНИЕ: document.fonts.check НЕ проверяет наличие глифа, он отвечает true просто
+    // потому что загружен шрифт с пересекающимся диапазоном. На этом я уже ошибся 03.08.
+    // Единственный честный признак здесь: браузер СКАЧАЛ файл донора, а он подключён
+    // с unicode-range ровно в один символ, значит скачан он только ради него.
+    var uz=[];w.document.fonts.forEach(function(ff){if(ff.family==='UzApos')uz.push(ff.status)});
+    out.push('донор UzApos: '+(uz.length?uz.join(','):'НЕ ПОДКЛЮЧЁН'));
+    out.push('внешних запросов к Google Fonts в разметке: '+(d.documentElement.innerHTML.indexOf('fonts.googleapis')>=0?'ЕСТЬ':'нет'));
+    var body=d.body.innerText||'';
+    out.push('символ U+02BB присутствует в тексте: '+(body.indexOf('ʻ')>=0));
+    document.title='ГОТОВО';
+    var pre=document.createElement('pre');pre.id='r';pre.style.cssText='color:#fff;font:13px monospace;padding:8px';
+    pre.textContent=out.join('\n');document.body.insertBefore(pre,f);
+  },1200);
+};
+</script>
+</body></html>
