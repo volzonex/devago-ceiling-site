@@ -26,7 +26,16 @@
 <link rel="apple-touch-icon" href="assets/apple-touch.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- ДВА ЗАПРОСА, И ЭТО ОБЯЗАТЕЛЬНО. Параметр &text= в Google Fonts применяется КО ВСЕМ
+     семействам запроса, а не к тому, рядом с которым написан: в одном общем link Prata
+     и Golos Text приехали бы обрезанными до букв вордмарка, и весь русский с узбекским
+     выпал бы в системный шрифт. Проверено ответом API (unicode-range схлопывался до
+     U+41,43-45,47,49,4C,4E-4F,56). Сливать обратно в один link НЕЛЬЗЯ. -->
+<link href="https://fonts.googleapis.com/css2?family=Prata&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Cormorant ТОЛЬКО на вордмарке, поэтому подмножеством: 1.9 КБ вместо 14 КБ (замерено).
+     Доступны лишь буквы D E V A G O C I L N. Появятся в вордмарке другие символы,
+     надо расширить text=, иначе они молча выпадут в системный шрифт. -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500&text=DEVAGOCEILN&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/cn-hero.webp" type="image/webp" fetchpriority="high">
 
 <!-- МЕТРИКА (просьба Артура): плейсхолдеры, инициализация только при реальных ID -->
@@ -62,7 +71,13 @@ function devagoTrack(goal){
   --gold:#C9A24B; --gold-l:#DEBC77; --gold-dim:rgba(201,162,75,.45);
   --text:#EDE6D6; --t2:#B0A691; --mut:#8D8373;
   --line:rgba(201,162,75,.28); --hairline:rgba(237,230,214,.1);
-  --serif:'Cormorant',Georgia,serif; --sans:'Manrope',system-ui,sans-serif;
+  /* ВНИМАНИЕ: --serif теперь Prata и стоит на ЗАГОЛОВКАХ. Вордмарк DEVAGO живёт на
+     отдельной --wordmark, потому что он единственное место, где остаётся Cormorant.
+     Не подставлять --serif обратно в .brand .bt b, иначе бренд-локап молча сменит
+     гарнитуру, без ошибки и без предупреждения. */
+  --serif:'Prata',Georgia,serif;
+  --sans:'Golos Text',system-ui,sans-serif;
+  --wordmark:'Cormorant',Georgia,serif;
   --maxw:1200px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -72,7 +87,7 @@ img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--gold);color:#171204}
 :focus-visible{outline:2px solid var(--gold-l);outline-offset:3px}
-h1,h2,h3{font-family:var(--sans);line-height:1.16}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.16}
 section{padding:clamp(52px,6vw,88px) 20px;position:relative}
 .wrap{max-width:var(--maxw);margin:0 auto}
 .kick{font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:var(--gold)}
@@ -116,7 +131,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .brand{display:flex;align-items:center;gap:12px;flex:none}
 .brand img{width:40px;height:40px}
 .brand .bt{display:flex;flex-direction:column;line-height:1.1}
-.brand .bt b{font:500 1.02rem/1 var(--serif);letter-spacing:.34em;color:var(--text)}
+.brand .bt b{font:500 1.02rem/1 var(--wordmark);letter-spacing:.34em;color:var(--text)}
 .brand .bt small{font:700 .5rem/1 var(--sans);letter-spacing:.52em;color:var(--gold);margin-top:4px}
 .dnav{display:none;gap:26px;margin-left:auto}
 .dnav a{font:600 .68rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--t2);padding:8px 0}
@@ -233,7 +248,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .steps{display:flex;flex-direction:column;gap:12px}
 .step{display:grid;grid-template-columns:1fr 42%;gap:14px;background:var(--card);border:1px solid var(--line);padding:14px;overflow:hidden}
 .step .tx{min-width:0;padding:4px 0 4px 4px}
-.step .no{display:inline-block;font:300 1.05rem/1 var(--sans);letter-spacing:.08em;color:var(--gold);margin-right:10px;vertical-align:1px}
+.step .no{display:inline-block;font:400 1.05rem/1 var(--sans);letter-spacing:.08em;color:var(--gold);margin-right:10px;vertical-align:1px}
 .step .tx b{display:inline;font:600 .78rem/1.4 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text)}
 .step .tx .sp{display:block;font-size:.78rem;color:var(--t2);margin-top:8px}
 .step .th{margin:-14px -14px -14px 0;overflow:hidden;position:relative}
@@ -357,6 +372,90 @@ footer .small{font-size:.72rem}
 body.sticky-on .sticky-cta{display:flex}
 .sticky-cta .btn{flex:1;padding:13px 10px}
 @media(min-width:900px){body.sticky-on .sticky-cta{display:none}}
+
+/* ==================== РИТМ И ВОЗДУХ: спецификация CDO от 04.08 ====================
+   Блок стоит В КОНЦЕ намеренно: он перекрывает точечные значения, набранные выше по
+   месту, и ровно в таком порядке CDO снимал замеры до и после. Не растаскивать по
+   файлу и не поднимать выше, иначе часть правил проиграет по порядку следования.
+   Композиция, сетка, порядок блоков и тексты НЕ менялись, только ритм и метрики.
+   Причина правки: единой шкалы отступов в файле не было, 20 разных значений,
+   а ритм секций упирался в 86 px на 1440. Высота страницы после правки
+   3817 → 4853 px при неизменном содержании, это и есть добавленный воздух. */
+:root{
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:64px;--s9:96px;--s10:128px;
+  --gutter:24px;
+}
+@media(min-width:900px){:root{--gutter:40px}}
+section{padding:clamp(76px,10vw,152px) var(--gutter)}
+/* метрики под Prata: прежние 1.16 и .15em были подобраны под Manrope */
+h1,h2,h3{line-height:1.14}
+body{line-height:1.7}
+.hero h1{letter-spacing:.14em;line-height:1.1}
+h2.title{letter-spacing:.12em;line-height:1.2}
+/* В спеке CDO стоял селектор .combo-t, такого класса в разметке НЕТ (есть combo-t-mob
+   и combo-t-desk), поэтому правило не применялось ни у него, ни здесь. Исправлено GM. */
+.combo-t-mob,.combo-t-desk{line-height:1.28}
+.lead{max-width:62ch;margin-top:var(--s4)}
+.kick{font-weight:600;letter-spacing:.32em}
+@media(min-width:900px){
+  .hero h1{letter-spacing:.10em;line-height:1.06}
+  h2.title{letter-spacing:.09em}
+}
+.sec-head{gap:var(--s4);margin-bottom:var(--s7)}
+.sec-head::before,.sec-head::after{background:linear-gradient(90deg,transparent,rgba(201,162,75,.45) 35%,rgba(201,162,75,.45) 65%,transparent)}
+@media(min-width:900px){
+  .sec-head{margin-bottom:var(--s8)}
+  .sec-head::before,.sec-head::after{width:96px}
+}
+.hero-in{padding:0 var(--gutter) clamp(56px,7vw,88px)}
+.hero .sub2{margin-top:var(--s4)}
+.hero .sub{margin-top:var(--s5)}
+.hero-btns{margin-top:var(--s7);gap:var(--s3)}
+.hero-arrow{margin-top:var(--s6)}
+@media(min-width:900px){.hero-btns{gap:var(--s6)}}
+.nav{padding:var(--s4) var(--gutter)}
+.brand{gap:14px}
+.brand img{width:34px;height:34px}
+header{border-bottom:1px solid rgba(237,230,214,.08)}
+@media(min-width:900px){
+  .nav{padding:20px var(--gutter)}
+  .brand{gap:18px}
+  .brand img{width:42px;height:42px}
+}
+.sol-list{gap:var(--s3)}
+.sol{padding:var(--s5);gap:var(--s4)}
+@media(min-width:900px){
+  .sol-list{gap:var(--s4)}
+  .sol{padding:var(--s6) var(--s4) var(--s7);gap:var(--s5)}
+}
+@media(min-width:900px){.combo-wrap{gap:0 var(--s8)}}
+#starry .feats{gap:var(--s6) var(--s5);margin-top:var(--s6)}
+@media(min-width:900px){#starry .grid{gap:var(--s8)}#starry .feats{gap:var(--s5)}}
+.steps{gap:var(--s3)}
+.step{padding:var(--s4);gap:var(--s4)}
+.step .th{margin:calc(var(--s4)*-1) calc(var(--s4)*-1) calc(var(--s4)*-1) 0}
+@media(min-width:900px){
+  .steps{gap:var(--s4)}
+  .step{padding:var(--s5) var(--s5) 0}
+  .step .th{margin:var(--s5) calc(var(--s5)*-1) 0}
+}
+.std-cta{margin-top:var(--s7)}
+.prj-track{gap:var(--s4)}
+.prj .bx{padding:var(--s5)}
+.final-wrap{gap:var(--s7)}
+.final-l .btn{margin-top:var(--s6)}
+.final-btns{gap:var(--s3);margin-top:var(--s6)}
+@media(min-width:900px){
+  .final-wrap{gap:var(--s9)}
+  .final-r .brand img{width:64px;height:64px}
+}
+.reveal{transform:translateY(12px);transition:opacity .9s cubic-bezier(.22,.61,.36,1),transform .9s cubic-bezier(.22,.61,.36,1)}
+
+/* Узкий телефон: расширенные поля выдавливали 1 px переполнения на 360 в узбекском,
+   виновник длинное «Ilhomlantiruvchi» в финальном заголовке. Найдено CDO при замере. */
+@media(max-width:400px){
+  .final-l h2{letter-spacing:.06em;overflow-wrap:anywhere}
+}
 </style>
 </head>
 <body>
@@ -364,7 +463,7 @@ body.sticky-on .sticky-cta{display:flex}
 <header>
   <div class="nav">
     <a class="brand" href="#top" aria-label="DEVAGO Ceiling">
-      <img src="assets/logo-96.png" alt="Логотип DEVAGO: золотой шестиугольник с монограммой V" width="96" height="96">
+      <img src="assets/logo-96.png" alt="Логотип DEVAGO: золотая монограмма в виде буквы D" width="192" height="192">
       <span class="bt"><b>DEVAGO</b><small>CEILING</small></span>
     </a>
     <nav class="dnav" aria-label="Разделы">
@@ -567,7 +666,7 @@ body.sticky-on .sticky-cta{display:flex}
       </div>
     </div>
     <div class="final-r">
-      <div class="brand"><img src="assets/logo.png" alt="Логотип DEVAGO" width="640" height="640" loading="lazy"><span class="bt"><b>DEVAGO</b><small>CEILING</small></span></div>
+      <div class="brand"><img src="assets/logo.png" alt="Логотип DEVAGO: золотая монограмма в виде буквы D" width="192" height="192" loading="lazy"><span class="bt"><b>DEVAGO</b><small>CEILING</small></span></div>
       <div class="tag" data-i18n="fin_tag">Архитектура света и пространства</div>
     </div>
   </div>
