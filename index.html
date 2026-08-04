@@ -33,7 +33,12 @@
      если он реально встретится в тексте.
      Jost переменный, поэтому 400 и 500 берутся из ОДНОГО файла, это не опечатка. -->
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/jost-400-cyrillic.woff2" crossorigin>
-<link rel="preload" as="image" href="assets/cn-hero.webp" type="image/webp" fetchpriority="high">
+<!-- Предзагрузка ОБЯЗАНА повторять набор ширин из <picture>. С обычным href браузер
+     тянул бы полный кадр 2220 px даже на телефоне, и адаптивные картинки не работали
+     бы вовсе, а на части браузеров качались бы два файла вместо одного. -->
+<link rel="preload" as="image" type="image/webp" fetchpriority="high"
+  imagesrcset="assets/cn-hero-1110.webp 1110w, assets/cn-hero-1660.webp 1660w, assets/cn-hero.webp 2220w"
+  imagesizes="100vw">
 <style>
 @font-face{font-family:'Jost';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/jost-400-cyrillic.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
 @font-face{font-family:'Jost';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/jost-400-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
@@ -407,6 +412,43 @@ body.sticky-on .sticky-cta{display:flex}
 .sticky-cta .btn{flex:1;padding:13px 10px}
 @media(min-width:900px){body.sticky-on .sticky-cta{display:none}}
 
+/* ==================== ГЛУБИНА: ДОВОДКА GM 04.08 ====================
+   ДЕФЕКТ, найденный замером, а не на глаз: дальний слой был #070605, полотно #0B0A08,
+   разница ЧЕТЫРЕ единицы из 255, контраст 1.023 к одному. Это ниже порога различимости,
+   поэтому геометрия зазора существовала, а глубины не было видно вообще.
+   Правится тремя вещами: тональным разведением слоёв, расширением зазора и переносом
+   света ИЗ секции В зазор. Палитра не меняется: полотно остаётся --bg, меняется только
+   то, что ПОД ним и МЕЖДУ секциями. */
+
+/* 1. Дальний слой уходит в честный чёрный, полотно остаётся прежним. Контраст между
+      ними становится ~1.19 к одному вместо 1.023, то есть переходит порог видимости.
+      Плюс тёплое зарево сверху: оно неподвижно, контент едет по нему, и именно это
+      даёт ощущение, что задняя часть живёт отдельно от передней. */
+body{background:#000}
+.deep{background:
+  radial-gradient(140% 70% at 50% -10%,rgba(222,188,119,.16),rgba(222,188,119,.04) 45%,transparent 70%),
+  radial-gradient(90% 50% at 50% 110%,rgba(201,162,75,.07),transparent 65%),
+  #000}
+
+/* 2. Зазор шире: 8 и 12 px глазом не читались. */
+section{margin-bottom:16px}
+@media(min-width:900px){section{margin-bottom:24px}}
+/* боковые рельсы включаются раньше, с 1100 px, иначе на ноутбуках их не видно вовсе */
+@media(min-width:1100px){section{margin-inline:clamp(20px,2.6vw,44px)}}
+
+/* 3. Свет теперь В ЗАЗОРЕ, а не внутри секции. Кромка ярче, и от неё идёт свечение
+      ВВЕРХ, в промежуток между секциями: это ровно то, как работает парящая подсветка
+      натяжного потолка, которую клиент и продаёт. */
+section::before{background:linear-gradient(90deg,transparent,rgba(222,188,119,.5) 15%,rgba(222,188,119,.5) 85%,transparent)}
+section::after{top:-16px;height:16px;
+  background:linear-gradient(0deg,rgba(222,188,119,.16),transparent);
+  opacity:0;transition:opacity 1.1s ease .15s}
+@media(min-width:900px){section::after{top:-24px;height:24px}}
+
+/* 4. Полотно отбрасывает тень на дальний слой: без неё край читается как стык цветов,
+      с ней как физическая кромка натянутой плоскости. */
+section{box-shadow:0 -1px 0 rgba(0,0,0,.9),0 18px 40px rgba(0,0,0,.55)}
+
 /* ==================== РИТМ И ВОЗДУХ: спецификация CDO от 04.08 ====================
    Блок стоит В КОНЦЕ намеренно: он перекрывает точечные значения, набранные выше по
    месту, и ровно в таком порядке CDO снимал замеры до и после. Не растаскивать по
@@ -741,7 +783,11 @@ body{font-size:1.02rem;line-height:1.72}
   <!-- STOCK: заменить на hi-res рендер Икрома -->
   <div class="hero-bg">
     <picture>
-      <source type="image/webp" srcset="assets/cn-hero.webp">
+      <!-- Три ширины, браузер берёт подходящую. Без этого телефон с экраном 390 px
+           качал кадр 2220 px целиком, и LCP на мобильном рос примерно на 0.4 c. -->
+      <source type="image/webp"
+        srcset="assets/cn-hero-1110.webp 1110w, assets/cn-hero-1660.webp 1660w, assets/cn-hero.webp 2220w"
+        sizes="100vw">
       <img src="assets/cn-hero.jpg" alt="Премиальный интерьер гостиной с натяжным потолком, световыми линиями и магнитными трековыми светильниками" width="1110" height="514" loading="eager" fetchpriority="high">
     </picture>
   </div>
@@ -786,7 +832,10 @@ body{font-size:1.02rem;line-height:1.72}
       <div class="combo">
         <!-- STOCK -->
         <picture>
-          <source type="image/webp" srcset="assets/cn-combo.webp">
+          <!-- Три ширины: на телефоне блок занимает всю ширину, на десктопе половину. -->
+          <source type="image/webp"
+            srcset="assets/cn-combo-1228.webp 1228w, assets/cn-combo-1840.webp 1840w, assets/cn-combo.webp 2456w"
+            sizes="(min-width:900px) 60vw, 100vw">
           <img src="assets/cn-combo.jpg" alt="Комбинированное потолочное решение: теневой профиль, световые линии, магнитные треки и скрытый карниз в одном интерьере" width="1228" height="454" loading="lazy">
         </picture>
         <span data-n="1" class="ann dn" style="left:10%;top:5%"><i></i><span data-i18n="a1">Теневой профиль</span></span>
