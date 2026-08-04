@@ -48,6 +48,7 @@
    Здесь лежит донор: один символ, вырезанный из Work Sans, 444 байта.
    Диапазон сужен до одного символа намеренно, чтобы шрифт не перехватывал ничего сверх. */
 @font-face{font-family:'UzApos';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/uz-apostrophe.woff2) format('woff2');unicode-range:U+02BB}
+
 </style>
 
 <!-- МЕТРИКА (просьба Артура): плейсхолдеры, инициализация только при реальных ID -->
@@ -119,6 +120,9 @@ h2.title{font-size:clamp(1.6rem,3.4vw,2.4rem);font-weight:400;letter-spacing:.14
 .reveal.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none;transition:none}
+  /* свет из зазора включён статично: картинка глубины остаётся полной */
+  section::after{opacity:1}
+  .deep{position:absolute}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
@@ -569,9 +573,130 @@ header{border-bottom:1px solid rgba(237,230,214,.07)}
 
 /* --- 10. Узкий телефон: длинное узбекское Ilhomlantiruvchi в финальном заголовке --- */
 @media(max-width:400px){.final-l h2{letter-spacing:.10em;overflow-wrap:anywhere}}
+/* ================= CDO v3: мембрана и зазор, подписи, метрики под Jost =================
+   Отменяет v2 в части типографики (Tenor Sans снят решением Тахира), остальное из v2
+   в силе. Блок стоит последним намеренно: перекрывает прежние значения по каскаду. */
+
+/* --- ЗАДАЧА 1. Подписи комбо-фото: правила вместо координат.
+   Якорные проценты (10/35/56/79/82) НЕ трогаем, они привязаны к деталям на фото.
+   24% ширины фото гарантируют, что пять подписей на своих якорях физически не сомкнутся;
+   11em не даёт коротким строкам растянуться. --- */
+.ann{
+  max-inline-size:min(11em,24%);
+  line-height:1.35;
+  letter-spacing:.14em;
+  text-wrap:balance;   /* делит две строки поровну, стоит 0 КБ, старые браузеры игнорируют */
+  hyphens:none;
+}
+/* Третья строка запрещена: кегль ступенькой вниз, а не втискивание трекингом. */
+@media(max-width:400px){ .ann{font-size:.5rem} }
+
+/* --- ЗАДАЧА 2. МЕМБРАНА И ЗАЗОР.
+   Содержимое это полотно, натянутое перед более тёмным дальним слоем; между ними
+   зазор, из зазора сочится тёплый свет. Ровно то, что клиент делает с потолками,
+   только вертикально. --- */
+
+/* Приём 1. Дальний слой. Темнее полотна (#070605 против #0B0A08): это не новая
+   палитра, а тень той же базы, нужна ровно чтобы зазор читался.
+   На десктопе слой неподвижен, полотно скользит по нему: разная скорость слоёв
+   получается бесплатно, без параллакс-математики и без обработчиков скролла.
+   На телефоне слой СТАТИЧЕН: в браузере Telegram fixed дёргается при схлопывании
+   адресной строки. Осознанный трейд, телефон главнее. */
+.deep{position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(120% 60% at 50% 0%,rgba(222,188,119,.05),transparent 60%),#070605}
+@media(max-width:899px){.deep{position:absolute;height:100lvh}}
+
+/* Приём 2. Полотно с кромкой и боковыми рельсами. Кромка ОСТРАЯ, без скруглений:
+   скругление читается как карточка, острый край как натянутая мембрана. */
+body{background:#070605}
+section,header,footer{background:var(--bg)}
+section{margin-bottom:8px;position:relative}
+@media(min-width:900px){section{margin-bottom:12px}}
+@media(min-width:1240px){
+  /* полотно отходит от краёв, дальний слой виден постоянными боковыми рельсами.
+     Контент не сужается ни на пиксель: .wrap и так 1200px. */
+  section{margin-inline:clamp(16px,2.2vw,32px)}
+}
+
+/* Приём 3. Свет из зазора: волосинка плюс тёплое затухание вниз от кромки.
+   Свечение НЕ постоянное, включается один раз при входе секции в вьюпорт,
+   через существующий IntersectionObserver. Вокруг карточек и кнопок свечения нет. */
+section::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,162,75,.26) 18%,rgba(201,162,75,.26) 82%,transparent)}
+section::after{content:"";position:absolute;left:0;right:0;top:0;height:22px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(222,188,119,.09),transparent);
+  opacity:0;transition:opacity 1.1s ease .15s}
+section.in::after,section.lit::after{opacity:1}
+
+/* --- ЗАДАЧА 3. Метрики под Jost. Значения v2 подбирались под Tenor Sans, а он
+   заметно шире Jost, поэтому набор капсом стал плотным. Пересчёт. --- */
+.hero h1{line-height:1.14;letter-spacing:.19em}
+h2.title{line-height:1.28;letter-spacing:.20em}
+.combo-t-mob,.combo-t-desk{line-height:1.32;letter-spacing:.10em;font-weight:400}
+.kick{letter-spacing:.36em;font-weight:500}
+.hero .sub2{letter-spacing:.32em}
+.dnav a{letter-spacing:.16em;font-weight:500}
+.btn{letter-spacing:.18em;font-weight:500}
+body{font-size:1.02rem;line-height:1.72}
+.lead{line-height:1.75}
+@media(min-width:900px){
+  .hero h1{line-height:1.08;letter-spacing:.16em}
+  h2.title{line-height:1.24;letter-spacing:.17em}
+}
+/* вордмарк остаётся как в знаке клиента, правила локапа из v2 не трогаем */
+.brand .bt b{font-weight:400;font-size:1.12rem;letter-spacing:.34em}
+
+/* --- ЗАДАЧА 4. Отделка. Всё из v2 остаётся, сверху по 0 КБ. --- */
+@media(hover:hover){
+  .step .th img,.prj .ph img{transition:transform 1.2s cubic-bezier(.22,.61,.36,1)}
+  .step:hover .th img,.prj:hover .ph img{transform:scale(1.03)}
+  .sol:hover .ic{color:var(--gold-l)}
+}
+.dot{transition:width .35s ease,background-color .35s}
+.dot.on{width:18px}
+
+/* ДЕГРАДАЦИЯ при «меньше движения». Правило стоит ЗДЕСЬ, а не в общем блоке
+   reduced-motion выше: тот объявлен раньше, и .deep{position:fixed} из приёма 1
+   перебивал его по каскаду. Поймано замером, а не на глаз. */
+@media(prefers-reduced-motion:reduce){
+  .deep{position:absolute;height:100lvh}   /* дифференциального движения нет */
+  section::after{opacity:1}                /* свет из зазора включён статично */
+}
+.modal{transform:scale(.98);opacity:0;transition:transform .35s cubic-bezier(.22,.61,.36,1),opacity .35s}
+.modal-ov.open .modal{transform:scale(1);opacity:1}
+@media(min-width:900px){
+  ::-webkit-scrollbar{width:10px;background:#070605}
+  ::-webkit-scrollbar-thumb{background:#241d12;border-radius:5px}
+  ::-webkit-scrollbar-thumb:hover{background:rgba(201,162,75,.45)}
+}
+
+/* --- ЗАДАЧА 1, ФОЛБЭК, ЗАРАНЕЕ ОДОБРЕННЫЙ СПЕКОЙ.
+   Замер показал: правил max-inline-size и balance НЕ хватило. На 390 и 360 в обоих
+   языках оставалось по два пересечения (минимальный зазор -10.2 px при требуемых 12),
+   а «Магнитные трековые системы» давали три строки, на 360 RU даже четыре.
+   Поэтому ниже 560px подписи уходят с фото: на фото остаются золотые точки-маркеры
+   с номерами, сами подписи встают компактной легендой в две колонки под фото.
+   Это стандартный приём архитектурных выносок: контент тот же, подача другая. --- */
+.ann-legend{display:none}
+@media(max-width:560px){
+  .ann{max-inline-size:none;width:14px;height:14px;padding:0;letter-spacing:0;
+       border-radius:50%;background:var(--gold);text-shadow:none;
+       display:grid;place-items:center;box-shadow:0 0 0 3px rgba(11,10,8,.7)}
+  .ann > span{display:none}            /* сам текст уезжает в легенду */
+  .ann i{display:none}
+  .ann::before{content:attr(data-n);position:static;width:auto;height:auto;
+       font:500 8px/1 var(--sans);color:#0B0A08;opacity:1;background:none}
+  .ann.dn::before{left:auto;top:auto}  /* гасим хвост выноски из десктопного правила */
+  .ann-legend{display:grid;grid-template-columns:1fr 1fr;gap:7px 14px;
+       margin:14px 0 0;padding:0;list-style:none}
+  .ann-legend li{display:flex;gap:7px;align-items:baseline;
+       font:400 .68rem/1.3 var(--sans);color:var(--t2)}
+  .ann-legend b{font-weight:500;color:var(--gold);flex:none;min-width:9px}
+}
 </style>
 </head>
 <body>
+<div class="deep" aria-hidden="true"></div>
 
 <header>
   <div class="nav">
@@ -659,12 +784,22 @@ header{border-bottom:1px solid rgba(237,230,214,.07)}
           <source type="image/webp" srcset="assets/cn-combo.webp">
           <img src="assets/cn-combo.jpg" alt="Комбинированное потолочное решение: теневой профиль, световые линии, магнитные треки и скрытый карниз в одном интерьере" width="1228" height="454" loading="lazy">
         </picture>
-        <span class="ann dn" style="left:10%;top:5%"><i></i><span data-i18n="a1">Теневой профиль</span></span>
-        <span class="ann dn" style="left:35%;top:6%"><i></i><span data-i18n="a2">Световые линии</span></span>
-        <span class="ann dn" style="left:56%;top:5%"><i></i><span data-i18n="a3">Магнитные трековые системы</span></span>
-        <span class="ann dn" style="left:79%;top:14%"><i></i><span data-i18n="a4">Скрытый карниз</span></span>
-        <span class="ann nn" style="left:82%;top:69%"><i></i><span data-i18n="a5">Парящая подсветка</span></span>
+        <span data-n="1" class="ann dn" style="left:10%;top:5%"><i></i><span data-i18n="a1">Теневой профиль</span></span>
+        <span data-n="2" class="ann dn" style="left:35%;top:6%"><i></i><span data-i18n="a2">Световые линии</span></span>
+        <span data-n="3" class="ann dn" style="left:56%;top:5%"><i></i><span data-i18n="a3">Магнитные трековые системы</span></span>
+        <span data-n="4" class="ann dn" style="left:79%;top:14%"><i></i><span data-i18n="a4">Скрытый карниз</span></span>
+        <span data-n="5" class="ann nn" style="left:82%;top:69%"><i></i><span data-i18n="a5">Парящая подсветка</span></span>
       </div>
+      <!-- ЛЕГЕНДА ВЫНОСОК, видна только ниже 560px. Ключи data-i18n те же, что у подписей
+           на фото, поэтому штатный переключатель языка обновляет и её. Контент не
+           меняется, меняется только подача на узком экране. -->
+      <ol class="ann-legend" aria-hidden="false">
+        <li><b>1</b><span data-i18n="a1">Теневой профиль</span></li>
+        <li><b>2</b><span data-i18n="a2">Световые линии</span></li>
+        <li><b>3</b><span data-i18n="a3">Магнитные трековые системы</span></li>
+        <li><b>4</b><span data-i18n="a4">Скрытый карниз</span></li>
+        <li><b>5</b><span data-i18n="a5">Парящая подсветка</span></li>
+      </ol>
       <div class="combo-btn"><a class="btn btn-out btn-w" href="#projects" data-i18n="cta_prj">Смотреть проект</a></div>
     </div>
   </div>
@@ -1021,7 +1156,10 @@ var I18N = {
      Страховка от невидимого контента ОСТАЛАСЬ, но теперь срабатывает только если
      наблюдатель не отработал ни разу. Прежняя безусловная страховка через 1.5 с
      показывала разом всё, включая то, что ниже экрана, и обнуляла весь эффект. */
-  var rvs=document.querySelectorAll(".reveal");
+  /* Секции наблюдаются ТЕМ ЖЕ наблюдателем, что и .reveal: свет из зазора на кромке
+     включается один раз при входе секции, новых слушателей скролла не заводим.
+     Класс .in на секции трогает только section::after, на её содержимое не влияет. */
+  var rvs=document.querySelectorAll(".reveal, section");
   if("IntersectionObserver" in window){
     var ioWorked=false;
     var io=new IntersectionObserver(function(es){
