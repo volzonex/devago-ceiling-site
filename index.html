@@ -412,6 +412,53 @@ body.sticky-on .sticky-cta{display:flex}
 .sticky-cta .btn{flex:1;padding:13px 10px}
 @media(min-width:900px){body.sticky-on .sticky-cta{display:none}}
 
+/* ==================== ФЛАГИ ОТЗЫВОВ И ЧЕСТНОЙ ПОДПИСИ (CSO, 05.08) ====================
+   Скрываем display:none, а не прозрачностью: невидимый, но существующий текст
+   остаётся в разметке, его читают поисковики и скринридеры, то есть выдуманные
+   отзывы всё равно были бы опубликованы, просто незаметно для глаза. */
+body.no-reviews .prj q,
+body.no-reviews .prj .prj-more,
+body.no-reviews .prj .who,
+body.no-reviews .prj .role{display:none}
+/* Карточка без цитаты становится ниже, поэтому подпираем низ, чтобы фото и текст
+   не слиплись и ряд не поехал по высоте. */
+body.no-reviews .prj .bx{padding-bottom:var(--s5)}
+.vis-note{display:none}
+body.renders-visual .vis-note{display:block;margin-top:var(--s4);max-width:70ch;
+  font-size:.92rem;color:var(--mut)}
+
+/* ==================== БЛИК НА ЗОЛОТОЙ КНОПКЕ (задание Тахира 05.08) ====================
+   ПОЧЕМУ ФОНОВЫМ СЛОЕМ, А НЕ НАКЛАДКОЙ. Первый вариант я сделал через ::after поверх
+   кнопки и сам же его забраковал: подпись кнопки лежит ГОЛЫМ ТЕКСТОМ, без обёртки
+   (`<button ... data-i18n="m_send">Отправить заявку</button>`), поэтому поднять её над
+   бликом нечем, а позиционированная псевдострока всегда рисуется выше строчного текста.
+   Полоса света прошла бы прямо по буквам. Обернуть текст в span тоже нельзя: перевод
+   ставится через innerHTML на саму кнопку, и обёртку стирало бы при смене языка.
+   Фон же всегда под содержимым, поэтому блик живёт первым фоновым слоем.
+   Проходка занимает шестую часть цикла, остальное пауза: металл должен блеснуть и
+   погаснуть, а не мигать. Выключается системной настройкой «меньше движения», там
+   стоит animation:none с !important, он бьёт это правило независимо от порядка. */
+.btn-gold{
+  background-image:
+    linear-gradient(100deg,transparent 42%,rgba(255,247,230,.5) 50%,transparent 58%),
+    linear-gradient(135deg,#E7CB8E 0%,var(--gold-l) 28%,var(--gold) 62%,#A8823A 100%);
+  background-size:250% 100%,180% 180%;
+  background-position:-150% 0,0% 50%;
+  background-repeat:no-repeat,no-repeat;
+  animation:goldSheen 4.5s linear infinite}
+@keyframes goldSheen{
+  0%{background-position:-150% 0,0% 50%}
+  16%{background-position:250% 0,0% 50%}
+  100%{background-position:250% 0,0% 50%}
+}
+/* На наведении блик замирает: две реакции разом читаются суетой. Прежний сдвиг золота
+   на наведении заменён подсветкой, потому что анимация перебивает background-position
+   по правилам каскада, и сдвиг всё равно бы не сработал. */
+@media(hover:hover){
+  .btn-gold:hover{animation-play-state:paused;filter:brightness(1.06)}
+  .btn-gold:active{filter:brightness(.94)}
+}
+
 /* ==================== ГЛУБИНА: ДОВОДКА GM 04.08 ====================
    ДЕФЕКТ, найденный замером, а не на глаз: дальний слой был #070605, полотно #0B0A08,
    разница ЧЕТЫРЕ единицы из 255, контраст 1.023 к одному. Это ниже порога различимости,
@@ -1539,6 +1586,8 @@ html{scrollbar-gutter:stable}
 <section id="projects">
   <div class="wrap reveal">
     <div class="sec-head"><span class="kick" data-i18n="p_kick">Реализованные проекты и отзывы</span></div>
+    <!-- Честная подпись кадров, показывается только при RENDERS_ARE_VISUALS. -->
+    <p class="lead vis-note" data-i18n="p_vis_note">Компьютерные визуализации решений DEVAGO. Фотографии выполненных объектов появятся здесь по мере сдачи работ.</p>
     <!-- ⚠️ ПЛЕЙСХОЛДЕР-проекты из канон-мокапа: заменить реальными кейсами клиента -->
     <!-- ⚠️ ПЛЕЙСХОЛДЕРЫ. Кадры взяты из ассетов репозитория 1600 px: прежние обрезки
          канон-мокапа были 170-210 px шириной и в слот 16:10 на карточке ~560 px не
@@ -1746,6 +1795,24 @@ html{scrollbar-gutter:stable}
 var TG_URL = "https://t.me/TG_PLACEHOLDER"; /* PLACEHOLDER: username группы/аккаунта DEVAGO от Икрома */
 var FORM_ENDPOINT = "FORM_ENDPOINT_PLACEHOLDER"; /* транспорт формы: serverless на Vercel (ТГ-бот) или Formspree, согласовать с Тахиром/CTO */
 var ENABLE_STICKY_CTA = false; /* включить только после одобрения Тахира и Икрома */
+
+/* ОТЗЫВЫ. Выключены решением CSO от 05.08, и это не косметика, а защита клиента:
+   именованные цитаты (Александр и Мария, Бахром Р., Дильноза К., Тимур А.) взяты из
+   макета и людей этих не существует. На живом сайте они читаются как отзывы реальных
+   заказчиков. Икром 04.08 подтвердил, что настоящие отзывы соберёт, ему нужно время
+   объехать клиентов.
+   ВКЛЮЧЕНИЕ = ОДНО ЗНАЧЕНИЕ, переверстки не требуется: ставим true, и цитаты, имена,
+   роли и кнопка «Читать полностью» возвращаются на свои места.
+   ПЕРЕД включением заменить тексты p1_q..p5_q, p1_w..p5_w, p1_r..p5_r на реальные. */
+var ENABLE_REVIEWS = false;
+
+/* ЧЕСТНАЯ ПОДПИСЬ КАДРОВ. Икром 04.08 сказал прямо: реальных фотографий таких работ
+   у них нет вообще, направление для компании новое, кадры это визуализации.
+   Поэтому секция называется визуализацией возможностей, а не выполненными проектами.
+   Одна строка, но она снимает вопрос «дайте адрес объекта» у первого же клиента и
+   защищает самого Икрома от обещания, которого он не сможет подтвердить.
+   Когда придут живые фото: ставим false, и подпись возвращается к «реализованным». */
+var RENDERS_ARE_VISUALS = true;
 var I18N = {
  ru:{meta_desc:"DEVAGO Ceiling - премиальные натяжные потолки: теневые системы, световые линии, магнитные треки, скрытые карнизы, звёздное небо, фотопечать. Ташкент, Узбекистан.",
  cta_main:"Получить консультацию",cta_main2:"Получить консультацию",cta_main4:"Получить консультацию",
@@ -1780,6 +1847,9 @@ var I18N = {
  std5_h:"Контроль качества",std5_p:"Многоступенчатая проверка на каждом этапе",
  std6_h:"Гарантия результата",std6_p:"Гарантия до 10 лет на все работы и материалы",
  p_kick:"Реализованные проекты и отзывы",
+ /* Подпись на время, пока живых фото нет. Возвращается снятием RENDERS_ARE_VISUALS. */
+ p_kick_v:"Визуализация возможностей",
+ p_vis_note:"Компьютерные визуализации решений DEVAGO. Фотографии выполненных объектов появятся здесь по мере сдачи работ.",
  p1_o:"Пентхаус 240 м²",p1_c:"<span class='dt'>Ташкент</span><span class='mb'>Tashkent City</span>",
  p1_q:"Искали подрядчика, который сможет объединить <span class='dt'>разные потолочные</span><span class='mb'>световые</span> решения в единую концепцию. Результат превзошёл ожидания.<span class='dt'> Пространство стало совершенно другим.</span>",
  p1_w:"Александр и Мария",p1_r:"Владельцы пентхауса",
@@ -1848,6 +1918,8 @@ var I18N = {
  std5_h:"Sifat nazorati",std5_p:"Har bosqichda koʻp pogʻonali tekshiruv",
  std6_h:"Natija kafolati",std6_p:"Barcha ish va materiallarga 10 yilgacha kafolat",
  p_kick:"Amalga oshirilgan loyihalar va fikrlar",
+ p_kick_v:"Imkoniyatlar vizualizatsiyasi",
+ p_vis_note:"DEVAGO yechimlarining kompyuter vizualizatsiyalari. Bajarilgan obyektlarning suratlari ishlar topshirilishi bilan shu yerda paydo boʻladi.",
  p1_o:"Pentxaus 240 m²",p1_c:"<span class='dt'>Toshkent</span><span class='mb'>Tashkent City</span>",
  p1_q:"Turli shift yechimlarini yagona konsepsiyaga birlashtira oladigan pudratchi izladik. Natija kutilganidan oshdi.<span class='dt'> Makon butunlay oʻzgardi.</span>",
  p1_w:"Aleksandr va Mariya",p1_r:"Pentxaus egalari",
@@ -1885,6 +1957,13 @@ var I18N = {
   function apply(l){document.documentElement.lang=l;var d=I18N[l];
     document.querySelectorAll("[data-i18n]").forEach(function(e){var k=e.getAttribute("data-i18n");if(d[k]!=null)e.innerHTML=d[k];});
     var md=document.querySelector('meta[name="description"]');if(md&&d.meta_desc)md.setAttribute("content",d.meta_desc);
+    /* Подмена заголовка секции проектов делается ЗДЕСЬ, внутри apply, а не один раз
+       при загрузке: иначе переключение языка вернуло бы «Реализованные проекты»,
+       то есть обещание, которого клиент подтвердить не может. */
+    if(RENDERS_ARE_VISUALS){
+      var pk=document.querySelector('[data-i18n="p_kick"]');
+      if(pk&&d.p_kick_v)pk.innerHTML=d.p_kick_v;
+    }
     /* Пар кнопок теперь ДВЕ: в меню и в шапке (от 1000px бургера нет). Ведём обе
        по data-l, чтобы копия не разъехалась с оригиналом по состоянию. */
     document.querySelectorAll(".lang button[data-l]").forEach(function(x){
@@ -1898,6 +1977,11 @@ var I18N = {
   var lang0="ru";try{if(localStorage.getItem("devago-lang")==="uz")lang0="uz"}catch(e){}
   apply(lang0);
   if(ENABLE_STICKY_CTA)document.body.classList.add("sticky-on");
+  /* Флаги ставятся классами на body ДО показа, поэтому скрытое не успевает мигнуть.
+     Скрываем именно отзывы: цитату, кнопку раскрытия и подпись автора. Фото, тип
+     объекта и город остаются, они описывают сам кадр, а не выдуманного человека. */
+  if(!ENABLE_REVIEWS)document.body.classList.add("no-reviews");
+  if(RENDERS_ARE_VISUALS)document.body.classList.add("renders-visual");
   document.querySelectorAll("a.tg-link").forEach(function(a){a.setAttribute("href",TG_URL)});
 
   /* меню */
