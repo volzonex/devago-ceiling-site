@@ -1,0 +1,39 @@
+<!doctype html><html><head><meta charset="utf-8"><title>ждёт</title></head>
+<body style="margin:0;background:#111">
+<!-- Проверка блика на золотой кнопке: два слоя фона и живая анимация.
+     ВАЖНО: этот стенд НЕЛЬЗЯ запускать с --force-prefers-reduced-motion,
+     там анимации глушатся глобально и проверка всегда покажет «нет». -->
+<script>
+var f=document.createElement('iframe');
+f.style.cssText='width:1200px;height:800px;border:0';
+f.src='../../index.html';
+document.body.appendChild(f);
+f.onload=function(){
+  setTimeout(function(){
+    var d=f.contentDocument,w=f.contentWindow,out=[];
+    var b=d.querySelector('.btn-gold');
+    if(!b){document.title='ГОТОВО';document.body.insertAdjacentHTML('afterbegin','<pre id=r>КНОПКА НЕ НАЙДЕНА</pre>');return;}
+    out.push('браузер просит «меньше движения»: '+(w.matchMedia('(prefers-reduced-motion: reduce)').matches?'ДА (тогда анимации глушит САМ САЙТ, и это правильно)':'нет'));
+    var cs=w.getComputedStyle(b);
+    var bg=cs.backgroundImage;
+    out.push('слоёв фона: '+(bg.match(/linear-gradient/g)||[]).length+' (нужно 2: блик + золото)');
+    out.push('animation-name: '+cs.animationName);
+    out.push('animation-duration: '+cs.animationDuration);
+    out.push('background-size: '+cs.backgroundSize);
+    // ловим движение: снимаем позицию фона дважды с паузой
+    var p1=cs.backgroundPosition;
+    setTimeout(function(){
+      var p2=w.getComputedStyle(b).backgroundPosition;
+      out.push('позиция фона замер 1: '+p1);
+      out.push('позиция фона замер 2: '+p2);
+      out.push('ДВИЖЕТСЯ: '+(p1!==p2?'ДА':'НЕТ'));
+      var pre=document.createElement('pre');pre.id='r';
+      pre.style.cssText='color:#fff;font:14px monospace;padding:10px';
+      pre.textContent=out.join('\n');
+      document.body.insertBefore(pre,f);
+      document.title='ГОТОВО';
+    },700);
+  },1500);
+};
+</script>
+</body></html>
