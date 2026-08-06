@@ -1599,6 +1599,64 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
   .dnav::before{content:"";position:absolute;left:-10px;top:50%;margin-top:-9px;
     width:1px;height:18px;background:rgba(201,162,75,.22)}
 }
+
+/* ================= CDO v8: МОБИЛЬНЫЕ ВЫНОСКИ КОМБО-ФОТО ================= */
+.ann-hint{display:none}
+@media(max-width:560px){
+  /* 1. Маркер это честная кнопка 44x44 БЕЗ учёта псевдоэлементов: размер перенесён
+     на сам элемент, видимый кружок ушёл в ::before. Сдвиг на половину бокса нужен,
+     чтобы центр кнопки встал ровно на процентный якорь: проценты отсчитываются от
+     левого верхнего угла, и без него все пять маркеров уехали бы вправо и вниз. */
+  .ann{width:44px;height:44px;background:none;box-shadow:none;border-radius:0;
+       display:grid;place-items:center;transform:translate(-22px,-22px)}
+  .ann::after{display:none}          /* прежняя накладка, иначе зона удвоится */
+  .ann::before{content:attr(data-n);position:static;
+       width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+       background:rgba(11,10,8,.72);border:1.5px solid var(--gold);
+       font:500 12px/1 var(--sans);color:var(--gold-l);letter-spacing:0;opacity:1}
+  /* Десктопные .ann.dn::before и .ann.up::before это ХВОСТ выноски, и они на класс
+     специфичнее моего .ann::before, поэтому кольцо выходило 1x26 вместо 28x28,
+     то есть маркеры 1-4 рисовались тонкой полоской. Глушим геометрию явно, на той же
+     специфичности. Пятый маркер класса .nn под это правило не попадал и был исправен,
+     из-за чего дефект и выглядел как «сломались четыре из пяти». */
+  .ann.dn::before,.ann.up::before{left:auto;right:auto;top:auto;bottom:auto;
+       width:28px;height:28px;transform:none}
+  .ann.on::before,.ann:focus-visible::before{background:var(--gold);border-color:var(--gold);color:#171204}
+  /* 2. Хвостик-указатель: маркер стал крупнее и закрывал бы саму линию на кадре.
+     Берём уже существующий .ann i, новых узлов не заводим. */
+  .ann i{display:block;position:absolute;width:1px;height:14px;
+         background:var(--gold);opacity:.7;left:50%;margin-left:-.5px;
+         border-radius:0;margin-right:0}
+  .ann.up i{bottom:calc(50% + 14px)}
+  .ann.dn i{top:calc(50% + 14px)}
+  .ann.nn i{display:none}
+  /* 3. Мобильные якоря отдельными значениями. Десктопные проценты НЕ трогаются:
+     на них завязана арифметика зазоров из v3.1 и починенные дефекты 3 и 4 из v4. */
+  .ann[data-ann="1"]{left:var(--mx1)!important;top:var(--my1)!important}
+  .ann[data-ann="2"]{left:var(--mx2)!important;top:var(--my2)!important}
+  .ann[data-ann="3"]{left:var(--mx3)!important;top:var(--my3)!important}
+  .combo{--mx1:10%;--my1:15%;--mx2:35%;--my2:16%;--mx3:56%;--my3:15%}
+  /* 4. Легенда это второй, БОЛЬШИЙ способ нажать: строка около 160x44 против
+     кружка 44x44, то есть втрое больше по площади. */
+  .ann-legend li{align-items:center}
+  .lg-btn{display:flex;align-items:center;gap:7px;width:100%;min-height:44px;
+       padding:0;background:none;border:none;cursor:pointer;text-align:left;
+       font:400 .68rem/1.3 var(--sans);color:var(--t2)}
+  .lg-btn b{font-weight:500;color:var(--gold);flex:none;min-width:12px}
+  .lg-btn.on{color:var(--text)}
+  .lg-btn.on b{color:var(--gold-l)}
+  /* 5. Подсказка, что цифры нажимаются. */
+  .ann-hint{display:block;margin:12px 0 0;text-align:center;
+       font:400 .68rem/1.3 var(--sans);color:var(--mut)}
+  /* Разовая пульсация кольца, РОВНО ТРИ раза. Бесконечный цикл запрещён: в CLAUDE.md
+     записано, что вечная анимация подвесила --virtual-time-budget и сломала стенд. */
+  @keyframes annPulse{0%,100%{box-shadow:0 0 0 0 rgba(201,162,75,0)}
+                      50%{box-shadow:0 0 0 6px rgba(201,162,75,.18)}}
+  .reveal.in .ann::before{animation:annPulse 1.6s ease-out 3}
+}
+@media(max-width:560px) and (prefers-reduced-motion:reduce){
+  .reveal.in .ann::before{animation:none}
+}
 </style>
 </head>
 <body>
@@ -1727,12 +1785,13 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
       <!-- ЛЕГЕНДА ВЫНОСОК, видна только ниже 560px. Ключи data-i18n те же, что у подписей
            на фото, поэтому штатный переключатель языка обновляет и её. Контент не
            меняется, меняется только подача на узком экране. -->
+      <p class="ann-hint" data-i18n="ann_hint">нажмите на цифры</p>
       <ol class="ann-legend" aria-hidden="false">
-        <li><b>1</b><span data-i18n="a1">Теневой профиль</span></li>
-        <li><b>2</b><span data-i18n="a2">Световые линии</span></li>
-        <li><b>3</b><span data-i18n="a3">Магнитные трековые системы</span></li>
-        <li><b>4</b><span data-i18n="a4">Скрытый карниз</span></li>
-        <li><b>5</b><span data-i18n="a5">Парящая подсветка</span></li>
+        <li><button type="button" class="lg-btn" data-ann="1"><b>1</b><span data-i18n="a1">Теневой профиль</span></button></li>
+        <li><button type="button" class="lg-btn" data-ann="2"><b>2</b><span data-i18n="a2">Световые линии</span></button></li>
+        <li><button type="button" class="lg-btn" data-ann="3"><b>3</b><span data-i18n="a3">Магнитные трековые системы</span></button></li>
+        <li><button type="button" class="lg-btn" data-ann="4"><b>4</b><span data-i18n="a4">Скрытый карниз</span></button></li>
+        <li><button type="button" class="lg-btn" data-ann="5"><b>5</b><span data-i18n="a5">Парящая подсветка</span></button></li>
       </ol>
       <div class="combo-btn"><a class="btn btn-out btn-w" href="#projects" data-i18n="cta_prj">Смотреть проект</a></div>
     </div>
@@ -2063,7 +2122,7 @@ var I18N = {
  fin_p:"<span class='dt'>Получите консультацию и расчёт стоимости вашего проекта бесплатно.</span><span class='mb'>Получите консультацию специалиста и расчёт стоимости вашего проекта.</span>",
  fin_city:"Ташкент, Узбекистан",fin_tag:"Архитектура света и пространства",
 
- nav_pp:"Фотопечать",read_more:"Читать полностью",skip:"К содержимому",lang_group:"Язык сайта",
+ nav_pp:"Фотопечать",read_more:"Читать полностью",skip:"К содержимому",lang_group:"Язык сайта",ann_hint:"нажмите на цифры",
  pp_kick:"Варианты фотопечати",pp_title:"Варианты фотопечати на потолке",pp_sub:"Премьерные решения для интерьеров",
  pp1_h:"Мрамор / оникс с подсветкой",pp1_p:"Эффект полупрозрачного камня",
  pp2_h:"Бетон",pp2_p:"Современная текстура для стильных интерьеров",
@@ -2133,7 +2192,7 @@ var I18N = {
  fin_p:"<span class='dt'>Konsultatsiya va loyihangiz narxining hisob-kitobini bepul oling.</span><span class='mb'>Mutaxassis konsultatsiyasi va loyihangiz narxining hisob-kitobini oling.</span>",
  fin_city:"Toshkent, Oʻzbekiston",fin_tag:"Yorugʻlik va makon arxitekturasi",
 
- nav_pp:"Fotopechat",read_more:"Toʻliq oʻqish",skip:"Mazmunga oʻtish",lang_group:"Sayt tili",
+ nav_pp:"Fotopechat",read_more:"Toʻliq oʻqish",skip:"Mazmunga oʻtish",lang_group:"Sayt tili",ann_hint:"raqamlarni bosing",
  pp_kick:"Fotopechat variantlari",pp_title:"Shiftdagi fotopechat variantlari",pp_sub:"Interyerlar uchun premyera yechimlari",
  pp1_h:"Marmar / oniks yoritish bilan",pp1_p:"Yarim shaffof tosh effekti",
  pp2_h:"Beton",pp2_p:"Zamonaviy interyerlar uchun tekstura",
@@ -2423,6 +2482,7 @@ var I18N = {
   function closeInfo(keepFocus){
     if(!im.classList.contains("open"))return;
     im.classList.remove("open");curModal=null;lockScroll(false);
+    if(typeof annMark==="function")annMark(null);
     if(!keepFocus&&lastFocus&&lastFocus.focus)lastFocus.focus();
     if(!keepFocus)lastFocus=null;
   }
@@ -2473,9 +2533,24 @@ var I18N = {
       e.preventDefault();e.stopPropagation();
       var id=a.getAttribute("data-ann");
       if(window.innerWidth>=900){ if(popOwner===a){closePop();return} openPop(a); }
-      else openInfo("ann-"+id,a);
+      else {annMark(id);openInfo("ann-"+id,a);}
     });
   });
+
+  /* CDO v8: строка легенды это второй способ нажать. Открывает то же содержимое
+     и подсвечивается вместе со своим маркером в обе стороны. */
+  function annMark(id){
+    document.querySelectorAll(".ann").forEach(function(a){
+      a.classList.toggle("on",a.getAttribute("data-ann")===id&&id!=null);});
+    document.querySelectorAll(".lg-btn").forEach(function(l){
+      l.classList.toggle("on",l.getAttribute("data-ann")===id&&id!=null);});
+  }
+  document.querySelectorAll(".lg-btn").forEach(function(l){
+    l.addEventListener("click",function(e){
+      e.preventDefault();var id=l.getAttribute("data-ann");
+      annMark(id);openInfo("ann-"+id,l);});
+  });
+
   document.addEventListener("click",function(e){
     if(!pop||pop.hidden)return;
     if(!e.target.closest(".pop")&&!e.target.closest(".ann"))closePop();
