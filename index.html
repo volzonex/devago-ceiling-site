@@ -161,7 +161,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .brand .bt{display:flex;flex-direction:column;line-height:1.1}
 .brand .bt b{font:500 1.02rem/1 var(--wordmark);letter-spacing:.34em;color:var(--text)}
 .brand .bt small{font:500 .5rem/1 var(--sans);letter-spacing:.52em;color:var(--gold);margin-top:4px}
-.dnav{display:none;gap:26px;margin-left:auto}
+.dnav{display:none;gap:22px}
 .dnav a{font:500 .68rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--t2);padding:8px 0}
 .dnav a:hover{color:var(--gold-l)}
 @media(min-width:1000px){.dnav{display:flex}}
@@ -1513,6 +1513,92 @@ body.renders-visual .vis-note{
 @media(min-width:900px){
   body.renders-visual .vis-note{font-size:.88rem;margin-bottom:var(--s6)}
 }
+
+/* ================= CDO v7. Блок последний, как все предыдущие спеки. ================= */
+
+/* --- ЗАДАЧА 2. Решения: шесть узких колонок становятся тремя широкими.
+   ЗАМЕР ДО ПРАВКИ: при шести колонках карточка это 140px на 1000 и 187px на 1440,
+   заголовки занимали от ОДНОЙ до ЧЕТЫРЁХ строк в одном ряду (RU на 1440: 4,1,3,1,1,3),
+   поэтому у каждой карточки была своя высота пустоты перед стрелкой. Шесть узких
+   колонок читались списком фишек, а не витриной услуг. --- */
+@media(min-width:700px) and (max-width:999px){
+  /* display:grid ОБЯЗАТЕЛЕН: базово .sol-list это flex-колонка, и одна смена
+     grid-template-columns на ней не действует вовсе, счётчик колонок молча врал. */
+  .sol-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+}
+@media(min-width:1000px){
+  .sol-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+  /* Выключка с центра на левый край: на 183px центр работал, на 373px короткий
+     центрованный текст висит в широком боксе без опоры. */
+  .sol{flex-direction:column;align-items:flex-start;text-align:left;
+    padding:30px 26px;gap:16px}
+  .sol .ic{width:44px;height:44px}
+  .sol .arr{right:18px;bottom:18px;width:16px;height:16px;margin-top:auto}
+  /* Минимумы выставлены ПО ЗАМЕРУ, а не по оценке: заголовки укладываются в две
+     строки, описания в одну или две (на 1000 в русском высоты расходились
+     181 против 202). Резерв под максимум выравнивает низ карточек. */
+  .sol .tx b{min-height:2.6em}
+  .sol .tx > span{min-height:2.8em}
+}
+
+/* --- ЗАДАЧА 3. Служебная оговорка.
+   ЗАМЕР ПО ЗАПРОСУ СПЕКИ: узел отрисован Jost и для кириллицы (34 глифа), и для
+   подстроки DEVAGO (6 глифов), перебивать некому, донор UzApos заперт на U+02BB.
+   Значит вопрос был в кегле и выключке.
+   СЛИЯНИЕ, А НЕ ЗАМЕНА: пока бриф шёл, GM коммитом fb4f5ec уже уменьшил кегль
+   (.84 на телефоне и .88 от 900), поставил интерлиньяж 1.6, меру 56ch и цвет --mut,
+   и починил нулевой зазор до карусели своими отступами. Всё это ЗАМЕРЕНО им, поэтому
+   я не переписываю его значения спековыми (.86 / 1.62 / --t2 / margin:0 auto var(--s6)):
+   последнее обнулило бы верхний отступ, ради которого его правка и делалась.
+   Добавляю только то, чего у него нет и что спека просит по существу: выключку по
+   центру под центрованный заголовок секции. Расхождение по цвету вынесено в recap. */
+body.renders-visual .vis-note{margin-inline:auto;text-align:center}
+
+/* --- ЗАДАЧА 5. Двойная рамка и нулевой радиус.
+   Радиус 0 на весь сайт (решение Тахира). НЕ трогаем точку карусели и ручку листа:
+   первая обязана остаться круглой, вторая читается только скруглённой. --- */
+.btn{border-radius:0;position:relative;isolation:isolate}
+.modal input,.info-modal .m-close,.skip:focus,.lang{border-radius:0}
+.btn::before{content:"";position:absolute;inset:4px;pointer-events:none;
+  border:1px solid rgba(201,162,75,.5);opacity:.45;
+  transition:opacity .3s ease,box-shadow .3s ease}
+.btn:hover::before{opacity:1;box-shadow:0 0 22px -6px rgba(222,188,119,.85)}
+.btn-out{border-color:rgba(201,162,75,.26)}
+/* У золотой внутренняя линия тёмная: светлая на золоте не видна вовсе. */
+.btn-gold::before{border-color:rgba(23,18,4,.28)}
+.btn-gold:hover::before{box-shadow:0 0 22px -6px rgba(23,18,4,.5)}
+
+/* --- ЗАДАЧА 4. Дистанции в шапке. Зазор бренд-меню не меньше двух зазоров между
+   пунктами. margin-right:auto обязателен: у .nav стоит space-between, и без него
+   свободное место разошлось бы поровну, а заданные 48px превратились бы в «не меньше
+   48», то есть в неуправляемую величину. --- */
+@media(min-width:1000px){
+  .dnav{margin-right:auto}
+  .nav-right .cta{letter-spacing:.12em}
+  /* Рамка переключателя снята, вместо неё волосяная черта между сегментами. */
+  .lang{border:none;position:relative;overflow:visible}
+  .lang button+button{border-left:none}
+  .lang button+button::before{content:"";position:absolute;left:0;top:50%;
+    margin-top:-6px;width:1px;height:12px;background:rgba(201,162,75,.28)}
+  .lang button{position:relative}
+}
+/* ЗАМЕР ПОСЛЕ ПРАВКИ: пара 22/48 не помещается в русском, переполнение 9px на 1200.
+   Инвариант спеки («зазор бренд-меню не меньше ДВУХ зазоров между пунктами») держим,
+   но масштабируем обе величины под ширину: 20/44 до 1440, 22/48 от 1440. Отношение
+   2.2 и 2.18, то есть требование выполняется в обеих вилках. */
+@media(min-width:1200px){.dnav{margin-left:44px;gap:20px}}
+@media(min-width:1440px){.dnav{margin-left:48px;gap:22px}}
+@media(min-width:1000px) and (max-width:1199px){
+  /* В сжатой вилке 48px нет, роль дистанции берёт вертикальный разделитель.
+     Он живёт ВНУТРИ отступа (left:-10px), а не добавляет своих полей: padding-left
+     съедал ещё 20px и давал переполнение 22px на 1000 в русском. */
+  /* Трекинг кнопки .12em из спеки держится от 1200. В сжатой вилке не хватало 2px,
+     поэтому здесь остаётся .10em, первая ступень порядка уступок из брифа v6. */
+  .nav-right .cta{letter-spacing:.10em}
+  .dnav{margin-left:20px;position:relative}
+  .dnav::before{content:"";position:absolute;left:-10px;top:50%;margin-top:-9px;
+    width:1px;height:18px;background:rgba(201,162,75,.22)}
+}
 </style>
 </head>
 <body>
@@ -1592,7 +1678,7 @@ body.renders-visual .vis-note{
 </section>
 
 <!-- 2 · SOLUTIONS -->
-<section id="solutions">
+<section id="solutions" data-modal-nav="off">
   <div class="wrap reveal">
     <div class="sec-head"><span class="kick" data-i18n="s_kick">Наши решения</span></div>
     <div class="sol-list">
@@ -2293,9 +2379,17 @@ var I18N = {
   var imSet=[],imIdx=-1;
   function imKey(el){var k=el.getAttribute("data-modal");
     return k||("ann-"+el.getAttribute("data-ann"));}
+  /* ПРАВИЛО, ПО КОТОРОМУ РАЗВОДЯТСЯ СТРЕЛКИ (CDO v7, задача 1). Не стирать при
+     следующей правке: стрелки нужны там, где набор это ПОСЛЕДОВАТЕЛЬНОСТЬ или
+     ГАЛЕРЕЯ, и не нужны там, где набор это МЕНЮ разных предложений. Стандарты это
+     шесть пронумерованных шагов подряд, фотопечать это восемь вариантов одного и
+     того же, их логично листать. Решения это шесть РАЗНЫХ услуг, листать их незачем:
+     человек пришёл за конкретной. Секция помечается атрибутом data-modal-nav="off",
+     ключи не разбираем (та же ловушка, что была с sol-1 против pp1). */
   function imBuild(src){
     imSet=[];imIdx=-1;
     var sec=src&&src.closest?src.closest("section"):null;if(!sec)return;
+    if(sec.getAttribute("data-modal-nav")==="off")return;
     imSet=[].slice.call(sec.querySelectorAll("[data-modal],[data-ann]"));
     imIdx=imSet.indexOf(src);
     if(imIdx<0)imSet=[];
