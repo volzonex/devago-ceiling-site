@@ -1586,7 +1586,9 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
    Инвариант спеки («зазор бренд-меню не меньше ДВУХ зазоров между пунктами») держим,
    но масштабируем обе величины под ширину: 20/44 до 1440, 22/48 от 1440. Отношение
    2.2 и 2.18, то есть требование выполняется в обеих вилках. */
-@media(min-width:1200px){.dnav{margin-left:44px;gap:20px}}
+/* 44 давало содержимому шапки 1203px против полосы в 1200: переполнения документа нет,
+   но кнопка вылезала на 3px за колонку контента. 40 держит инвариант (2 x 20). */
+@media(min-width:1200px){.dnav{margin-left:40px;gap:20px}}
 @media(min-width:1440px){.dnav{margin-left:48px;gap:22px}}
 @media(min-width:1000px) and (max-width:1199px){
   /* В сжатой вилке 48px нет, роль дистанции берёт вертикальный разделитель.
@@ -1657,6 +1659,111 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
 @media(max-width:560px) and (prefers-reduced-motion:reduce){
   .reveal.in .ann::before{animation:none}
 }
+
+/* ================= CDO v9. Блок последний, как все предыдущие спеки. ================= */
+
+/* --- ЗАДАЧА 1. Полоса цифр. Без заголовка и без орнамента: это полоса доверия. --- */
+#facts{padding:clamp(44px,5vw,68px) var(--gutter)}
+#facts .sec-head{display:none}
+.facts{display:grid;gap:0;grid-template-columns:1fr 1fr}
+.facts .f{padding:22px 16px;text-align:center;position:relative}
+.facts .f b{display:block;font:500 clamp(1.7rem,7vw,2rem)/1 var(--sans);
+  color:var(--gold-l);letter-spacing:.02em;white-space:nowrap}
+/* Кегль .76rem, а не .72rem из спеки. Причина замерена: аудит Lighthouse «legible font
+   sizes» проходит при доле текста от 12px не ниже 60%, а страница стояла на 58.07%.
+   Подписи полосы (4.81% всего текста при .72rem = 11.52px) и строка географии (1.56%
+   при .74rem = 11.84px) были ровно той разницей, которая уронила практики со 100 до 96.
+   Обе подняты выше 12px, это возвращает 6.37 пункта и даёт 64.4%. */
+.facts .f span{display:block;margin-top:8px;font:400 .76rem/1.45 var(--sans);
+  color:var(--t2);letter-spacing:.06em}
+.facts-note{margin-top:18px;text-align:center;font:400 .78rem/1.5 var(--sans);color:var(--mut)}
+/* На 360 «600 000 м²» это самое длинное число: при nowrap оно должно РЕЗАТЬСЯ кеглем,
+   а не переноситься, поэтому нижняя граница clamp опущена только на узком телефоне. */
+@media(max-width:380px){.facts .f b{font-size:clamp(1.32rem,6.4vw,1.7rem)}}
+@media(min-width:1000px){
+  .facts{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .facts .f{padding:8px 24px}
+  .facts .f + .f::before{content:"";position:absolute;left:0;top:12%;bottom:12%;
+    width:1px;background:rgba(201,162,75,.18)}
+  .facts .f b{font-size:clamp(2rem,2.6vw,2.6rem)}
+}
+
+/* --- ЗАДАЧА 2. Прямой звонок и Instagram. --- */
+/* Иконки в шапке ТОЛЬКО от 1200px: по замеру v7 запас строки в вилке 1000-1199
+   всего 13-15px, две кнопки по 44px её ломают. Проверено, не догадка. */
+/* ПОРОГ 1200 ИЗ БРИФА НЕ ПРОХОДИТ ПО АРИФМЕТИКЕ, и дело не в запасе строки, а в том,
+   что .nav ограничен max-width:1200px. Русской строке шапки с двумя иконками нужно
+   1333px, а внутри полосы доступно 1200 минус 80 полей, то есть 1120. Не помещается
+   НИ НА КАКОЙ ширине окна, включая 1920: на широких экранах содержимое просто вылезало
+   за правый край полосы на 125px и уезжало из колонки контента, а на 1200-1440 давало
+   честное переполнение документа до 111px. Одна иконка вместо двух тоже не спасает,
+   нужно 1265 против 1120. Поэтому иконки включаются с 1440, и ровно там же полоса
+   шапки расширяется до 1440: содержимое получает 1360 против нужных 1333, запас 27px.
+   Узбекской строке нужно 1279, ей хватало и раньше. */
+.ic-btn{display:none}
+@media(min-width:1440px){
+  .nav{max-width:1440px}
+}
+@media(min-width:1440px){
+  .ic-btn{display:grid;place-items:center;width:44px;height:44px;flex:none;
+    color:var(--t2);transition:color .25s}
+  .ic-btn:hover{color:var(--gold-l)}
+  .ic-btn svg{width:19px;height:19px;display:block}
+}
+/* Две строки действий в бургер-меню, до 1000px. */
+.menu-act{display:flex;flex-direction:column;gap:2px;margin:8px 0 18px}
+.ma{display:flex;align-items:center;gap:12px;min-height:48px;color:var(--text);
+  font:500 .8rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;
+  border-bottom:1px solid var(--hairline)}
+.ma svg{width:18px;height:18px;color:var(--gold);flex:none}
+.ma:hover{color:var(--gold-l)}
+@media(min-width:1000px){.menu-act{display:none}}
+/* Instagram строкой в финале и в футере. */
+.inst-line{display:inline-flex;align-items:center;gap:10px;min-height:44px;
+  font-size:.9rem;color:var(--t2)}
+.inst-line svg{width:17px;height:17px;color:var(--gold);flex:none}
+.inst-line:hover{color:var(--gold-l)}
+.foot-wrap .inst-line{font-size:.8rem}
+/* Липкая полоса: появляется ТОЛЬКО после ухода первого экрана и прячется под окном. */
+body.sticky-on .sticky-cta{display:none}
+body.sticky-on.past-hero .sticky-cta{display:flex}
+body.sticky-on.no-scroll .sticky-cta{display:none}
+@media(min-width:900px){body.sticky-on.past-hero .sticky-cta{display:none}}
+
+/* --- ЗАДАЧА 3. Навигация окна переезжает к КАРТИНКЕ, а не к действию.
+   На десктопе блок ложится в ТУ ЖЕ ячейку грида, что и медиа (grid-column:1/grid-row:1),
+   поэтому ширина колонки нигде не зашита числом и переживёт смену 440 на 480. --- */
+.im-nav{margin-top:0}
+@media(min-width:1000px){
+  /* Позиции задаются ВСЕМ ТРЁМ явно. Ловушка: стоит явно поставить в ячейку (1,1)
+     только навигацию, как авторазмещение уводит .im-media в СОСЕДНЮЮ колонку, и
+     картинка с текстом меняются местами, а стрелки повисают над текстом. Поймано
+     замером координат: картинка оказалась в 829..1309, а стрелки в 131..829. */
+  .info-modal .im-media{grid-column:1;grid-row:1}
+  .info-modal .im-body{grid-column:2;grid-row:1}
+  .info-modal .im-nav{grid-column:1;grid-row:1;position:relative;
+    align-self:stretch;justify-self:stretch;pointer-events:none;
+    display:block;margin:0;z-index:2}
+  .im-nav .im-arrow{position:absolute;top:50%;margin-top:-22px;pointer-events:auto;
+    /* Подложка .68, а не .55 из спеки. Замер по ВСЕМ восьми кадрам набора: на «Геометрии»
+       самый светлый пиксель под стрелкой это rgb(248,210,163), с подложкой .55 композит
+       даёт rgb(118,100,78) и контраст 4.56 при пороге 4.5, то есть запас 0.06. GM уже
+       перегенерировал этот набор один раз, и следующая картинка светлее уронила бы порог
+       молча. При .68 тот же худший кадр даёт 6.9. */
+    background:rgba(11,10,8,.68);border-color:transparent;color:var(--text)}
+  .im-nav .im-arrow:hover{background:rgba(11,10,8,.78);color:var(--gold-l);border-color:transparent}
+  /* Классы .nav-prev и .nav-next принадлежат КАРУСЕЛИ отзывов, у стрелок окна их нет,
+     и первая версия этого блока просто не находила ничего. Адресуем по id. */
+  .im-nav #imPrev{left:12px}
+  .im-nav #imNext{right:12px}
+  .im-nav .im-count{position:absolute;right:12px;bottom:12px;pointer-events:auto;
+    background:rgba(11,10,8,.68);padding:7px 10px;min-width:0}
+}
+/* Телефон: полоса сразу ПОД картинкой и НАД кикером, с волосяной линией снизу. */
+@media(max-width:999px){
+  .info-modal .im-nav{order:0;display:flex;justify-content:center;align-items:center;
+    gap:12px;padding:8px 0;border-bottom:1px solid var(--hairline);margin:0}
+}
 </style>
 </head>
 <body>
@@ -1687,7 +1794,7 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
       <!-- ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА В ШАПКЕ (CDO v4, пункт 1). Обязателен вместе со скрытием
            бургера от 1000px: RU/UZ жил ТОЛЬКО внутри .menu-ov, и без этой копии он бы
            просто исчез на десктопе. Обе пары кнопок ведёт один обработчик по data-l. -->
-      <div class="lang lang-desk" role="group" data-i18n-label="lang_group" aria-label="Язык сайта"><button type="button" data-l="ru" lang="ru" aria-pressed="true" class="on">RU</button><button type="button" data-l="uz" lang="uz" aria-pressed="false">UZ</button></div>
+      <a class="ic-btn tel-link" href="#" data-goal="phone_click" data-i18n-label="call_lbl" aria-label="Позвонить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></a><a class="ic-btn inst-link" href="#" target="_blank" rel="noopener" data-goal="inst_click" data-i18n-label="inst_lbl" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></a><div class="lang lang-desk" role="group" data-i18n-label="lang_group" aria-label="Язык сайта"><button type="button" data-l="ru" lang="ru" aria-pressed="true" class="on">RU</button><button type="button" data-l="uz" lang="uz" aria-pressed="false">UZ</button></div>
       <a class="btn btn-out cta" href="#final" data-i18n="cta_main">Получить консультацию</a>
       <button class="burger" id="burger" aria-label="Меню"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
@@ -1703,6 +1810,10 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
   <a class="mi" href="#standards" data-i18n="nav_std">Стандарты</a>
   <a class="mi" href="#final" data-i18n="nav_con">Контакты</a>
   <div class="lang" role="group" data-i18n-label="lang_group" aria-label="Язык сайта"><button id="lang-ru2" data-l="ru" lang="ru" aria-pressed="true" class="on" type="button">RU</button><button id="lang-uz2" data-l="uz" lang="uz" aria-pressed="false" type="button">UZ</button></div>
+  <div class="menu-act">
+    <a class="ma tel-link" href="#" data-goal="phone_click"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg><span data-i18n="call_lbl">Позвонить</span></a>
+    <a class="ma inst-link" href="#" target="_blank" rel="noopener" data-goal="inst_click"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg><span data-i18n="inst_lbl">Instagram</span></a>
+  </div>
   <a class="btn btn-gold cta" href="#final" data-i18n="cta_main2">Получить консультацию</a>
 </div>
 
@@ -1732,6 +1843,24 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
       <a class="btn btn-out btn-w tg-link" href="#" data-goal="hero_tg_click" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.6l-3.1 14.5c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-.9.5l.3-4.6L18.2 7c.4-.3-.1-.5-.6-.2L7.3 13.3 2.9 12c-1-.3-1-1 .2-1.4l17.5-6.7c.8-.3 1.5.2 1.3 1.7z"/></svg><span data-i18n="cta_tg">Связаться в Telegram</span></a>
     </div>
     <div class="hero-arrow reveal" aria-hidden="true"><svg viewBox="0 0 14 30" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M7 1v25M2 21l5 6 5-6"/></svg></div>
+  </div>
+</section>
+
+<!-- ПОЛОСА ЦИФР (CDO v9, задача 1). Запрошена Артуром, цифры дал Икром 06.08.
+     Секция БЕЗ заголовка и без орнаментного разделителя намеренно: это полоса доверия,
+     а не раздел. Пятая плитка не заводится: четыре читаются одним взглядом, пятая ломает
+     ряд на десктопе и делает 2х2 неровным на телефоне, поэтому география вынесена
+     отдельной строкой и работает как сигнал «мы рядом с вами».
+     В числах стоят НЕРАЗРЫВНЫЕ пробелы (U+00A0) и знак «²» (U+00B2) символом. -->
+<section id="facts">
+  <div class="wrap reveal">
+    <div class="facts">
+      <div class="f"><b data-i18n="fact1_n">16 лет</b><span data-i18n="fact1_t">на рынке: 2010-2022 Москва, с 2022 Узбекистан</span></div>
+      <div class="f"><b data-i18n="fact2_n">10 000+</b><span data-i18n="fact2_t">выполненных объектов в Узбекистане</span></div>
+      <div class="f"><b data-i18n="fact3_n">600 000 м²</b><span data-i18n="fact3_t">натянутого полотна</span></div>
+      <div class="f"><b data-i18n="fact4_n">12 бригад</b><span data-i18n="fact4_t">собственный монтаж</span></div>
+    </div>
+    <p class="facts-note" data-i18n="facts_geo">Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья</p>
   </div>
 </section>
 
@@ -1953,8 +2082,9 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
       <p class="lead" data-i18n="fin_p">Получите консультацию и расчёт стоимости вашего проекта бесплатно.</p>
       <div class="contact-row">
         <!-- PHONE-slot -->
-        <a class="ph-big" href="tel:+998901234567"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg><b>+998 90 123 45 67</b></a>
+        <a class="ph-big tel-link" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg><b>+998 90 123 45 67</b></a>
         <a class="tg-line tg-link" href="#" data-goal="final_tg_click" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.6l-3.1 14.5c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-.9.5l.3-4.6L18.2 7c.4-.3-.1-.5-.6-.2L7.3 13.3 2.9 12c-1-.3-1-1 .2-1.4l17.5-6.7c.8-.3 1.5.2 1.3 1.7z"/></svg><span data-i18n="fin_tg_line">Мы на связи в Telegram</span></a>
+        <a class="inst-line inst-link" href="#" target="_blank" rel="noopener" data-goal="inst_click"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg><span data-i18n="inst_lbl">Instagram</span></a>
         <span class="geo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10Z"/><circle cx="12" cy="11" r="2.2"/></svg><span data-i18n="fin_city">Ташкент, Узбекистан</span></span>
       </div>
     </div>
@@ -1975,6 +2105,7 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
     <div class="brand foot-brand"><img src="assets/logo.png" alt="Логотип DEVAGO: золотая монограмма в виде буквы D" width="164" height="186" loading="lazy"><span class="bt"><b>DEVAGO</b><small>CEILING</small></span></div>
     <div class="foot-tx">
       <div class="tag" data-i18n="fin_tag">Архитектура света и пространства</div>
+      <a class="inst-line inst-link" href="#" target="_blank" rel="noopener" data-goal="inst_click"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg><span data-i18n="inst_lbl">Instagram</span></a>
       <div class="small" data-i18n="f_small">&#169; DEVAGO Ceiling &#183; Ташкент, Узбекистан</div>
     </div>
   </div>
@@ -1982,8 +2113,8 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
 
 <!-- липкая CTA (флаг выключен: нет в каноне, включаем только после одобрения) -->
 <div class="sticky-cta">
-  <a class="btn btn-out" href="tel:+998901234567" data-i18n="sc_call">Позвонить</a>
-  <a class="btn btn-gold form-open" href="#form" data-goal="final_form_click" data-i18n="sc_cons">Заявка</a>
+  <a class="btn btn-out tel-link" href="#" data-goal="phone_click" data-i18n="sc_call">Позвонить</a>
+  <a class="btn btn-gold tg-link" href="#" target="_blank" rel="noopener" data-goal="sticky_tg_click" data-i18n="cta_tg">Связаться в Telegram</a>
 </div>
 
 <!-- МОДАЛКА ЗАЯВКИ (v4.2): панель в ДНК канона, отправка за FORM_ENDPOINT -->
@@ -2018,6 +2149,11 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
     <span class="sheet-grip" aria-hidden="true"></span>
     <button class="m-close" id="imClose" aria-label="Закрыть">&#10005;</button>
     <div class="im-media"><img id="imImg" src="" alt="" width="720" height="450" loading="lazy"></div>
+      <div class="im-nav" id="imNav" hidden>
+        <button type="button" class="im-arrow" id="imPrev" aria-label="Предыдущее"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M11 3L5 9l6 6"/></svg></button>
+        <span class="im-count" id="imCount" aria-live="polite"></span>
+        <button type="button" class="im-arrow" id="imNext" aria-label="Следующее"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 3l6 6-6 6"/></svg></button>
+      </div>
     <div class="im-body">
       <div class="kick" id="imKick"></div>
       <h3 id="imTitle"></h3>
@@ -2026,11 +2162,6 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
       <!-- Переходы по набору. Набор собирается по ПОРЯДКУ В DOM внутри той же секции,
            а не разбором ключа: ключи именованы непоследовательно (sol-1, pp1, std-1),
            парсер на этом сломался бы молча. -->
-      <div class="im-nav" id="imNav" hidden>
-        <button type="button" class="im-arrow" id="imPrev" aria-label="Предыдущее"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M11 3L5 9l6 6"/></svg></button>
-        <span class="im-count" id="imCount" aria-live="polite"></span>
-        <button type="button" class="im-arrow" id="imNext" aria-label="Следующее"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 3l6 6-6 6"/></svg></button>
-      </div>
       <div class="im-cta">
         <a class="btn btn-gold form-open" href="#form" data-goal="modal_form_click" data-i18n="cta_form">Оставить заявку</a>
         <a class="btn btn-out tg-link" href="#" data-goal="modal_tg_click" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.6l-3.1 14.5c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-.9.5l.3-4.6L18.2 7c.4-.3-.1-.5-.6-.2L7.3 13.3 2.9 12c-1-.3-1-1 .2-1.4l17.5-6.7c.8-.3 1.5.2 1.3 1.7z"/></svg><span data-i18n="cta_tg">Связаться в Telegram</span></a>
@@ -2050,9 +2181,14 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
 
 <script>
 /* ===== СВАП-ТОЧКИ ===== */
+var INST_URL = "https://instagram.com/INST_PLACEHOLDER"; /* PLACEHOLDER: аккаунт DEVAGO от Икрома */
+/* Телефон демонстрационный. Держится ОДНОЙ парой переменных: подпись и цель ссылки
+   расходятся (в tel: не должно быть пробелов), поэтому две, а не одна. */
+var PHONE_DISPLAY = "+998 90 123 45 67"; /* PLACEHOLDER */
+var PHONE_TEL = "+998901234567";         /* PLACEHOLDER */
 var TG_URL = "https://t.me/TG_PLACEHOLDER"; /* PLACEHOLDER: username группы/аккаунта DEVAGO от Икрома */
 var FORM_ENDPOINT = "FORM_ENDPOINT_PLACEHOLDER"; /* транспорт формы: serverless на Vercel (ТГ-бот) или Formspree, согласовать с Тахиром/CTO */
-var ENABLE_STICKY_CTA = false; /* включить только после одобрения Тахира и Икрома */
+var ENABLE_STICKY_CTA = true;  /* включена по брифу CDO v9, задача 2 */
 
 /* ОТЗЫВЫ. Выключены решением CSO от 05.08, и это не косметика, а защита клиента:
    именованные цитаты (Александр и Мария, Бахром Р., Дильноза К., Тимур А.) взяты из
@@ -2123,6 +2259,7 @@ var I18N = {
  fin_city:"Ташкент, Узбекистан",fin_tag:"Архитектура света и пространства",
 
  nav_pp:"Фотопечать",read_more:"Читать полностью",skip:"К содержимому",lang_group:"Язык сайта",ann_hint:"нажмите на цифры",
+ fact1_n:"16 лет",fact1_t:"на рынке: 2010-2022 Москва, с 2022 Узбекистан",fact2_n:"10 000+",fact2_t:"выполненных объектов в Узбекистане",fact3_n:"600 000 м²",fact3_t:"натянутого полотна",fact4_n:"12 бригад",fact4_t:"собственный монтаж",facts_geo:"Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья",call_lbl:"Позвонить",inst_lbl:"Instagram",
  pp_kick:"Варианты фотопечати",pp_title:"Варианты фотопечати на потолке",pp_sub:"Премьерные решения для интерьеров",
  pp1_h:"Мрамор / оникс с подсветкой",pp1_p:"Эффект полупрозрачного камня",
  pp2_h:"Бетон",pp2_p:"Современная текстура для стильных интерьеров",
@@ -2193,6 +2330,8 @@ var I18N = {
  fin_city:"Toshkent, Oʻzbekiston",fin_tag:"Yorugʻlik va makon arxitekturasi",
 
  nav_pp:"Fotopechat",read_more:"Toʻliq oʻqish",skip:"Mazmunga oʻtish",lang_group:"Sayt tili",ann_hint:"raqamlarni bosing",
+ /* УЗБЕКСКИЕ ПОДПИСИ ПОЛОСЫ ЦИФР, ЧЕРНОВИК. Финальные формулировки за копирайтером. */
+ fact1_n:"16 yil",fact1_t:"bozorda: 2010-2022 Moskva, 2022 dan Oʻzbekiston",fact2_n:"10 000+",fact2_t:"Oʻzbekistonda bajarilgan obyektlar",fact3_n:"600 000 m²",fact3_t:"tortilgan polotno",fact4_n:"12 brigada",fact4_t:"oʻz montajimiz",facts_geo:"Oʻz sexlarimiz: Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",call_lbl:"Qoʻngʻiroq",inst_lbl:"Instagram",
  pp_kick:"Fotopechat variantlari",pp_title:"Shiftdagi fotopechat variantlari",pp_sub:"Interyerlar uchun premyera yechimlari",
  pp1_h:"Marmar / oniks yoritish bilan",pp1_p:"Yarim shaffof tosh effekti",
  pp2_h:"Beton",pp2_p:"Zamonaviy interyerlar uchun tekstura",
@@ -2243,6 +2382,10 @@ var I18N = {
   if(!ENABLE_REVIEWS)document.body.classList.add("no-reviews");
   if(RENDERS_ARE_VISUALS)document.body.classList.add("renders-visual");
   document.querySelectorAll("a.tg-link").forEach(function(a){a.setAttribute("href",TG_URL)});
+  document.querySelectorAll("a.inst-link").forEach(function(a){a.setAttribute("href",INST_URL)});
+  document.querySelectorAll("a.tel-link").forEach(function(a){
+    a.setAttribute("href","tel:"+PHONE_TEL);
+    var b=a.querySelector("b");if(b)b.textContent=PHONE_DISPLAY;});
 
   /* меню */
   var ov=document.getElementById("menuOv");
@@ -2463,9 +2606,12 @@ var I18N = {
     imIdx=(imIdx+d+imSet.length)%imSet.length;
     var el=imSet[imIdx];
     curModal=imKey(el);renderModal(curModal);
-    /* Возврат по Esc ведёт на ту карточку, которую человек СЕЙЧАС смотрит, а не на ту,
-       с которой он начал: иначе после восьмой плитки страница отпрыгивает к первой. */
-    lastFocus=el;imNavDraw();
+    /* ИЗМЕНЕНО ПО БРИФУ v9: возврат ведёт на карточку, С КОТОРОЙ окно открыто, а не на
+       ту, которую человек долистал. В v5 я выбрал обратное, чтобы страница не отпрыгивала
+       после восьмой плитки; CDO в v9 сформулировал требование прямо, поэтому lastFocus
+       больше не переписывается. Все элементы набора лежат в одной секции, так что
+       прыжок в любом случае остаётся внутри неё. */
+    imNavDraw();
     var b=document.querySelector(".im-body");if(b)b.scrollTop=0;
   }
   function openInfo(id,src){
@@ -2677,6 +2823,9 @@ var I18N = {
       var gone=!es[0].isIntersecting;
       ctaTop.classList.toggle("btn-gold",gone);
       ctaTop.classList.toggle("btn-out",!gone);
+      /* Липкая полоса появляется по тому же сигналу: пока первый экран виден,
+         главная кнопка живёт в нём, и дублировать её внизу незачем. */
+      document.body.classList.toggle("past-hero",gone);
     },{threshold:0}).observe(hero);
   }
 
