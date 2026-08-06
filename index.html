@@ -177,7 +177,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .menu-ov .lang{margin:22px 0}
 .menu-ov .btn{margin-top:auto}
 .lang{display:flex;border:1px solid var(--hairline)}
-.lang button{background:transparent;border:none;color:var(--mut);font:500 .68rem/1 var(--sans);letter-spacing:.1em;padding:10px 13px;cursor:pointer;min-height:38px}
+.lang button{background:transparent;border:none;color:var(--mut);font:400 .68rem/1 var(--sans);letter-spacing:.1em;padding:10px 13px;cursor:pointer;min-height:38px}
 .lang button.on{background:var(--gold);color:#171204}
 
 /* ==================== 1 · HERO ==================== */
@@ -1417,9 +1417,65 @@ html{scrollbar-gutter:stable}
   .btn-gold:hover{animation-play-state:paused;filter:brightness(1.06)}
   .btn-gold:active{filter:brightness(.94)}
 }
+
+/* ================= CDO v6: ШАПКА. Блок последний, как все предыдущие спеки. ================= */
+/* 7. Ссылка обхода. Уводим за экран координатой, а не display:none: скрытое так
+   не получает фокус и обход перестаёт существовать. */
+.skip{position:absolute;left:-9999px;top:0}
+.skip:focus{left:8px;top:8px;z-index:200;background:var(--gold);color:#171204;
+  padding:12px 18px;border-radius:3px;font:500 .72rem/1 var(--sans);letter-spacing:.12em}
+/* 5. Якоря перестают прятаться под липкой шапкой: 90px несжатой шапки плюс воздух.
+   На телефоне шапка статичная, там достаточно 16. */
+section[id],div[id]{scroll-margin-top:104px}
+@media(max-width:760px){section[id],div[id]{scroll-margin-top:16px}}
+/* 1. Переключатель языка становится утилитой: сегментный контроль, состояние
+   различается ДВУМЯ каналами (подложка и вес), а не только цветом. */
+.lang{border:1px solid rgba(201,162,75,.22);border-radius:3px;overflow:hidden}
+.lang button{min-width:56px;color:var(--t2);transition:background-color .25s,color .25s}
+.lang button+button{border-left:1px solid rgba(201,162,75,.16)}
+.lang button.on{background:rgba(201,162,75,.14);color:var(--gold-l);font-weight:500}
+.lang button:hover:not(.on){color:var(--text);background:rgba(237,230,214,.04)}
+/* 2. Подпись кнопки не ломается. Провал теперь не тихий: он вылезет переполнением. */
+.btn{white-space:nowrap}
+/* 4. Текущий раздел. Механику подчёркивания не изобретаем, у .dnav a::after
+   уже есть раскрытие по hover и focus, нужен лишь второй повод. */
+.dnav a[aria-current="true"]{color:var(--gold-l)}
+.dnav a[aria-current="true"]::after{right:0}
+@media(min-width:1000px){
+  /* 6. Плотность идёт за прокруткой: наверху сквозь шапку видно фонари стены. */
+  header{background:linear-gradient(180deg,rgba(11,10,8,.88),rgba(11,10,8,0));
+    border-bottom-color:transparent;box-shadow:none}
+  header.shrunk{background:rgba(11,10,8,.97);border-bottom-color:rgba(201,162,75,.20)}
+  /* 2. Кнопка контурная, пока главная золотая живёт в первом экране. */
+  /* ЛОВУШКА, на которую я наступил ровно после снятия инлайнового style: правило
+     .nav-right .cta это специфичность 0,2,0, а .btn-gold всего 0,1,0, поэтому при
+     повышении кнопка МОЛЧА оставалась контурной, а сокращённая запись background
+     ещё и обнуляла background-image, то есть градиент и блик. Оформление контурного
+     состояния привязано к КЛАССУ btn-out, который скрипт снимает вместе с повышением. */
+  .nav-right .cta.btn-out{color:var(--gold-l);border-color:rgba(201,162,75,.55);
+    background:rgba(201,162,75,.06)}
+  .nav-right .cta.btn-out:hover{border-color:var(--gold);background:rgba(201,162,75,.12)}
+  /* УСТУПКА 1 из порядка спеки. С nowrap подпись «ПОЛУЧИТЬ КОНСУЛЬТАЦИЮ» стала 249.2px
+     и строка шапки перестала помещаться (запас -5px от 1200 и -17px на 1000).
+     Трекинг .18em это 2.10px на знак, на 21 знаке это 44px чистого воздуха. */
+  .nav-right .cta{letter-spacing:.10em}
+  /* Повышение до залитой делает скрипт, ПЕРЕКЛЮЧАЯ КЛАСС btn-gold, а не копируя фон.
+     Причина: у .btn-gold с 05.08 живёт блик в два фоновых слоя со своей анимацией,
+     и любая копия градиента разъехалась бы с оригиналом на первой же его правке. */
+}
+/* 8. Сжатая вилка. Порядок уступок из спеки: сначала зазор, потом трекинг, кегль
+   последним и не ниже .64rem. Прежние .63rem это 10.08px прописными, мелко. */
+@media(min-width:1000px) and (max-width:1199px){
+  .dnav{gap:10px}
+  .dnav a{font-size:.64rem;letter-spacing:.10em}
+  .nav-right{gap:8px}
+  .nav-right .cta{padding:12px 14px;font-size:.66rem;letter-spacing:.10em}
+  .lang button{min-width:44px;padding:13px 8px}
+}
 </style>
 </head>
 <body>
+<a class="skip" href="#main" data-i18n="skip">К содержимому</a>
 <!-- ЖИВОЙ ФОН (CDO v3.1). Стена здания вечером, которую снизу моют фонари.
      Три фонаря с разными периодами (74, 88, 96 c) намеренно не совпадают по фазе,
      поэтому картинка не зацикливается заметно. .wall-hero не фиксирован, он уезжает
@@ -1446,8 +1502,8 @@ html{scrollbar-gutter:stable}
       <!-- ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА В ШАПКЕ (CDO v4, пункт 1). Обязателен вместе со скрытием
            бургера от 1000px: RU/UZ жил ТОЛЬКО внутри .menu-ov, и без этой копии он бы
            просто исчез на десктопе. Обе пары кнопок ведёт один обработчик по data-l. -->
-      <div class="lang lang-desk"><button type="button" data-l="ru" class="on">RU</button><button type="button" data-l="uz">UZ</button></div>
-      <a class="btn btn-out cta" style="color:var(--gold-l);border-color:var(--line)" href="#final" data-i18n="cta_main">Получить консультацию</a>
+      <div class="lang lang-desk" role="group" data-i18n-label="lang_group" aria-label="Язык сайта"><button type="button" data-l="ru" lang="ru" aria-pressed="true" class="on">RU</button><button type="button" data-l="uz" lang="uz" aria-pressed="false">UZ</button></div>
+      <a class="btn btn-out cta" href="#final" data-i18n="cta_main">Получить консультацию</a>
       <button class="burger" id="burger" aria-label="Меню"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </div>
@@ -1461,10 +1517,11 @@ html{scrollbar-gutter:stable}
   <a class="mi pp-nav" href="#photoprint" data-i18n="nav_pp">Фотопечать</a>
   <a class="mi" href="#standards" data-i18n="nav_std">Стандарты</a>
   <a class="mi" href="#final" data-i18n="nav_con">Контакты</a>
-  <div class="lang"><button id="lang-ru2" data-l="ru" class="on" type="button">RU</button><button id="lang-uz2" data-l="uz" type="button">UZ</button></div>
+  <div class="lang" role="group" data-i18n-label="lang_group" aria-label="Язык сайта"><button id="lang-ru2" data-l="ru" lang="ru" aria-pressed="true" class="on" type="button">RU</button><button id="lang-uz2" data-l="uz" lang="uz" aria-pressed="false" type="button">UZ</button></div>
   <a class="btn btn-gold cta" href="#final" data-i18n="cta_main2">Получить консультацию</a>
 </div>
 
+<main id="main">
 <div id="top"></div>
 
 <!-- 1 · HERO -->
@@ -1725,6 +1782,8 @@ html{scrollbar-gutter:stable}
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="foot-wrap">
     <div class="brand foot-brand"><img src="assets/logo.png" alt="Логотип DEVAGO: золотая монограмма в виде буквы D" width="164" height="186" loading="lazy"><span class="bt"><b>DEVAGO</b><small>CEILING</small></span></div>
@@ -1877,7 +1936,7 @@ var I18N = {
  fin_p:"<span class='dt'>Получите консультацию и расчёт стоимости вашего проекта бесплатно.</span><span class='mb'>Получите консультацию специалиста и расчёт стоимости вашего проекта.</span>",
  fin_city:"Ташкент, Узбекистан",fin_tag:"Архитектура света и пространства",
 
- nav_pp:"Фотопечать",read_more:"Читать полностью",
+ nav_pp:"Фотопечать",read_more:"Читать полностью",skip:"К содержимому",lang_group:"Язык сайта",
  pp_kick:"Варианты фотопечати",pp_title:"Варианты фотопечати на потолке",pp_sub:"Премьерные решения для интерьеров",
  pp1_h:"Мрамор / оникс с подсветкой",pp1_p:"Эффект полупрозрачного камня",
  pp2_h:"Бетон",pp2_p:"Современная текстура для стильных интерьеров",
@@ -1947,7 +2006,7 @@ var I18N = {
  fin_p:"<span class='dt'>Konsultatsiya va loyihangiz narxining hisob-kitobini bepul oling.</span><span class='mb'>Mutaxassis konsultatsiyasi va loyihangiz narxining hisob-kitobini oling.</span>",
  fin_city:"Toshkent, Oʻzbekiston",fin_tag:"Yorugʻlik va makon arxitekturasi",
 
- nav_pp:"Fotopechat",read_more:"Toʻliq oʻqish",
+ nav_pp:"Fotopechat",read_more:"Toʻliq oʻqish",skip:"Mazmunga oʻtish",lang_group:"Sayt tili",
  pp_kick:"Fotopechat variantlari",pp_title:"Shiftdagi fotopechat variantlari",pp_sub:"Interyerlar uchun premyera yechimlari",
  pp1_h:"Marmar / oniks yoritish bilan",pp1_p:"Yarim shaffof tosh effekti",
  pp2_h:"Beton",pp2_p:"Zamonaviy interyerlar uchun tekstura",
@@ -1970,6 +2029,8 @@ var I18N = {
   function apply(l){document.documentElement.lang=l;var d=I18N[l];
     document.querySelectorAll("[data-i18n]").forEach(function(e){var k=e.getAttribute("data-i18n");if(d[k]!=null)e.innerHTML=d[k];});
     var md=document.querySelector('meta[name="description"]');if(md&&d.meta_desc)md.setAttribute("content",d.meta_desc);
+    document.querySelectorAll("[data-i18n-label]").forEach(function(e){
+      var v=d[e.getAttribute("data-i18n-label")];if(v)e.setAttribute("aria-label",v);});
     /* Подмена заголовка секции проектов делается ЗДЕСЬ, внутри apply, а не один раз
        при загрузке: иначе переключение языка вернуло бы «Реализованные проекты»,
        то есть обещание, которого клиент подтвердить не может. */
@@ -2381,6 +2442,33 @@ var I18N = {
     setTimeout(function(){ if(!ioWorked) rvs.forEach(function(el){el.classList.add("in")}); },1800);
   }
   else rvs.forEach(function(el){el.classList.add("in")});
+
+
+  /* ================= CDO v6: ШАПКА ================= */
+  /* Текущий раздел. Наблюдатель ОТДЕЛЬНЫЙ, к наблюдателю появлений не подмешан. */
+  var navMap={},navSecs=[];
+  document.querySelectorAll('.dnav a[href^="#"]').forEach(function(a){
+    var t=document.querySelector(a.getAttribute("href"));
+    if(t&&t.tagName==="SECTION"){navMap[t.id]=a;navSecs.push(t)}
+  });
+  if("IntersectionObserver" in window&&navSecs.length){
+    var nio=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting)return;
+        for(var k in navMap)navMap[k].removeAttribute("aria-current");
+        if(navMap[e.target.id])navMap[e.target.id].setAttribute("aria-current","true");
+      });
+    },{rootMargin:"-45% 0px -50% 0px"});
+    navSecs.forEach(function(x){nio.observe(x)});
+    /* Повышение шапочной кнопки завязано на УХОД ПЕРВОГО ЭКРАНА, а не на .shrunk:
+       тот вешается уже на 40px прокрутки, и золотых заливок на экране было бы две. */
+    var hero=document.querySelector(".hero"),ctaTop=document.querySelector(".nav-right .cta");
+    if(hero&&ctaTop)new IntersectionObserver(function(es){
+      var gone=!es[0].isIntersecting;
+      ctaTop.classList.toggle("btn-gold",gone);
+      ctaTop.classList.toggle("btn-out",!gone);
+    },{threshold:0}).observe(hero);
+  }
 
   /* ШАПКА ПРИ ПРОКРУТКЕ, только десктоп: сам класс вешаем всегда, но всё оформление
      .shrunk живёт внутри @media(min-width:900px), поэтому на телефоне ничего не
