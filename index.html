@@ -1499,6 +1499,20 @@ section[id],div[id]{scroll-margin-top:104px}
        box-shadow:0 0 0 3px rgba(11,10,8,.78),0 2px 6px rgba(0,0,0,.55)}
   .ann::before{color:#0B0A08;font:600 11px/1 var(--sans)}
 }
+
+/* 3. ПОДПИСЬ О ВИЗУАЛИЗАЦИЯХ ЛЕЖАЛА НА КАРУСЕЛИ.
+   Замер на 390px: низ абзаца 227px, верх карусели 227px, зазор РОВНО НОЛЬ, поэтому
+   строка «по мере сдачи работ» касалась верхней кромки фотографии и читалась как
+   наложенная на неё. Причина в том, что подпись унаследовала класс .lead: у лида есть
+   верхний отступ и нет нижнего, он не рассчитан стоять перед блоком.
+   Заодно снимаем с неё вес лида. Это техническая оговорка, а не подзаголовок секции,
+   и набирать её кеглем крупнее подписей внутри карточек неправильно. */
+body.renders-visual .vis-note{
+  font-size:.84rem;line-height:1.6;margin-top:var(--s3);margin-bottom:var(--s5);
+  max-width:56ch;color:var(--mut)}
+@media(min-width:900px){
+  body.renders-visual .vis-note{font-size:.88rem;margin-bottom:var(--s6)}
+}
 </style>
 </head>
 <body>
