@@ -1297,15 +1297,6 @@ footer{text-align:left}
   background:linear-gradient(to top,var(--card2) 74%,rgba(20,17,13,0));display:grid;gap:10px}
 .im-cta .btn{width:100%;max-width:none;min-height:48px}
 /* Задача 4. Стрелки набора и счётчик. */
-.im-nav{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:20px}
-.im-nav[hidden]{display:none}
-.im-arrow{width:44px;height:44px;display:grid;place-items:center;padding:0;cursor:pointer;
-  background:none;border:1px solid var(--line);color:var(--gold);transition:border-color .3s,color .3s}
-.im-arrow:hover{border-color:var(--gold);color:var(--gold-l)}
-.im-arrow svg{width:15px;height:15px;display:block}
-.im-count{font:500 .72rem/1 var(--sans);letter-spacing:.14em;color:var(--t2);
-  min-width:58px;text-align:center}
-
 /* Задача 2. Планшетная полоса: фото перестаёт быть неограниченным.
    На телефонах правило неактивно ПО ПОСТРОЕНИЮ, а не по совпадению: при 390x844 фото
    244px против потолка min(40vh,320px)=320, при 360x640 фото 225px против 256.
@@ -1714,50 +1705,8 @@ body.sticky-on.past-hero .sticky-cta{display:flex}
 body.sticky-on.no-scroll .sticky-cta{display:none}
 @media(min-width:900px){body.sticky-on.past-hero .sticky-cta{display:none}}
 
-/* --- ЗАДАЧА 3. Навигация окна переезжает к КАРТИНКЕ, а не к действию.
-   На десктопе блок ложится в ТУ ЖЕ ячейку грида, что и медиа (grid-column:1/grid-row:1),
-   поэтому ширина колонки нигде не зашита числом и переживёт смену 440 на 480. --- */
-.im-nav{margin-top:0}
-@media(min-width:1000px){
-  /* Позиции задаются ВСЕМ ТРЁМ явно. Ловушка: стоит явно поставить в ячейку (1,1)
-     только навигацию, как авторазмещение уводит .im-media в СОСЕДНЮЮ колонку, и
-     картинка с текстом меняются местами, а стрелки повисают над текстом. Поймано
-     замером координат: картинка оказалась в 829..1309, а стрелки в 131..829. */
-  .info-modal .im-media{grid-column:1;grid-row:1}
-  .info-modal .im-body{grid-column:2;grid-row:1}
-  .info-modal .im-nav{grid-column:1;grid-row:1;position:relative;
-    align-self:stretch;justify-self:stretch;pointer-events:none;
-    display:block;margin:0;z-index:2}
-  .im-nav .im-arrow{position:absolute;top:50%;margin-top:-22px;pointer-events:auto;
-    /* Подложка .68, а не .55 из спеки. Замер по ВСЕМ восьми кадрам набора: на «Геометрии»
-       самый светлый пиксель под стрелкой это rgb(248,210,163), с подложкой .55 композит
-       даёт rgb(118,100,78) и контраст 4.56 при пороге 4.5, то есть запас 0.06. GM уже
-       перегенерировал этот набор один раз, и следующая картинка светлее уронила бы порог
-       молча. При .68 тот же худший кадр даёт 6.9. */
-    background:rgba(11,10,8,.68);border-color:transparent;color:var(--text)}
-  .im-nav .im-arrow:hover{background:rgba(11,10,8,.78);color:var(--gold-l);border-color:transparent}
-  /* Классы .nav-prev и .nav-next принадлежат КАРУСЕЛИ отзывов, у стрелок окна их нет,
-     и первая версия этого блока просто не находила ничего. Адресуем по id. */
-  .im-nav #imPrev{left:12px}
-  .im-nav #imNext{right:12px}
-  .im-nav .im-count{position:absolute;right:12px;bottom:12px;pointer-events:auto;
-    background:rgba(11,10,8,.68);padding:7px 10px;min-width:0}
-}
-/* Телефон: полоса сразу ПОД картинкой и НАД кикером, с волосяной линией снизу. */
-@media(max-width:999px){
-  .info-modal .im-nav{order:0;display:flex;justify-content:center;align-items:center;
-    gap:12px;padding:8px 0;border-bottom:1px solid var(--hairline);margin:0}
-}
-
 /* ================= CDO v9, дополнение от 07.08: три дефекта живой сборки ================= */
 
-/* ДЕФЕКТ 1. Стрелки в окне решений не скрывались НИ на телефоне, НИ на десктопе.
-   Причина каскадная: .im-nav[hidden]{display:none} это (0,2,0), а мои блоки позиции
-   .info-modal .im-nav{display:block} и {display:flex} тоже (0,2,0), но объявлены НИЖЕ,
-   и при равном весе побеждает нижнее. Поднимаем вес, без !important.
-   МОЯ ОШИБКА МЕТОДА в v7: я проверял АТРИБУТ hidden, а не отрисовку, поэтому набор
-   «решения» отчитался как исправный. Теперь сверяется computed display. */
-.info-modal .im-nav[hidden]{display:none}
 
 /* ДЕФЕКТ 2. Полоса действий перекрывала текст на телефоне: sticky держал её поверх
    прокручиваемого тела. Лист становится колонкой из трёх этажей, где прокручивается
@@ -1880,7 +1829,12 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
    Окно из этого сценария уходит совсем: поповер работает на всех ширинах.
    Прозрачность даётся ТОЛЬКО альфой, backdrop-filter нет, правило про Telegram в силе. */
 @media(max-width:899px){.pop{display:block!important;width:min(280px,calc(100% - 24px));padding:14px 16px 15px}}
-.pop{background:rgba(11,10,8,.72);border:1px solid rgba(201,162,75,.34);
+/* Альфа .82, а не .72 из спеки, и это ваш же порядок действий («поднимай альфу,
+   а не меняй цвет текста»). Замер по всем пяти маркерам: самый светлый пиксель под
+   карточкой это rgb(222,188,119), и это НЕ фото, а золото легенды под ним, потому что
+   на телефоне карточка свисает ниже фото. При .72 основной текст даёт ровно 4.50,
+   то есть стоит НА пороге. При .82 тот же худший случай даёт 5.89. */
+.pop{background:rgba(11,10,8,.82);border:1px solid rgba(201,162,75,.34);
   box-shadow:0 18px 44px rgba(0,0,0,.55);
   opacity:0;transform:translateY(6px);
   transition:opacity .18s ease,transform .18s cubic-bezier(.22,.61,.36,1)}
@@ -1994,7 +1948,7 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
 </section>
 
 <!-- 2 · SOLUTIONS -->
-<section id="solutions" data-modal-nav="off">
+<section id="solutions">
   <div class="wrap reveal">
     <div class="sec-head"><span class="kick" data-i18n="s_kick">Наши решения</span></div>
     <div class="sol-list">
@@ -2279,11 +2233,6 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
     <span class="sheet-grip" aria-hidden="true"></span>
     <button class="m-close" id="imClose" aria-label="Закрыть">&#10005;</button>
     <div class="im-media"><img id="imImg" src="" alt="" width="720" height="450" loading="lazy"></div>
-      <div class="im-nav" id="imNav" hidden>
-        <button type="button" class="im-arrow" id="imPrev" aria-label="Предыдущее"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M11 3L5 9l6 6"/></svg></button>
-        <span class="im-count" id="imCount" aria-live="polite"></span>
-        <button type="button" class="im-arrow" id="imNext" aria-label="Следующее"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 3l6 6-6 6"/></svg></button>
-      </div>
     <div class="im-body">
       <div class="kick" id="imKick"></div>
       <h3 id="imTitle"></h3>
@@ -2710,46 +2659,11 @@ var I18N = {
   /* НАБОР ДЛЯ СТРЕЛОК. Собираем по ПОРЯДКУ В DOM внутри секции источника, ключи не
      разбираем: они именованы непоследовательно (sol-1, pp1, std-1) и парсер сломался
      бы молча. Выноски комбо ходят через data-ann, поэтому берём оба атрибута. */
-  var imSet=[],imIdx=-1;
   function imKey(el){var k=el.getAttribute("data-modal");
     return k||("ann-"+el.getAttribute("data-ann"));}
-  /* ПРАВИЛО, ПО КОТОРОМУ РАЗВОДЯТСЯ СТРЕЛКИ (CDO v7, задача 1). Не стирать при
-     следующей правке: стрелки нужны там, где набор это ПОСЛЕДОВАТЕЛЬНОСТЬ или
-     ГАЛЕРЕЯ, и не нужны там, где набор это МЕНЮ разных предложений. Стандарты это
-     шесть пронумерованных шагов подряд, фотопечать это восемь вариантов одного и
-     того же, их логично листать. Решения это шесть РАЗНЫХ услуг, листать их незачем:
-     человек пришёл за конкретной. Секция помечается атрибутом data-modal-nav="off",
-     ключи не разбираем (та же ловушка, что была с sol-1 против pp1). */
-  function imBuild(src){
-    imSet=[];imIdx=-1;
-    var sec=src&&src.closest?src.closest("section"):null;if(!sec)return;
-    if(sec.getAttribute("data-modal-nav")==="off")return;
-    imSet=[].slice.call(sec.querySelectorAll("[data-modal],[data-ann]"));
-    imIdx=imSet.indexOf(src);
-    if(imIdx<0)imSet=[];
-  }
-  function imNavDraw(){
-    var nav=document.getElementById("imNav"),n=imSet.length;
-    nav.hidden=n<2;if(n<2)return;
-    document.getElementById("imCount").textContent=(imIdx+1)+" / "+n;
-  }
-  function imGo(d){
-    if(imSet.length<2)return;
-    imIdx=(imIdx+d+imSet.length)%imSet.length;
-    var el=imSet[imIdx];
-    curModal=imKey(el);renderModal(curModal);
-    /* ИЗМЕНЕНО ПО БРИФУ v9: возврат ведёт на карточку, С КОТОРОЙ окно открыто, а не на
-       ту, которую человек долистал. В v5 я выбрал обратное, чтобы страница не отпрыгивала
-       после восьмой плитки; CDO в v9 сформулировал требование прямо, поэтому lastFocus
-       больше не переписывается. Все элементы набора лежат в одной секции, так что
-       прыжок в любом случае остаётся внутри неё. */
-    imNavDraw();
-    var b=document.querySelector(".im-body");if(b)b.scrollTop=0;
-  }
   function openInfo(id,src){
     if(!renderModal(id))return;
     curModal=id;lastFocus=src||document.activeElement;
-    imBuild(src);imNavDraw();
     im.classList.add("open");lockScroll(true);
     closePop();ov.classList.remove("open");
     setTimeout(function(){document.getElementById("imClose").focus({preventScroll:true})},50);
@@ -2764,12 +2678,11 @@ var I18N = {
     if(!keepFocus&&lastFocus&&lastFocus.focus)lastFocus.focus();
     if(!keepFocus)lastFocus=null;
   }
-  document.getElementById("imPrev").onclick=function(){imGo(-1)};
-  document.getElementById("imNext").onclick=function(){imGo(1)};
-  im.addEventListener("keydown",function(e){
-    if(e.key==="ArrowLeft"){e.preventDefault();imGo(-1)}
-    else if(e.key==="ArrowRight"){e.preventDefault();imGo(1)}
-  });
+  /* ВОССТАНОВЛЕНО. Крестик, клик по подложке и ловушка фокуса стояли ВНУТРИ того же
+     куска, что и обработчики стрелок, поэтому удаление навигации по v12 снесло их
+     заодно. Esc продолжал работать (он висит на документе), и именно поэтому потеря
+     не бросалась в глаза: окно закрывалось клавишей, но не крестиком и не подложкой.
+     Поймано шестиклеточной приёмкой, столбец «крестик». */
   document.getElementById("imClose").onclick=closeInfo;
   im.addEventListener("click",function(e){if(e.target===im)closeInfo()});
   im.addEventListener("keydown",function(e){trap(im.querySelector(".modal"),e)});
