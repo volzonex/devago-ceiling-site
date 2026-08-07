@@ -918,22 +918,44 @@ body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
   background-size:6px 6px,100% 1px}
 
 /* 2.2 Уголки карточек: тонкие скобки 14px, псевдоэлементами, не картинками. */
+/* ⚠️ ВСЕ ЧЕТЫРЕ УГЛА РИСУЕТ ОДИН ПСЕВДОЭЛЕМЕНТ, и это не упрощение ради красоты кода.
+   Спека предлагала достроить вторую диагональ на ВНУТРЕННЕМ узле карточки (.tx, .bx,
+   .final-btns), раз ::before и ::after самой карточки заняты. Замер до вёрстки показал,
+   что угол сел бы не в угол: внутренний узел до края карточки не доходит. Отступы от
+   края карточки до узла, замер на живой сборке:
+
+       .sol на 1440       сверху 91, справа 123      .sol на 390    сверху 25, справа 57
+       .pp на 1440        сверху 218, справа 1       .pp на 390     сверху 123
+       .final-act 1440    сверху 49, справа 33       .final-act 390 сверху 33, справа 25
+       .step              сверху 1, справа 1         (единственный, кто доходит)
+
+   То есть у фотопечати «верхний правый» угол оказался бы на 218px ниже верха карточки,
+   а у решений в 123px от правого края, прямо у текста. Ровно поэтому спека и запрещала
+   ставить их в решениях на телефоне: она чинила симптом своего же способа.
+
+   Здесь скобки рисуются ФОНОМ на одном полноразмерном слое: восемь полосок, по две на
+   угол. Слой лежит по кромке карточки (inset:-1px), поэтому все четыре угла попадают
+   ровно туда, куда смотрит Тахир, а ::after освобождается совсем. */
 .sol,.step,.pp,.prj,.final-act{position:relative}
-.sol::before,.sol::after,.step::before,.step::after,
-.pp::before,.pp::after,.final-act::before,.final-act::after{
-  content:"";position:absolute;width:14px;height:14px;pointer-events:none;
-  border-style:solid;border-color:var(--gold);border-width:0;
-  opacity:.18;transition:opacity .35s ease}
 .sol::before,.step::before,.pp::before,.final-act::before{
-  top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
-.sol::after,.step::after,.pp::after,.final-act::after{
-  bottom:-1px;right:-1px;border-bottom-width:1px;border-right-width:1px}
-.sol:hover::before,.sol:hover::after,.step:hover::before,.step:hover::after,
-.pp:hover::before,.pp:hover::after,
-.sol:focus-visible::before,.sol:focus-visible::after,
-.step:focus-visible::before,.step:focus-visible::after,
-.pp:focus-visible::before,.pp:focus-visible::after{opacity:.5}
-.final-act::before,.final-act::after{opacity:.5}
+  content:"";position:absolute;inset:-1px;pointer-events:none;
+  opacity:.28;transition:opacity .35s ease;background-repeat:no-repeat;
+  background-image:
+    linear-gradient(var(--gold),var(--gold)),linear-gradient(var(--gold),var(--gold)),
+    linear-gradient(var(--gold),var(--gold)),linear-gradient(var(--gold),var(--gold)),
+    linear-gradient(var(--gold),var(--gold)),linear-gradient(var(--gold),var(--gold)),
+    linear-gradient(var(--gold),var(--gold)),linear-gradient(var(--gold),var(--gold));
+  background-size:14px 1px,1px 14px,14px 1px,1px 14px,14px 1px,1px 14px,14px 1px,1px 14px;
+  background-position:left top,left top,right top,right top,
+    left bottom,left bottom,right bottom,right bottom}
+/* ЛОВУШКА ИЗ СПЕКИ, подтверждена замером: у .step стоит overflow:hidden, и он действует
+   на ОБЕИХ ширинах, на 390 и на 1440. Со смещением -1px слой обрезался бы по кромке и
+   внешний угол пропадал. Поэтому у стандартов, и только у них, смещение нулевое. */
+.step::before{inset:0}
+.sol:hover::before,.step:hover::before,.pp:hover::before,
+.sol:focus-visible::before,.step:focus-visible::before,
+.pp:focus-visible::before{opacity:.5}
+.final-act::before{opacity:.5}
 
 /* 2.3 Подчёркивание номеров 01-06: линия 24px с разрывом 6px посередине. */
 .step .no{position:relative;padding-bottom:9px}
@@ -1157,7 +1179,11 @@ body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
   background:rgba(20,17,13,.55)}
 /* свет из зазора сверху, тот же приём, что у кромки секции */
 .final-act{background-image:linear-gradient(180deg,rgba(222,188,119,.09),transparent 22px)}
-.final-act::before,.final-act::after{width:16px;height:16px}
+/* У финального блока скобка крупнее, 16px вместо 14. Раньше это задавалось width/height
+   самих псевдоэлементов, теперь слой один и полноразмерный, поэтому размер скобки
+   задаётся ТОЛЬКО background-size. Оставь здесь width, и слой схлопнется в 16px. */
+.final-act::before{background-size:16px 1px,1px 16px,16px 1px,1px 16px,
+  16px 1px,1px 16px,16px 1px,1px 16px}
 .final-btns{display:flex;flex-direction:column;gap:12px;margin:0}
 .final-act .btn{width:100%}
 .tg-btn{white-space:nowrap;letter-spacing:.14em;min-width:260px}
@@ -1807,22 +1833,37 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
    Локап логотипа не трогаем ни на пиксель: на нём стоит арифметика из v2 (ширина
    волосяной линии равна ширине слова DEVAGO, text-indent компенсирует трекинг),
    и любое изменение размеров её ломает. Компактность даётся ТОЛЬКО полями .nav. */
+/* ⚠️ ОТКАТ ПОЛОЖЕНИЯ, 07.08 вечером. Липкость и самопрятание на телефоне СНЯТЫ.
+   Основание не вкус, а два наблюдения подряд. Тахир пожаловался на мерцание шапки
+   во встроенном браузере Telegram; я нашёл и починил дрожание в скрипте (порог 48px
+   от точки разворота, заморозка после resize, пауза 300ms), выкладка на прод
+   подтверждена побайтно, и мерцание ОСТАЛОСЬ. Значит переключение классов не было
+   причиной, и модель была неверной.
+
+   Что остаётся, если дело не в скрипте: сама пара «position:sticky плюс transform».
+   Липкое смещение iOS считает на потоке прокрутки, а трансформацию на главном, во время
+   инерционной прокрутки они расходятся, и элемент дрожит. Сюда же ложится
+   padding-top:env(safe-area-inset-top): встроенный браузер схлопывает свою обвязку на
+   ходу, инсет меняется, высота липкой шапки прыгает. Ни то, ни другое стендом не
+   воспроизводится, headless не знает ни безопасной зоны, ни отдельного потока прокрутки.
+
+   Поэтому вместо третьей догадки берём то, что ПРОВЕРЕНО ПОЛЕМ. До v10 шапка на
+   телефоне была статической, и жалоб на мерцание не было; они появились ровно после
+   v10. Возвращаем статическую: у неё во время прокрутки не меняется ничего, поэтому
+   мерцать нечему по построению.
+
+   ЦЕНА, называю вслух: замысел v10 (шапка уступает экран и возвращается движением
+   вверх) на телефоне утрачен, меню снова достаётся только прокруткой к началу.
+   Если Тахир хочет прятание обратно, следующая попытка это position:fixed плюс
+   распорка в высоту шапки: тогда липкой механики нет вовсе и конфликт с transform
+   исчезает. Это отдельная правка и отдельная проверка на его телефоне.
+
+   Компактность полей из v10 остаётся, локап логотипа не тронут ни на пиксель. */
 @media(max-width:760px){
-  header{position:sticky;top:0;z-index:60;background:var(--bg);
-    transform:translateY(0);
-    transition:transform .28s cubic-bezier(.22,.61,.36,1),border-color .3s ease;
-    border-bottom:1px solid transparent}
-  header.hide{transform:translateY(-100%)}
-  header.stuck{border-bottom-color:rgba(201,162,75,.16)}
   .nav{padding-top:10px;padding-bottom:10px}
-  /* СВЯЗЬ, КОТОРАЯ СЛОМАЛАСЬ БЫ МОЛЧА: 16px здесь стояли ровно потому, что шапка была
-     НЕлипкой. С липкой заголовки разделов уехали бы под неё. 52px шапки плюс воздух. */
-  /* 76, а не 68 из брифа. Замер: шапка выходит 65px, а не ~52. Пол задают ТАП-ЦЕЛИ:
-     локап-ссылка и бургер это ровно 44px по правилу из v2, плюс поля 2x10 и волосинка,
-     итого 65. Чтобы получить 52, поля пришлось бы срезать до 3-4px, а это ломает и вид,
-     и запас вокруг 44px кнопок. До правки шапка была 77px (в брифе указано 64),
-     то есть она всё равно стала компактнее на 12px. 76 = 65 плюс 11 воздуха. */
-  section[id],div[id]{scroll-margin-top:76px}
+  /* 16px, а не 76: со статической шапкой заголовок раздела больше ни подо что не уезжает.
+     76 стояли ровно потому, что шапка была липкой, и вместе с ней уходят. */
+  section[id],div[id]{scroll-margin-top:16px}
 }
 @media(prefers-reduced-motion:reduce){header{transition:none}}
 
@@ -1928,7 +1969,18 @@ body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
    колонка, выравнивать нечего, а пустая строка есть. В карточках решений та же ловушка
    вылечена тем же способом ещё в v7. Порог 599 выбран по сетке: с 600px карточки встают
    в две колонки и min-height снова нужен, поэтому за медиазапрос правку не выносим. */
+/* B (спека уголков). Черта под номером на телефоне тянется до правого края текстовой
+   зоны. Замер: .no это блок во всю зону (292px на 390, 262 на 360, 332 на 430), поэтому
+   width:auto плюс right:0 дают полную длину без подпорок. Прозрачность переезжает ВНУТРЬ
+   градиента, поэтому opacity правила поднимается до 1: иначе прежние .35 умножились бы
+   на альфы градиента и линия ушла бы почти в ничто. Первые 7-12% держат прежнюю яркость,
+   чтобы отрезок у номера читался как раньше, дальше полутон, световой разрыв по центру
+   и затухание к правому краю. Десктоп не трогаем: там черта работает как задумана. */
 @media(max-width:599px){
+  .step .no::after{width:auto;right:0;opacity:1;
+    background:linear-gradient(90deg,var(--gold) 0%,var(--gold) 7%,
+      rgba(201,162,75,.45) 12%,rgba(201,162,75,.45) 44%,transparent 48%,
+      transparent 56%,rgba(201,162,75,.45) 60%,rgba(201,162,75,.10) 100%)}
   .step .tx b{min-height:0}
   .step .tx .sp{margin-top:6px}
   .step .th{margin-top:var(--s5)}
