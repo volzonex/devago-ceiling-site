@@ -1850,6 +1850,31 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
   .facts .f:nth-child(even){border-left:1px solid rgba(201,162,75,.14)}
   .facts .f:nth-child(-n+2){border-bottom:1px solid rgba(201,162,75,.14)}
 }
+
+/* ================= CDO v10: САМОПРЯЧУЩАЯСЯ ШАПКА НА ТЕЛЕФОНЕ =================
+   Фон СПЛОШНОЙ var(--bg), никакого backdrop-filter и никакой полупрозрачности:
+   правило про браузер Telegram остаётся в силе целиком, меняем ПОЛОЖЕНИЕ, не материал.
+   Локап логотипа не трогаем ни на пиксель: на нём стоит арифметика из v2 (ширина
+   волосяной линии равна ширине слова DEVAGO, text-indent компенсирует трекинг),
+   и любое изменение размеров её ломает. Компактность даётся ТОЛЬКО полями .nav. */
+@media(max-width:760px){
+  header{position:sticky;top:0;z-index:60;background:var(--bg);
+    transform:translateY(0);
+    transition:transform .28s cubic-bezier(.22,.61,.36,1),border-color .3s ease;
+    border-bottom:1px solid transparent}
+  header.hide{transform:translateY(-100%)}
+  header.stuck{border-bottom-color:rgba(201,162,75,.16)}
+  .nav{padding-top:10px;padding-bottom:10px}
+  /* СВЯЗЬ, КОТОРАЯ СЛОМАЛАСЬ БЫ МОЛЧА: 16px здесь стояли ровно потому, что шапка была
+     НЕлипкой. С липкой заголовки разделов уехали бы под неё. 52px шапки плюс воздух. */
+  /* 76, а не 68 из брифа. Замер: шапка выходит 65px, а не ~52. Пол задают ТАП-ЦЕЛИ:
+     локап-ссылка и бургер это ровно 44px по правилу из v2, плюс поля 2x10 и волосинка,
+     итого 65. Чтобы получить 52, поля пришлось бы срезать до 3-4px, а это ломает и вид,
+     и запас вокруг 44px кнопок. До правки шапка была 77px (в брифе указано 64),
+     то есть она всё равно стала компактнее на 12px. 76 = 65 плюс 11 воздуха. */
+  section[id],div[id]{scroll-margin-top:76px}
+}
+@media(prefers-reduced-motion:reduce){header{transition:none}}
 </style>
 </head>
 <body>
@@ -2649,12 +2674,14 @@ var I18N = {
       document.body.style.top=(-lockY)+"px";
       document.documentElement.classList.add("no-scroll");
       document.body.classList.add("no-scroll");
+      if(window.__headerHide)window.__headerHide(true);
     }else if(lockN===0&&was>0){
       document.documentElement.classList.remove("no-scroll");
       document.body.classList.remove("no-scroll");
       document.body.style.top="";
       /* instant, иначе scroll-behavior:smooth у html проиграет возврат анимацией */
       try{window.scrollTo({top:lockY,left:0,behavior:"instant"})}catch(e){window.scrollTo(0,lockY)}
+      if(window.__headerHide)window.__headerHide(false);
     }
   }
   /* НАБОР ДЛЯ СТРЕЛОК. Собираем по ПОРЯДКУ В DOM внутри секции источника, ключи не
@@ -2917,16 +2944,37 @@ var I18N = {
   (function(){
     var h=document.querySelector("header"), t=false;
     if(!h) return;
+    var lastY=0;
     addEventListener("scroll",function(){
-      /* Пока страница заморожена под модальным окном, scrollY равен нулю по построению,
-         слушатель снимал .shrunk и шапка вырастала с 74 до 90px, а вместе с ней уезжала
-         на 16px вся вёрстка ниже. Именно это и был «сдвиг страницы при открытии окна». */
+      /* ОГОВОРКА ПЕРВАЯ. Слушатель молчит, пока тело заморожено открытым окном.
+         В v5 при заморозке scrollY обнулялся, слушатель снимал класс, шапка вырастала
+         на 16px и вёрстка ниже уезжала. Здесь та же ловушка с другим последствием:
+         шапка выпрыгнула бы поверх открытого листа. */
+      if(document.documentElement.classList.contains("no-scroll"))return;
       if(document.body.classList.contains("no-scroll"))return;
       var sc=scrollY>40;
       if(sc!==t){ t=sc; h.classList.toggle("shrunk",sc); }
+      /* ОГОВОРКА ВТОРАЯ. Порог 140 не даёт шапке прятаться внутри первого экрана,
+         гистерезис 6px не даёт ей дрожать от инерционной прокрутки iOS. */
+      var y=Math.max(0,window.pageYOffset);
+      h.classList.toggle("stuck",y>8);
+      if(y>140&&y>lastY+6) h.classList.add("hide");
+      else if(y<lastY-6||y<60) h.classList.remove("hide");
+      lastY=y;
     },{passive:true});
+    /* ОГОВОРКА ТРЕТЬЯ. При открытии любого окна шапке принудительно ставится hide,
+       при закрытии снимается. Точка перехвата одна на все окна, это счётчик замков. */
+    window.__headerHide=function(on){h.classList.toggle("hide",!!on);if(!on)lastY=Math.max(0,window.pageYOffset)};
   })();
 })();
 </script>
+
+<!-- ИИ-АДМИНИСТРАТОР. Виджет чата: объясняет решения, ведёт к бесплатному замеру,
+     передаёт заявку менеджеру. Сервис отдельный (репозиторий ai-admin, Railway),
+     на странице только эта строка, никакого кода и никаких ключей здесь нет.
+     Виджет живёт в Shadow DOM, поэтому стили сайта и виджета не пересекаются.
+     Отключается удалением одной строки, вёрстка от этого не меняется.
+     ⚠️ Заявки сейчас копятся на сервере: чат менеджера клиент пока не дал. -->
+<script src="https://ai-admin-production.up.railway.app/widget.js" data-client="devago" defer></script>
 </body>
 </html>
