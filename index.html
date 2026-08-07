@@ -1691,33 +1691,6 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
 /* --- ЗАДАЧА 2. Прямой звонок и Instagram. --- */
 /* Иконки в шапке ТОЛЬКО от 1200px: по замеру v7 запас строки в вилке 1000-1199
    всего 13-15px, две кнопки по 44px её ломают. Проверено, не догадка. */
-/* ПОРОГ 1200 ИЗ БРИФА НЕ ПРОХОДИТ ПО АРИФМЕТИКЕ, и дело не в запасе строки, а в том,
-   что .nav ограничен max-width:1200px. Русской строке шапки с двумя иконками нужно
-   1333px, а внутри полосы доступно 1200 минус 80 полей, то есть 1120. Не помещается
-   НИ НА КАКОЙ ширине окна, включая 1920: на широких экранах содержимое просто вылезало
-   за правый край полосы на 125px и уезжало из колонки контента, а на 1200-1440 давало
-   честное переполнение документа до 111px. Одна иконка вместо двух тоже не спасает,
-   нужно 1265 против 1120. Поэтому иконки включаются с 1440, и ровно там же полоса
-   шапки расширяется до 1440: содержимое получает 1360 против нужных 1333, запас 27px.
-   Узбекской строке нужно 1279, ей хватало и раньше. */
-.ic-btn{display:none}
-@media(min-width:1440px){
-  .nav{max-width:1440px}
-}
-@media(min-width:1440px){
-  .ic-btn{display:grid;place-items:center;width:44px;height:44px;flex:none;
-    color:var(--t2);transition:color .25s}
-  .ic-btn:hover{color:var(--gold-l)}
-  .ic-btn svg{width:19px;height:19px;display:block}
-}
-/* Две строки действий в бургер-меню, до 1000px. */
-.menu-act{display:flex;flex-direction:column;gap:2px;margin:8px 0 18px}
-.ma{display:flex;align-items:center;gap:12px;min-height:48px;color:var(--text);
-  font:500 .8rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;
-  border-bottom:1px solid var(--hairline)}
-.ma svg{width:18px;height:18px;color:var(--gold);flex:none}
-.ma:hover{color:var(--gold-l)}
-@media(min-width:1000px){.menu-act{display:none}}
 /* Instagram строкой в финале и в футере. */
 .inst-line{display:inline-flex;align-items:center;gap:10px;min-height:44px;
   font-size:.9rem;color:var(--t2)}
@@ -1764,6 +1737,56 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
   .info-modal .im-nav{order:0;display:flex;justify-content:center;align-items:center;
     gap:12px;padding:8px 0;border-bottom:1px solid var(--hairline);margin:0}
 }
+
+/* ================= CDO v9, дополнение от 07.08: три дефекта живой сборки ================= */
+
+/* ДЕФЕКТ 1. Стрелки в окне решений не скрывались НИ на телефоне, НИ на десктопе.
+   Причина каскадная: .im-nav[hidden]{display:none} это (0,2,0), а мои блоки позиции
+   .info-modal .im-nav{display:block} и {display:flex} тоже (0,2,0), но объявлены НИЖЕ,
+   и при равном весе побеждает нижнее. Поднимаем вес, без !important.
+   МОЯ ОШИБКА МЕТОДА в v7: я проверял АТРИБУТ hidden, а не отрисовку, поэтому набор
+   «решения» отчитался как исправный. Теперь сверяется computed display. */
+.info-modal .im-nav[hidden]{display:none}
+
+/* ДЕФЕКТ 2. Полоса действий перекрывала текст на телефоне: sticky держал её поверх
+   прокручиваемого тела. Лист становится колонкой из трёх этажей, где прокручивается
+   ТОЛЬКО средний, как в нативных нижних листах. Градиентная подложка в этом режиме
+   больше не нужна: текст физически не может уйти под кнопку. Десктоп не трогаем. */
+@media(max-width:999px){
+  .info-modal{display:flex;flex-direction:column}
+  .im-media{flex:none}
+  .im-body{flex:1 1 auto;min-height:0;overflow-y:auto}
+  .im-cta{position:static;flex:none;background:var(--card2);
+    padding:16px 20px calc(20px + env(safe-area-inset-bottom));
+    border-top:1px solid var(--hairline);margin-top:0}
+}
+
+/* ================= CDO v9, дополнение от 06.08: иконки уезжают на мобильный =================
+   Правило: иконки живут в шапке ТАМ, ГДЕ ЕСТЬ БУРГЕР, то есть до 1000px. На десктопе их нет:
+   там tel: бесполезен, телефон работает текстом в финале и футере, а элемент, который есть
+   на 900, пропадает на 1100 и возвращается на 1400, ничего не даёт и дорого стоит в поддержке.
+   Отменяет расширение .nav до 1440 и блок .ic-btn из v9: они больше не нужны, шапка
+   возвращается к геометрии v7. Пункты «Позвонить» и «Instagram» из бургер-меню убраны,
+   дублировать видимые всегда иконки незачем. */
+@media(max-width:999px){
+  /* ЗАМЕР ДО ВЁРСТКИ, оценка CDO уточнена: локап на мобильном 146px, а не 129.
+     При зазоре 6 и группе 144 на 360 оставалось 6px при заявленном поле в 16,
+     поэтому по порядку уступок из брифа зазор группы срезан до 4, а зазор внутри
+     локапа с 12 до 10. Кегль вордмарка не тронут. */
+  .nav-right{gap:4px}
+  .brand{gap:10px}
+  /* Третья уступка: зазор самой строки шапки 16 -> 12. После первых двух на 360
+     оставалось 12px при поле в 16, эта добирает ровно до поля. */
+  .nav{gap:12px}
+  .nav-ico{width:44px;height:44px;display:grid;place-items:center;
+    background:none;border:none;padding:0;color:var(--t2);transition:color .25s}
+  .nav-ico svg{width:20px;height:20px;display:block}
+  /* Одно тихое ударение на самом ценном действии: третьей золотой заливки на экране,
+     где уже две большие кнопки первого экрана, быть не должно. */
+  .nav-ico.tel{color:var(--gold-l)}
+  .nav-ico:active{color:var(--gold)}
+}
+@media(min-width:1000px){.nav-ico{display:none}}
 </style>
 </head>
 <body>
@@ -1794,9 +1817,9 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
       <!-- ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА В ШАПКЕ (CDO v4, пункт 1). Обязателен вместе со скрытием
            бургера от 1000px: RU/UZ жил ТОЛЬКО внутри .menu-ov, и без этой копии он бы
            просто исчез на десктопе. Обе пары кнопок ведёт один обработчик по data-l. -->
-      <a class="ic-btn tel-link" href="#" data-goal="phone_click" data-i18n-label="call_lbl" aria-label="Позвонить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></a><a class="ic-btn inst-link" href="#" target="_blank" rel="noopener" data-goal="inst_click" data-i18n-label="inst_lbl" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></a><div class="lang lang-desk" role="group" data-i18n-label="lang_group" aria-label="Язык сайта"><button type="button" data-l="ru" lang="ru" aria-pressed="true" class="on">RU</button><button type="button" data-l="uz" lang="uz" aria-pressed="false">UZ</button></div>
+      <div class="lang lang-desk" role="group" data-i18n-label="lang_group" aria-label="Язык сайта"><button type="button" data-l="ru" lang="ru" aria-pressed="true" class="on">RU</button><button type="button" data-l="uz" lang="uz" aria-pressed="false">UZ</button></div>
       <a class="btn btn-out cta" href="#final" data-i18n="cta_main">Получить консультацию</a>
-      <button class="burger" id="burger" aria-label="Меню"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <a class="nav-ico tel tel-link" href="#" data-goal="phone_click" data-i18n-label="call_lbl" aria-label="Позвонить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></a><a class="nav-ico inst-link" href="#" target="_blank" rel="noopener" data-goal="inst_click" data-i18n-label="inst_lbl" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></a><button class="burger" id="burger" aria-label="Меню"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </div>
 </header>
@@ -1810,10 +1833,6 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
   <a class="mi" href="#standards" data-i18n="nav_std">Стандарты</a>
   <a class="mi" href="#final" data-i18n="nav_con">Контакты</a>
   <div class="lang" role="group" data-i18n-label="lang_group" aria-label="Язык сайта"><button id="lang-ru2" data-l="ru" lang="ru" aria-pressed="true" class="on" type="button">RU</button><button id="lang-uz2" data-l="uz" lang="uz" aria-pressed="false" type="button">UZ</button></div>
-  <div class="menu-act">
-    <a class="ma tel-link" href="#" data-goal="phone_click"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg><span data-i18n="call_lbl">Позвонить</span></a>
-    <a class="ma inst-link" href="#" target="_blank" rel="noopener" data-goal="inst_click"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg><span data-i18n="inst_lbl">Instagram</span></a>
-  </div>
   <a class="btn btn-gold cta" href="#final" data-i18n="cta_main2">Получить консультацию</a>
 </div>
 
