@@ -1851,6 +1851,42 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
   background:none;border:none;border-bottom:1px solid rgba(201,162,75,.4);cursor:pointer;
   font:500 .68rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 .pop-more:hover{color:var(--gold-l);border-bottom-color:var(--gold)}
+
+/* ================= CDO 07.08, задачи B и C ================= */
+
+/* B. РИТМ ЗАГОЛОВОЧНОГО БЛОКА. Правило на весь сайт: внутри связки «кикер,
+   заголовок, подзаголовок» зазоры нарастают сверху вниз, а зазор ОТ предыдущего
+   блока не меньше ТРЁХ внутренних. Замер до правки в окне услуги на 390:
+   картинка->кикер 20, кикер->заголовок 8, то есть 20 против нужных 24, и кикер
+   читался подписью под фотографией, а не частью заголовка. После: 32 к 6,
+   больше пяти к одному. */
+.im-body{padding-top:32px}
+.im-body .kick{margin-bottom:6px}
+.info-modal h3{margin:0 0 10px}
+@media(min-width:1000px){.im-body{padding-top:44px}}
+
+/* C. ЛЕГЕНДА ВЫНОСОК В ОДНУ КОЛОНКУ.
+   Две колонки давали наполовину пустой последний ряд (пунктов пять) и рваный правый
+   край: «Магнитные трековые системы» это 26 знаков против 14 у «Скрытого карниза».
+   Плюс цифра в легенде была голой золотой цифрой шириной 9px, а та же цифра на фото
+   это кружок 28px с кольцом, то есть ОДИН объект выглядел двумя разными способами.
+   Кружок в легенде это уменьшенный близнец маркера: то же кольцо, тот же цвет,
+   тот же способ показать активность. */
+@media(max-width:560px){
+  .ann-legend{display:block;margin-top:16px;border-top:1px solid rgba(201,162,75,.14)}
+  /* Сетка стоит ТОЛЬКО на кнопке. Если задать её ещё и на li, кнопка попадает
+     в первую колонку шириной 22px, сжимается до неё, и названия едут в 2-3 строки.
+     Поймано замером бокса: 22x44 вместо 342x44. */
+  .ann-legend li{display:block;padding:0;border-bottom:1px solid rgba(201,162,75,.14)}
+  .lg-btn{display:grid;grid-template-columns:22px 1fr;align-items:center;gap:12px;
+    width:100%;min-height:44px;padding:0;text-align:left;
+    font-size:.78rem;line-height:1.35;color:var(--t2)}
+  .ann-legend b{width:22px;height:22px;min-width:0;display:grid;place-items:center;
+    border:1px solid var(--gold);border-radius:50%;background:none;
+    font:500 11px/1 var(--sans);color:var(--gold-l)}
+  .lg-btn.on b{background:var(--gold);border-color:var(--gold);color:#171204}
+  .lg-btn.on{color:var(--text)}
+}
 </style>
 </head>
 <body>
