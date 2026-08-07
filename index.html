@@ -33,6 +33,7 @@
      если он реально встретится в тексте.
      Jost переменный, поэтому 400 и 500 берутся из ОДНОГО файла, это не опечатка. -->
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/jost-400-cyrillic.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/forum-h1.woff2" crossorigin>
 <!-- Предзагрузка ОБЯЗАНА повторять набор ширин из <picture>. С обычным href браузер
      тянул бы полный кадр 2220 px даже на телефоне, и адаптивные картинки не работали
      бы вовсе, а на части браузеров качались бы два файла вместо одного. -->
@@ -52,6 +53,16 @@
    время рисовал этот знак случайным системным шрифтом устройства.
    Здесь лежит донор: один символ, вырезанный из Work Sans, 444 байта.
    Диапазон сужен до одного символа намеренно, чтобы шрифт не перехватывал ничего сверх. */
+@font-face{font-family:'HeroH1';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/forum-h1.woff2) format('woff2')}
+/* ГАРНИТУРА ЗАГОЛОВКА ПЕРВОГО ЭКРАНА (CDO 07.08). Ровно ОДНА точка переключения:
+   меняешь имя файла в строке выше на prata-h1.woff2 или oranienbaum-h1.woff2, и всё.
+   Все три лежат в assets/fonts/, весят 2520, 1984 и 2104 байта.
+   ПОДМНОЖЕСТВО РЕЗАЛОСЬ ПО ОТРИСОВАННЫМ ПРОПИСНЫМ, а не по исходной строке: заголовок
+   набирается через text-transform:uppercase, в разметке лежат строчные, и запрос по ним
+   положил бы в файл строчные глифы, а прописные уехали бы на Jost, то есть в одном слове
+   оказались бы две гарнитуры. Набор выведен ИЗ САМИХ ключей h_h1 скриптом, не переписан
+   руками: 22 глифа, латиница AFGHILNRST и кириллица АЕЖИКЛНОПТЫЯ. Наличие каждого
+   проверено по таблице cmap внутри скачанного файла, а не по unicode-range. */
 @font-face{font-family:'UzApos';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/uz-apostrophe.woff2) format('woff2');unicode-range:U+02BB}
 
 </style>
@@ -1787,6 +1798,58 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
   .nav-ico:active{color:var(--gold)}
 }
 @media(min-width:1000px){.nav-ico{display:none}}
+
+/* ЗАДАЧА A (CDO, 07.08). ДВОЙНАЯ РАМКА ЭТО ПРИЁМ ТОЛЬКО ДЛЯ КОНТУРНЫХ КНОПОК.
+   Правило, чтобы оно снова не разъехалось: контурная кнопка это ЛИНИЯ, и вторая линия
+   делает её богаче; залитая кнопка это ПЛОСКОСТЬ, и линия внутри плоскости читается
+   как обводка по ошибке. Золотые теряют рамку везде: первый экран, окна, финальная
+   секция, липкая полоса. Кнопка в шапке теряет её при повышении автоматически, потому
+   что повышение переключает класс btn-gold, и это правильное поведение, а не побочный
+   эффект. Блик-градиент у золотых остаётся, ничего вместо рамки не добавляем. */
+.btn-gold{border:none}
+.btn-gold::before{display:none}
+.btn-gold:hover::before{box-shadow:none}
+
+/* ЗАДАЧА B (CDO, 07.08). Гарнитура ТОЛЬКО на h1 первого экрана. Заголовки секций,
+   вордмарк и весь остальной сайт остаются на Jost, поэтому селектор максимально узкий.
+   Метрики: у антиквы прописные и так идут с воздухом, гротескный трекинг их разваливает.
+   Нынешние значения в файле .19em на телефоне и .16em на десктопе (в брифе указаны
+   .16 и .13, это старые, до правки v3), интерлиньяж 1.14 и 1.08. */
+.hero h1{font-family:'HeroH1','Jost','UzApos',system-ui,sans-serif;
+  letter-spacing:.08em;line-height:1.04}
+@media(min-width:900px){.hero h1{letter-spacing:.06em;line-height:1.04}}
+
+/* ================= CDO, 07.08: полоса цифр, мобильная раскладка и разделители ============ */
+#facts{border-top:1px solid rgba(201,162,75,.10);border-bottom:1px solid rgba(201,162,75,.10)}
+/* ЗАДАЧА 3. Цифра и единица разного веса: раньше «600 000 м²» шло одним кеглем целиком,
+   и единица весила столько же, сколько факт, а широкие строки распирали колонку. */
+/* display:inline и отступ ОБЯЗАТЕЛЬНЫ, их в спеке нет. Базовое правило
+   .facts .f span{display:block} ловит и вложенный .fu внутри b, поэтому единица
+   уезжала на СВОЮ СТРОКУ под числом на всех ширинах от 600. Отступа тоже нет:
+   в разметке между числом и единицей пробела нет намеренно (чтобы не переносилось),
+   и без margin получалось «16лет». На телефоне зазор даёт flex gap, выше он нужен свой. */
+.facts .f b .fu{display:inline;margin-left:.26em;font-size:.48em;font-weight:400;
+  color:var(--gold);letter-spacing:.02em}
+@media(max-width:599px){.facts .f b .fu{margin-left:0}}
+/* ЗАДАЧА 1. Телефон: спецификация в одну колонку, число слева, ярлык справа. */
+@media(max-width:599px){
+  .facts{display:block}
+  .facts .f{display:grid;grid-template-columns:auto 1fr;align-items:baseline;
+    gap:16px;padding:15px 0;text-align:left;
+    border-bottom:1px solid rgba(201,162,75,.14)}
+  .facts .f:last-child{border-bottom:none}
+  .facts .f b{display:flex;align-items:baseline;gap:6px;margin:0;
+    font-size:clamp(1.6rem,7vw,1.95rem);white-space:nowrap}
+  .facts .f span{margin-top:0;justify-self:end;text-align:right;
+    font-size:.78rem;line-height:1.35}
+  .facts-note{text-align:left;margin-top:20px}
+}
+/* ЗАДАЧА 2. Планшет 600-999: сетка 2х2 получает крест из линий.
+   Десктоп от 1000 не трогаем, там вертикальные линии через ::before уже стоят. */
+@media(min-width:600px) and (max-width:999px){
+  .facts .f:nth-child(even){border-left:1px solid rgba(201,162,75,.14)}
+  .facts .f:nth-child(-n+2){border-bottom:1px solid rgba(201,162,75,.14)}
+}
 </style>
 </head>
 <body>
@@ -1879,7 +1942,7 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
       <div class="f"><b data-i18n="fact3_n">600 000 м²</b><span data-i18n="fact3_t">натянутого полотна</span></div>
       <div class="f"><b data-i18n="fact4_n">12 бригад</b><span data-i18n="fact4_t">собственный монтаж</span></div>
     </div>
-    <p class="facts-note" data-i18n="facts_geo">Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья</p>
+    <p class="facts-note"><span data-i18n="facts_hist">2010-2022 Москва, с 2022 Узбекистан</span><br><span data-i18n="facts_geo">Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья</span></p>
   </div>
 </section>
 
@@ -2278,7 +2341,7 @@ var I18N = {
  fin_city:"Ташкент, Узбекистан",fin_tag:"Архитектура света и пространства",
 
  nav_pp:"Фотопечать",read_more:"Читать полностью",skip:"К содержимому",lang_group:"Язык сайта",ann_hint:"нажмите на цифры",
- fact1_n:"16 лет",fact1_t:"на рынке: 2010-2022 Москва, с 2022 Узбекистан",fact2_n:"10 000+",fact2_t:"выполненных объектов в Узбекистане",fact3_n:"600 000 м²",fact3_t:"натянутого полотна",fact4_n:"12 бригад",fact4_t:"собственный монтаж",facts_geo:"Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья",call_lbl:"Позвонить",inst_lbl:"Instagram",
+ fact1_n:"16<span class='fu'>лет</span>",fact1_t:"на рынке",fact2_n:"10 000+",fact2_t:"выполненных объектов в Узбекистане",fact3_n:"600 000<span class='fu'>м²</span>",fact3_t:"натянутого полотна",fact4_n:"12<span class='fu'>бригад</span>",fact4_t:"собственный монтаж",facts_hist:"2010-2022 Москва, с 2022 Узбекистан",facts_geo:"Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья",call_lbl:"Позвонить",inst_lbl:"Instagram",
  pp_kick:"Варианты фотопечати",pp_title:"Варианты фотопечати на потолке",pp_sub:"Премьерные решения для интерьеров",
  pp1_h:"Мрамор / оникс с подсветкой",pp1_p:"Эффект полупрозрачного камня",
  pp2_h:"Бетон",pp2_p:"Современная текстура для стильных интерьеров",
@@ -2350,7 +2413,7 @@ var I18N = {
 
  nav_pp:"Fotopechat",read_more:"Toʻliq oʻqish",skip:"Mazmunga oʻtish",lang_group:"Sayt tili",ann_hint:"raqamlarni bosing",
  /* УЗБЕКСКИЕ ПОДПИСИ ПОЛОСЫ ЦИФР, ЧЕРНОВИК. Финальные формулировки за копирайтером. */
- fact1_n:"16 yil",fact1_t:"bozorda: 2010-2022 Moskva, 2022 dan Oʻzbekiston",fact2_n:"10 000+",fact2_t:"Oʻzbekistonda bajarilgan obyektlar",fact3_n:"600 000 m²",fact3_t:"tortilgan polotno",fact4_n:"12 brigada",fact4_t:"oʻz montajimiz",facts_geo:"Oʻz sexlarimiz: Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",call_lbl:"Qoʻngʻiroq",inst_lbl:"Instagram",
+ fact1_n:"16<span class='fu'>yil</span>",fact1_t:"bozorda",fact2_n:"10 000+",fact2_t:"Oʻzbekistonda bajarilgan obyektlar",fact3_n:"600 000<span class='fu'>m²</span>",fact3_t:"tortilgan polotno",fact4_n:"12<span class='fu'>brigada</span>",fact4_t:"oʻz montajimiz",facts_hist:"2010-2022 Moskva, 2022 dan Oʻzbekiston",facts_geo:"Oʻz sexlarimiz: Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",call_lbl:"Qoʻngʻiroq",inst_lbl:"Instagram",
  pp_kick:"Fotopechat variantlari",pp_title:"Shiftdagi fotopechat variantlari",pp_sub:"Interyerlar uchun premyera yechimlari",
  pp1_h:"Marmar / oniks yoritish bilan",pp1_p:"Yarim shaffof tosh effekti",
  pp2_h:"Beton",pp2_p:"Zamonaviy interyerlar uchun tekstura",
