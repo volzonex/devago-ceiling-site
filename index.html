@@ -207,6 +207,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .pc{width:34px;height:34px;flex:none;border:1px solid var(--gold);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:var(--gold)}
 .pc svg{width:12px;height:12px;margin-left:2px}
 .hero-arrow{margin-top:22px;text-align:center;max-width:440px}
+.hero-arrow-b{display:inline-flex;align-items:center;justify-content:center;width:48px;min-height:44px;color:var(--gold)}
 .hero-arrow svg{width:14px;height:30px;color:var(--gold)}
 /* Стрелка живая (задание Тахира 04.08). Движение намеренно медленное и с паузой:
    цикл 2.6 c, из которых больше половины стрелка стоит на месте. Дёрганый пульс на
@@ -2006,7 +2007,10 @@ body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
       <a class="btn btn-gold btn-w form-open" href="#form" data-goal="hero_form_click" data-i18n="cta_form">Оставить заявку</a>
       <a class="btn btn-out btn-w tg-link" href="#" data-goal="hero_tg_click" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.6l-3.1 14.5c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-.9.5l.3-4.6L18.2 7c.4-.3-.1-.5-.6-.2L7.3 13.3 2.9 12c-1-.3-1-1 .2-1.4l17.5-6.7c.8-.3 1.5.2 1.3 1.7z"/></svg><span data-i18n="cta_tg">Связаться в Telegram</span></a>
     </div>
-    <div class="hero-arrow reveal" aria-hidden="true"><svg viewBox="0 0 14 30" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M7 1v25M2 21l5 6 5-6"/></svg></div>
+    <!-- Стрелка перестала быть украшением и стала ссылкой на следующий раздел.
+         Обёртка нужна, чтобы ссылка была ровно 48x44 (правило тап-целей), а не
+         во всю ширину колонки 342px: широкая цель ловила бы промахи по фону. -->
+    <div class="hero-arrow reveal"><a class="hero-arrow-b" href="#facts" data-i18n-label="arrow_lbl" aria-label="К следующему разделу"><svg viewBox="0 0 14 30" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M7 1v25M2 21l5 6 5-6"/></svg></a></div>
   </div>
 </section>
 
@@ -2419,7 +2423,7 @@ var I18N = {
  fin_city:"Ташкент, Узбекистан",fin_tag:"Архитектура света и пространства",
 
  nav_pp:"Фотопечать",read_more:"Читать полностью",skip:"К содержимому",lang_group:"Язык сайта",ann_hint:"нажмите на цифры",pop_more:"подробнее",
- fact1_n:"16<span class='fu'>лет</span>",fact1_t:"на рынке",fact2_n:"10 000+",fact2_t:"выполненных объектов в Узбекистане",fact3_n:"600 000<span class='fu'>м²</span>",fact3_t:"натянутого полотна",fact4_n:"12<span class='fu'>бригад</span>",fact4_t:"собственный монтаж",facts_hist:"2010-2022 Москва, с 2022 Узбекистан",facts_geo:"Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья",call_lbl:"Позвонить",inst_lbl:"Instagram",
+ fact1_n:"16<span class='fu'>лет</span>",fact1_t:"на рынке",fact2_n:"10 000+",fact2_t:"выполненных объектов в Узбекистане",fact3_n:"600 000<span class='fu'>м²</span>",fact3_t:"натянутого полотна",fact4_n:"12<span class='fu'>бригад</span>",fact4_t:"собственный монтаж",facts_hist:"2010-2022 Москва, с 2022 Узбекистан",facts_geo:"Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья",call_lbl:"Позвонить",inst_lbl:"Instagram",arrow_lbl:"К следующему разделу",
  pp_kick:"Варианты фотопечати",pp_title:"Варианты фотопечати на потолке",pp_sub:"Премиальные решения для интерьеров",
  pp1_h:"Мрамор / оникс с подсветкой",pp1_p:"Эффект полупрозрачного камня",
  pp2_h:"Бетон",pp2_p:"Современная текстура для стильных интерьеров",
@@ -2491,7 +2495,7 @@ var I18N = {
 
  nav_pp:"Fotopechat",read_more:"Toʻliq oʻqish",skip:"Mazmunga oʻtish",lang_group:"Sayt tili",ann_hint:"raqamlarni bosing",pop_more:"batafsil",
  /* УЗБЕКСКИЕ ПОДПИСИ ПОЛОСЫ ЦИФР, ЧЕРНОВИК. Финальные формулировки за копирайтером. */
- fact1_n:"16<span class='fu'>yil</span>",fact1_t:"bozorda",fact2_n:"10 000+",fact2_t:"Oʻzbekistonda bajarilgan obyektlar",fact3_n:"600 000<span class='fu'>m²</span>",fact3_t:"tortilgan polotno",fact4_n:"12<span class='fu'>brigada</span>",fact4_t:"oʻz montajimiz",facts_hist:"2010-2022 Moskva, 2022 dan Oʻzbekiston",facts_geo:"Oʻz ishlab chiqarishimiz: Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",call_lbl:"Qoʻngʻiroq",inst_lbl:"Instagram",
+ fact1_n:"16<span class='fu'>yil</span>",fact1_t:"bozorda",fact2_n:"10 000+",fact2_t:"Oʻzbekistonda bajarilgan obyektlar",fact3_n:"600 000<span class='fu'>m²</span>",fact3_t:"tortilgan polotno",fact4_n:"12<span class='fu'>brigada</span>",fact4_t:"oʻz montajimiz",facts_hist:"2010-2022 Moskva, 2022 dan Oʻzbekiston",facts_geo:"Oʻz ishlab chiqarishimiz: Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",call_lbl:"Qoʻngʻiroq",inst_lbl:"Instagram",arrow_lbl:"Keyingi boʻlimga",
  pp_kick:"Fotopechat variantlari",pp_title:"Shiftdagi fotopechat variantlari",pp_sub:"Interyerlar uchun premium yechimlar",
  pp1_h:"Marmar / oniks yoritish bilan",pp1_p:"Yarim shaffof tosh effekti",
  pp2_h:"Beton",pp2_p:"Zamonaviy interyerlar uchun tekstura",
@@ -2994,30 +2998,149 @@ var I18N = {
   /* ШАПКА ПРИ ПРОКРУТКЕ, только десктоп: сам класс вешаем всегда, но всё оформление
      .shrunk живёт внутри @media(min-width:900px), поэтому на телефоне ничего не
      меняется и шапка остаётся нелипкой и без размытия. */
+  /* ПЕРЕПИСАНО ПОСЛЕ ЖАЛОБЫ НА БРАУЗЕР TELEGRAM: «шапка мерцает очень быстро».
+     Дефект воспроизведён и измерен на стенде. Старое правило сравнивало положение
+     с ПРЕДЫДУЩИМ СОБЫТИЕМ и имело гистерезис 6px, поэтому любое дрожание амплитудой
+     больше 6px переключало шапку на КАЖДОМ событии:
+
+         дрожание +-8px, 24 колебания  -> 21 переключение
+         дрожание +-14px и выше        -> 24 переключения из 24
+
+     При переходе 0.28s это и есть «мерцает». Дрожание во встроенном браузере берётся
+     не из воздуха: строка адреса схлопывается в пилюлю и разворачивается обратно,
+     высота окна прыгает, инерционная прокрутка iOS добавляет своё.
+
+     Три независимых заслона, каждый закрывает свой источник:
+     1. ЯКОРЬ ВМЕСТО ПРЕДЫДУЩЕГО КАДРА. Считаем ход от точки РАЗВОРОТА, а не от
+        соседнего события. Пока в одну сторону не пройдено 48px, шапка не трогается,
+        и колебание любой частоты в пределах 48px не даёт вообще ни одного переключения.
+     2. ТИХОЕ ОКНО ПОСЛЕ СМЕНЫ РАЗМЕРА ОКНА. Схлопывание строки адреса это скачок
+        сразу на десятки пикселей, порог 48px его не удержит. Но такой скачок ВСЕГДА
+        приходит вместе с resize visualViewport, и на 400ms после него положение
+        шапки замораживается.
+     3. ПАУЗА 300ms МЕЖДУ ПЕРЕКЛЮЧЕНИЯМИ. Потолок на частоту: что бы ни случилось,
+        чаще трёх раз в секунду шапка сменить состояние не может.
+     Плюс чтение перенесено в requestAnimationFrame: на кадр приходится один расчёт. */
   (function(){
-    var h=document.querySelector("header"), t=false;
+    var h=document.querySelector("header");
     if(!h) return;
-    var lastY=0;
-    addEventListener("scroll",function(){
-      /* ОГОВОРКА ПЕРВАЯ. Слушатель молчит, пока тело заморожено открытым окном.
-         В v5 при заморозке scrollY обнулялся, слушатель снимал класс, шапка вырастала
-         на 16px и вёрстка ниже уезжала. Здесь та же ловушка с другим последствием:
-         шапка выпрыгнула бы поверх открытого листа. */
+    var STEP=48,   /* ход в одну сторону, после которого шапка реагирует */
+        PAUSE=300, /* минимум между сменами состояния */
+        QUIET=400; /* заморозка после смены размера окна */
+    var t=false,hidden=false,held=false,tick=false;
+    var lastY=0,anchorY=0,dir=0,flipAt=0,quietTill=0;
+    function now(){return window.performance&&performance.now?performance.now():+new Date}
+    function set(v){
+      if(v===hidden)return;
+      if(now()-flipAt<PAUSE)return;
+      hidden=v;flipAt=now();h.classList.toggle("hide",v);
+    }
+    function reset(){anchorY=lastY=Math.max(0,window.pageYOffset);dir=0}
+    function read(){
+      tick=false;
+      /* Слушатель молчит, пока тело заморожено открытым окном. В v5 при заморозке
+         scrollY обнулялся, слушатель снимал класс, шапка вырастала на 16px и вёрстка
+         ниже уезжала. Здесь та же ловушка: шапка выпрыгнула бы поверх открытого листа. */
       if(document.documentElement.classList.contains("no-scroll"))return;
       if(document.body.classList.contains("no-scroll"))return;
-      var sc=scrollY>40;
-      if(sc!==t){ t=sc; h.classList.toggle("shrunk",sc); }
-      /* ОГОВОРКА ВТОРАЯ. Порог 140 не даёт шапке прятаться внутри первого экрана,
-         гистерезис 6px не даёт ей дрожать от инерционной прокрутки iOS. */
       var y=Math.max(0,window.pageYOffset);
+      var sc=y>40;
+      if(sc!==t){ t=sc; h.classList.toggle("shrunk",sc); }
       h.classList.toggle("stuck",y>8);
-      if(y>140&&y>lastY+6) h.classList.add("hide");
-      else if(y<lastY-6||y<60) h.classList.remove("hide");
+      /* Пока идёт наш собственный переход по якорю или пока окно меняет размер,
+         положение шапки не пересчитываем, только запоминаем точку. */
+      if(held||now()<quietTill){ anchorY=lastY=y; return }
+      /* Порог 140 не даёт шапке прятаться внутри первого экрана. */
+      if(y<60){ set(false); anchorY=lastY=y; dir=0; return }
+      if(y>lastY){ if(dir!==1){dir=1;anchorY=lastY} }
+      else if(y<lastY){ if(dir!==-1){dir=-1;anchorY=lastY} }
       lastY=y;
+      if(dir===1&&y>140&&y-anchorY>STEP){ set(true); anchorY=y }
+      else if(dir===-1&&anchorY-y>STEP){ set(false); anchorY=y }
+    }
+    addEventListener("scroll",function(){
+      if(tick)return; tick=true;
+      if(window.requestAnimationFrame)requestAnimationFrame(read); else read();
     },{passive:true});
-    /* ОГОВОРКА ТРЕТЬЯ. При открытии любого окна шапке принудительно ставится hide,
-       при закрытии снимается. Точка перехвата одна на все окна, это счётчик замков. */
-    window.__headerHide=function(on){h.classList.toggle("hide",!!on);if(!on)lastY=Math.max(0,window.pageYOffset)};
+    function calm(){quietTill=now()+QUIET}
+    if(window.visualViewport&&visualViewport.addEventListener)visualViewport.addEventListener("resize",calm);
+    addEventListener("resize",calm);
+    /* При открытии любого окна шапке принудительно ставится hide, при закрытии
+       снимается. Точка перехвата одна на все окна, это счётчик замков. Пауза здесь
+       обходится: это не дрожание, а осознанная команда. */
+    window.__headerHide=function(on){hidden=!!on;flipAt=0;h.classList.toggle("hide",!!on);if(!on)reset()};
+    /* Удержание на время нашего плавного перехода по якорю: шапка обязана стоять
+       на месте, иначе раздел приедет под уехавшую шапку. */
+    window.__headerHold=function(on){held=!!on;if(on){hidden=false;flipAt=0;h.classList.remove("hide")}else reset()};
+  })();
+
+  /* ================= ПЛАВНЫЙ ПЕРЕХОД ПО ЯКОРЯМ =================
+     На странице стоит html{scroll-behavior:smooth}, и на стенде переход из меню
+     действительно плавный: замер дал 49 разных положений за 51 кадр. Но у клиента
+     во встроенном браузере Telegram перенос мгновенный, то есть на это свойство
+     полагаться нельзя. Причин ровно две, и обе вне нашего контроля: движок может
+     не поддерживать плавную прокрутку по якорю, либо у человека включено системное
+     «уменьшение движения». Первую мы обязаны обойти, вторую обязаны уважать.
+
+     Поэтому переход считается сами: requestAnimationFrame плюс кубическая кривая.
+     Это работает в любом движке, не зависит от scroll-behavior и заодно даёт то,
+     чего у родного перехода нет: шапка на время переезда удерживается на месте,
+     а посадка считается от её ЖИВОЙ высоты, а не от заранее вбитого scroll-margin.
+
+     ВАЖНО про scrollTo внутри цикла: только behavior "instant". С поведением по
+     умолчанию каждый шаг цикла сам стал бы плавной анимацией и дрался бы с циклом.
+     Ровно на этом сначала сломался мой собственный стенд: замер дрожания шапки
+     показывал 2 переключения вместо 24, потому что шаги имитации не доезжали. */
+  (function(){
+    var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches;
+    var head=document.querySelector("header"),menu=document.getElementById("menuOv");
+    function jump(y){try{window.scrollTo({top:y,left:0,behavior:"instant"})}catch(e){window.scrollTo(0,y)}}
+    /* Высота берётся только у ЛИПКОЙ шапки. На ширинах 761-899px она статическая,
+       уезжает вместе со страницей, и вычитать её было бы дырой в 65px. */
+    function headH(){
+      if(!head)return 0;
+      return getComputedStyle(head).position==="sticky"?head.getBoundingClientRect().height:0;
+    }
+    function glide(el){
+      var doc=document.documentElement;
+      var max=Math.max(0,doc.scrollHeight-window.innerHeight);
+      var from=window.pageYOffset;
+      var to=Math.max(0,Math.min(max,from+el.getBoundingClientRect().top-headH()-12));
+      var d=to-from;
+      if(reduce||Math.abs(d)<2||!window.requestAnimationFrame){jump(to);return}
+      /* Время от расстояния: короткий переход не тянется, длинный не превращается
+         в поездку. Потолок 900ms, пол 380ms. */
+      var ms=Math.min(900,Math.max(380,Math.abs(d)*0.55));
+      var t0=null;
+      if(window.__headerHold)window.__headerHold(true);
+      requestAnimationFrame(function step(ts){
+        if(t0===null)t0=ts;
+        var k=Math.min(1,(ts-t0)/ms);
+        var e=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+        jump(from+d*e);
+        if(k<1)requestAnimationFrame(step);
+        else if(window.__headerHold)window.__headerHold(false);
+      });
+    }
+    document.addEventListener("click",function(ev){
+      if(ev.defaultPrevented||ev.button||ev.metaKey||ev.ctrlKey||ev.shiftKey)return;
+      var a=ev.target&&ev.target.closest?ev.target.closest("a"):null;
+      if(!a)return;
+      /* ИСКЛЮЧЕНИЯ, иначе правка молча сломала бы три работающих сценария:
+         .form-open и .cta открывают окно формы своим обработчиком,
+         .skip это ссылка обхода для клавиатуры, ей нужен родной перенос ФОКУСА,
+         а не только прокрутка. Телефон и Instagram на старте висят на href="#". */
+      if(a.classList.contains("form-open")||a.classList.contains("cta")||a.classList.contains("skip"))return;
+      var href=a.getAttribute("href")||"";
+      if(href.charAt(0)!=="#"||href.length<2)return;
+      var el;
+      try{el=document.querySelector(href)}catch(e){return}
+      if(!el)return;
+      ev.preventDefault();
+      if(menu)menu.classList.remove("open");
+      glide(el);
+      if(history.replaceState)history.replaceState(null,"",href);
+    },false);
   })();
 })();
 </script>
