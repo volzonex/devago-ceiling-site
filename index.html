@@ -165,7 +165,19 @@ h2.title{font-size:clamp(1.6rem,3.4vw,2.4rem);font-weight:400;letter-spacing:.14
 
 /* ==================== HEADER ==================== */
 header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bottom:1px solid var(--hairline);padding-top:env(safe-area-inset-top)}
-@media(max-width:760px){header{position:static;background:var(--bg)}}
+/* ⚠️ ШАПКА ЗАКРЕПЛЕНА НА ВСЕХ ШИРИНАХ. Решение Тахира, механика sticky.
+   Отменяет три прежние записи: правило «на мобильном шапка не липкая» В ЧАСТИ
+   ЛИПКОСТИ, самопрятание v10 и мой откат a9111c3. Запрет backdrop-filter остаётся
+   целиком, он про материал, а не про положение.
+   Мерцание давало не приклеивание, а его связка с transform при прятании: липкое
+   смещение iOS считает на потоке прокрутки, трансформацию на главном. Прятания больше
+   нет, трансформации нет, причина исчезла.
+   ⚠️ ВЫСОТА ДО 1000px ПОСТОЯННА И НЕ ЗАВИСИТ ОТ ПРОКРУТКИ. Отсюда две правки, которые
+   легко потерять: уплотнение .shrunk переехало с 900px на 1000px (иначе на 900-999
+   шапка меняла бы высоту на ходу), и снят padding-top:env(safe-area-inset-top) —
+   встроенный браузер меняет инсет, когда схлопывает свою обвязку, а это и есть скачок
+   высоты у липкой шапки. Выше 1000px инсет оставлен, там обвязки браузера нет. */
+@media(max-width:999px){header{background:var(--bg);padding-top:0}}
 .nav{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;gap:16px}
 .brand{display:flex;align-items:center;gap:12px;flex:none}
 .brand img{width:40px;height:40px;object-fit:contain}
@@ -201,7 +213,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .hero .kick{font-weight:400;letter-spacing:.34em}
 .hero h1{font-size:clamp(2.15rem,5.6vw,3.7rem);letter-spacing:.15em;text-transform:uppercase;color:#fff;font-weight:400;margin-top:10px}
 .hero h1 .g{color:var(--gold-l)}
-.hero .sub2{font:500 .7rem/1.7 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--text);margin-top:12px}
+.hero .sub2{font:500 .78rem/1.7 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--text);margin-top:12px}
 .hero .sub{color:var(--t2);font-size:.96rem;margin-top:16px;max-width:44ch;text-shadow:0 1px 12px rgba(11,10,8,.9)}
 .hero-btns{display:flex;flex-direction:column;gap:12px;margin-top:26px;max-width:440px}
 .pc{width:34px;height:34px;flex:none;border:1px solid var(--gold);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:var(--gold)}
@@ -237,8 +249,8 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .sol .ic{width:44px;height:44px;flex:none;color:var(--gold)}
 .sol .ic svg{width:100%;height:100%}
 .sol .tx{flex:1;min-width:0}
-.sol .tx b{display:block;font:500 .8rem/1.35 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--text)}
-.sol .tx > span{display:block;font-size:.8rem;color:var(--t2);margin-top:4px}
+.sol .tx b{display:block;font:500 .85rem/1.35 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--text)}
+.sol .tx > span{display:block;font-size:.85rem;color:var(--t2);margin-top:4px}
 .sol .arr{color:var(--gold);flex:none;width:16px;height:16px}
 .sol .arr .ad{display:none}
 @media(min-width:900px){.sol .arr .ad{display:block}.sol .arr .am{display:none}}
@@ -248,18 +260,21 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
   .sol:hover{transform:translateY(-3px)}
   .sol .ic{width:40px;height:40px}
   .sol .tx b{font-size:.72rem;letter-spacing:.14em}
-  .sol .tx > span{font-size:.74rem;margin-top:8px}
+  .sol .tx > span{font-size:.85rem;margin-top:8px}
   .sol .arr{position:absolute;right:12px;bottom:12px;width:15px;height:15px}
 }
 
 /* ==================== 3 · COMBO ==================== */
-.combo-wrap{margin-top:10px}
+/* ⚠️ 0, А НЕ 10px. Шапка блока #combo единственная из шести не лежит в .sec-head, и
+   эти 10px были её личной добавкой: на телефоне заголовок садился на 98px против 88
+   у остальных пяти. Разброс посадки якорей задан не больше 8px, 10 в него не влезали. */
+.combo-wrap{margin-top:0}
 .combo-text .kick{margin-bottom:12px}
 .combo-t-mob{font-weight:400;letter-spacing:.02em;font-size:clamp(1.7rem,4.4vw,2.2rem);color:var(--text)}
 .combo-t-desk,.combo-p{display:none}
 .combo{position:relative;margin-top:22px;border:1px solid var(--hairline)}
 .combo img{width:100%;aspect-ratio:16/10.5;object-fit:cover;height:auto;object-position:35% 20%}
-.ann{position:absolute;font:500 .55rem/1.35 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text);text-shadow:0 1px 8px rgba(11,10,8,.95)}
+.ann{position:absolute;font:500 .6875rem/1.35 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text);text-shadow:0 1px 8px rgba(11,10,8,.95)}
 .ann::before{content:"";position:absolute;background:var(--gold);opacity:.85}
 .ann.up::before{left:8px;bottom:100%;width:1px;height:26px}
 .ann.dn::before{left:8px;top:100%;width:1px;height:26px}
@@ -267,7 +282,12 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .combo-btn{margin-top:20px}
 @media(min-width:1100px){
   .combo-wrap{display:grid;grid-template-columns:.82fr 1.18fr;grid-template-rows:auto auto;gap:0 48px;align-items:center}
-  .combo-text{grid-column:1;grid-row:1;align-self:end}
+  /* ⚠️ ТЕКСТОВАЯ КОЛОНКА ПРИЖАТА К ВЕРХУ, картинка по-прежнему по центру ряда.
+     Причина посадки якоря найдена здесь: align-items:center центрировал текст против
+     ВЫСОКОЙ фотографии, и кикер уезжал вниз. Замер на 1280: заголовок вставал на 268px
+     против 209 у остальных пяти секций. Композиция от этого меняется, называю прямо:
+     раньше текст висел по центру снимка, теперь начинается с его верхней кромки. */
+  .combo-text{grid-column:1;grid-row:1;align-self:start}
   .combo{grid-column:2;grid-row:1/3}
   .combo-btn{grid-column:1;grid-row:2;align-self:start;margin-top:24px}
   .combo-t-mob{display:none}
@@ -301,7 +321,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .step .tx{min-width:0;padding:4px 0 4px 4px}
 .step .no{display:inline-block;font:400 1.05rem/1 var(--sans);letter-spacing:.08em;color:var(--gold);margin-right:10px;vertical-align:1px}
 .step .tx b{display:inline;font:500 .78rem/1.4 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text)}
-.step .tx .sp{display:block;font-size:.78rem;color:var(--t2);margin-top:8px}
+.step .tx .sp{display:block;font-size:.85rem;color:var(--t2);margin-top:8px}
 .step .th{margin:-14px -14px -14px 0;overflow:hidden;position:relative}
 .step .th img{width:100%;height:100%;object-fit:cover}
 .step .th::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--card),transparent 45%)}
@@ -311,7 +331,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
   .step .tx{padding:0}
   .step .no{display:block;font-size:1.2rem;margin:0 0 8px}
   .step .tx b{display:block;font-size:.72rem;letter-spacing:.12em}
-  .step .tx .sp{font-size:.74rem;margin-top:6px}
+  .step .tx .sp{font-size:.85rem;margin-top:6px}
   .step .th{margin:14px -16px 0;height:118px}
   .step .th::after{background:linear-gradient(180deg,var(--card),transparent 45%)}
 }
@@ -628,9 +648,12 @@ header{border-bottom:1px solid rgba(237,230,214,.07)}
 /* Курсора grab и grabbing на карусели НЕТ намеренно: перетаскивания и свайпа у неё
    нет ни на одном устройстве, ладонь обещала бы жест, которого не существует. */
 
-/* --- 8. Шапка при прокрутке, ТОЛЬКО десктоп. На мобильном шапка остаётся нелипкой
-       и без размытия: принятое решение из-за браузера Telegram, не отменять. --- */
-@media(min-width:900px){
+/* --- 8. Уплотнение шапки при прокрутке, ТОЛЬКО от 1000px.
+       Порог 900 заменён на 1000 сознательно: до 1000px высота шапки обязана быть
+       постоянной, а .shrunk меняет поля .nav, то есть высоту. Приклеенная шапка,
+       меняющая высоту на ходу, это ровно то дрожание, из-за которого всё началось.
+       Материал не меняем: backdrop-filter под запретом на всех ширинах. --- */
+@media(min-width:1000px){
   header{transition:background-color .35s ease,box-shadow .35s ease}
   .nav{transition:padding .35s cubic-bezier(.22,.61,.36,1)}
   header.shrunk{background:rgba(11,10,8,.92);box-shadow:0 1px 0 rgba(201,162,75,.22)}
@@ -1059,7 +1082,7 @@ body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .pp .bx{display:block;padding:12px 12px 14px}
 .pp .bx b{display:block;font:500 .66rem/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-l);overflow-wrap:anywhere}
 .pp .bx b i{font-style:normal;color:var(--gold);margin-right:6px}
-.pp .pp-d{display:block;font-size:.74rem;color:var(--t2);margin-top:5px}
+.pp .pp-d{display:block;font-size:.85rem;color:var(--t2);margin-top:5px}
 @media(hover:hover){.pp:hover .ph img{transform:scale(1.03)}
   .pp .ph img{transition:transform 1.2s cubic-bezier(.22,.61,.36,1)}}
 @media(min-width:1000px){
@@ -1089,7 +1112,7 @@ body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .step .no{display:block;font:400 1.2rem/1 var(--sans);letter-spacing:.08em;color:var(--gold);margin:0 0 10px}
 .step .tx b{display:block;font:500 .74rem/1.4 var(--sans);letter-spacing:.12em;text-transform:uppercase;
   color:var(--text);overflow-wrap:anywhere;min-height:2.8em}
-.step .tx .sp{display:block;font-size:.76rem;color:var(--t2);margin-top:7px}
+.step .tx .sp{display:block;font-size:.85rem;color:var(--t2);margin-top:7px}
 .step .arr{order:3;width:15px;height:15px;color:var(--gold);flex:none;
   align-self:flex-end;margin:-26px 12px 12px 0;position:relative;z-index:1;
   transition:transform .3s cubic-bezier(.22,.61,.36,1)}
@@ -1189,9 +1212,31 @@ body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .tg-btn{white-space:nowrap;letter-spacing:.14em;min-width:260px}
 .final-note{margin-top:var(--s4);font-size:.78rem;line-height:1.55;color:var(--mut)}
 @media(min-width:900px){
+  /* ⚠️ ЗАГОЛОВОК НА ОБЕ КОЛОНКИ, КАРТОЧКА РАВНЯЕТСЯ С ПАРОЙ ЛИД ПЛЮС КОНТАКТЫ.
+     Причина пустоты была не в полях: карточка стояла по align-items:center внутри
+     колонки, высоту которой задавал крупный заголовок, поэтому над ней и под ней
+     оставалось по 81-105px. Вариант «растянуть карточку на всю колонку» спекой
+     отрисован и отвергнут: внутри неё образуется около 200px пустоты.
+     display:contents у .final-l применён после проверки: у неё нет ни фона, ни полей,
+     ни рамки, ни собственного позиционирования (замер computed-стилей до вёрстки),
+     поэтому уничтожение её бокса ничего не уносит. Запасной вариант с зашитым
+     margin-top не понадобился. */
+  #final{padding-bottom:clamp(48px,5vw,72px)}
   .final-wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
-    gap:var(--s8);align-items:center}
-  .final-act{padding:var(--s7) var(--s6) var(--s6)}
+    column-gap:var(--s8);row-gap:var(--s5);align-items:stretch}
+  .final-l{display:contents}
+  .final-l h2{grid-column:1/-1;grid-row:1}
+  .final-l .lead{grid-column:1;grid-row:2;margin-top:0}
+  .contact-row{grid-column:1;grid-row:3;gap:6px;margin-top:var(--s4)}
+  /* Поля симметричны: 48 сверху ставились, когда карточка стояла по своей высоте.
+     Теперь она растянута и содержимое центрируется, поэтому разные поля дают разные
+     зазоры сверху и снизу без всякой причины. 32 со всех сторон.
+     ЧЕСТНАЯ ОГОВОРКА про «хвост под последней строкой»: он равен полю 32 ПЛЮС половина
+     свободного места растянутой карточки, и вторую часть полем не убрать. Убрать её
+     можно только перестав растягивать карточку, но тогда пустота вернётся наружу,
+     ради чего вся правка и делалась. */
+  .final-act{grid-column:2;grid-row:2/4;display:flex;flex-direction:column;
+    justify-content:center;padding:var(--s6)}
 }
 /* Логотип уехал в футер: третьей колонкой он перетягивал внимание с кнопки в
    единственном месте страницы, где внимание должно уходить в действие. */
@@ -1455,8 +1500,10 @@ html{scrollbar-gutter:stable}
   padding:12px 18px;border-radius:3px;font:500 .72rem/1 var(--sans);letter-spacing:.12em}
 /* 5. Якоря перестают прятаться под липкой шапкой: 90px несжатой шапки плюс воздух.
    На телефоне шапка статичная, там достаточно 16. */
-section[id],div[id]{scroll-margin-top:104px}
-@media(max-width:760px){section[id],div[id]{scroll-margin-top:16px}}
+/* 80 = высота уплотнённой шапки 69 плюс 11 воздуха. */
+section[id],div[id]{scroll-margin-top:80px}
+/* 76 = высота шапки телефона 65 плюс 11 воздуха. */
+@media(max-width:760px){section[id],div[id]{scroll-margin-top:76px}}
 /* 1. Переключатель языка становится утилитой: сегментный контроль, состояние
    различается ДВУМЯ каналами (подложка и вес), а не только цветом. */
 .lang{border:1px solid rgba(201,162,75,.22);border-radius:3px;overflow:hidden}
@@ -1791,9 +1838,28 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
    Метрики: у антиквы прописные и так идут с воздухом, гротескный трекинг их разваливает.
    Нынешние значения в файле .19em на телефоне и .16em на десктопе (в брифе указаны
    .16 и .13, это старые, до правки v3), интерлиньяж 1.14 и 1.08. */
-.hero h1{font-family:'HeroH1','Jost','UzApos',system-ui,sans-serif;
-  letter-spacing:.08em;line-height:1.04}
-@media(min-width:900px){.hero h1{letter-spacing:.06em;line-height:1.04}}
+/* ⚠️ ПРАВКА ТАХИРА 08.08: гарнитура Futura и кегль СИЛЬНО крупнее.
+   Антиква HeroH1 (Forum) с первого экрана снята, файл шрифта из <head> НЕ удаляю:
+   он не подключается этим правилом больше нигде, но и весит он только когда его
+   просят, а вернуть решение одной строкой дешевле, чем восстанавливать по истории.
+
+   ПРО СТЕК, И ЭТО НЕ ПОДМЕНА ЗАКАЗА. Futura это платная гарнитура, свободного файла с
+   кириллицей у нас нет, а половина посетителей сидит на Android, где Futura не стоит
+   ни в каком виде. Поэтому: сначала спрашиваем настоящую Futura у системы (на macOS и
+   iOS она есть штатно, там заголовок будет ровно ей), а запасным идёт Jost, который
+   УЖЕ загружен сайтом и является прямой свободной репликой Futura, той же геометрии и
+   тех же пропорций. Так на технике Тахира и клиентов-эппловодов стоит настоящая Futura,
+   а на остальных неотличимая на глаз замена, и ни одного лишнего килобайта.
+
+   КЕГЛЬ. Было clamp(2.15rem, 5.6vw, 3.7rem), стало clamp(3rem, 9vw, 6.2rem): рост
+   примерно в 1.4 раза на телефоне и в 1.7 на десктопе. Геометрический гротеск в
+   прописных держит крупный кегль лучше антиквы, но требует ДРУГИХ метрик: трекинг
+   срезан почти вдвое (у Futura прописные и так широкие, прежний .19em разваливал бы
+   слово), интерлиньяж поджат до 0.95, иначе две строки расходятся дырой. */
+.hero h1{font-family:'Futura','Futura PT','Jost','UzApos',system-ui,sans-serif;
+  font-size:clamp(3rem,9vw,6.2rem);font-weight:500;
+  letter-spacing:.05em;line-height:.98}
+@media(min-width:900px){.hero h1{letter-spacing:.03em;line-height:.95}}
 
 /* ================= CDO, 07.08: полоса цифр, мобильная раскладка и разделители ============ */
 #facts{border-top:1px solid rgba(201,162,75,.10);border-bottom:1px solid rgba(201,162,75,.10)}
@@ -1861,9 +1927,8 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
    Компактность полей из v10 остаётся, локап логотипа не тронут ни на пиксель. */
 @media(max-width:760px){
   .nav{padding-top:10px;padding-bottom:10px}
-  /* 16px, а не 76: со статической шапкой заголовок раздела больше ни подо что не уезжает.
-     76 стояли ровно потому, что шапка была липкой, и вместе с ней уходят. */
-  section[id],div[id]{scroll-margin-top:16px}
+  /* Шапка снова липкая, поэтому 76 вернулись: 65 высоты плюс 11 воздуха. */
+  section[id],div[id]{scroll-margin-top:76px}
 }
 @media(prefers-reduced-motion:reduce){header{transition:none}}
 
@@ -1943,8 +2008,10 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
    .prj .role, .foot-tx .small и .ann-legend .lg-btn.
    ПОПРАВКА К СПЕКЕ: селектора .final-r .tag больше не существует, блок .final-r убран
    в v4, когда логотип уехал в футер. Вместо него .foot-tx .tag. */
+/* 1.5, а не 1.45. Значение 1.45 ставилось под кегль 11.8px; описания карточек выросли
+   до 13.6px, и на них строка стала тесной. Это правка моей же недавней правки. */
 .pp .pp-d,.tx .sp,.prj .city,.prj .obj,.bt small,.foot-tx .tag,
-.kick,.prj .role,.foot-tx .small,.ann-legend .lg-btn{line-height:1.45}
+.kick,.prj .role,.foot-tx .small,.ann-legend .lg-btn{line-height:1.5}
 .prj q,.im-list li,.why span{line-height:1.55}
 
 /* B. ПОДПИСЬ ПОД ЗАГОЛОВКОМ ПРИНАДЛЕЖИТ ЗАГОЛОВКУ.
@@ -2783,14 +2850,12 @@ var I18N = {
       document.body.style.top=(-lockY)+"px";
       document.documentElement.classList.add("no-scroll");
       document.body.classList.add("no-scroll");
-      if(window.__headerHide)window.__headerHide(true);
     }else if(lockN===0&&was>0){
       document.documentElement.classList.remove("no-scroll");
       document.body.classList.remove("no-scroll");
       document.body.style.top="";
       /* instant, иначе scroll-behavior:smooth у html проиграет возврат анимацией */
       try{window.scrollTo({top:lockY,left:0,behavior:"instant"})}catch(e){window.scrollTo(0,lockY)}
-      if(window.__headerHide)window.__headerHide(false);
     }
   }
   /* НАБОР ДЛЯ СТРЕЛОК. Собираем по ПОРЯДКУ В DOM внутри секции источника, ключи не
@@ -3047,132 +3112,144 @@ var I18N = {
     },{threshold:0}).observe(hero);
   }
 
-  /* ШАПКА ПРИ ПРОКРУТКЕ, только десктоп: сам класс вешаем всегда, но всё оформление
-     .shrunk живёт внутри @media(min-width:900px), поэтому на телефоне ничего не
-     меняется и шапка остаётся нелипкой и без размытия. */
-  /* ПЕРЕПИСАНО ПОСЛЕ ЖАЛОБЫ НА БРАУЗЕР TELEGRAM: «шапка мерцает очень быстро».
-     Дефект воспроизведён и измерен на стенде. Старое правило сравнивало положение
-     с ПРЕДЫДУЩИМ СОБЫТИЕМ и имело гистерезис 6px, поэтому любое дрожание амплитудой
-     больше 6px переключало шапку на КАЖДОМ событии:
-
-         дрожание +-8px, 24 колебания  -> 21 переключение
-         дрожание +-14px и выше        -> 24 переключения из 24
-
-     При переходе 0.28s это и есть «мерцает». Дрожание во встроенном браузере берётся
-     не из воздуха: строка адреса схлопывается в пилюлю и разворачивается обратно,
-     высота окна прыгает, инерционная прокрутка iOS добавляет своё.
-
-     Три независимых заслона, каждый закрывает свой источник:
-     1. ЯКОРЬ ВМЕСТО ПРЕДЫДУЩЕГО КАДРА. Считаем ход от точки РАЗВОРОТА, а не от
-        соседнего события. Пока в одну сторону не пройдено 48px, шапка не трогается,
-        и колебание любой частоты в пределах 48px не даёт вообще ни одного переключения.
-     2. ТИХОЕ ОКНО ПОСЛЕ СМЕНЫ РАЗМЕРА ОКНА. Схлопывание строки адреса это скачок
-        сразу на десятки пикселей, порог 48px его не удержит. Но такой скачок ВСЕГДА
-        приходит вместе с resize visualViewport, и на 400ms после него положение
-        шапки замораживается.
-     3. ПАУЗА 300ms МЕЖДУ ПЕРЕКЛЮЧЕНИЯМИ. Потолок на частоту: что бы ни случилось,
-        чаще трёх раз в секунду шапка сменить состояние не может.
-     Плюс чтение перенесено в requestAnimationFrame: на кадр приходится один расчёт. */
+  /* УПЛОТНЕНИЕ ШАПКИ ПРИ ПРОКРУТКЕ. Всё, что осталось от прежнего блока.
+     ⚠️ МЕХАНИЗМ ПРЯТАНИЯ УДАЛЁН, А НЕ ЗАГЛУШЕН, и это требование, а не уборка: класс
+     hide, пороги 48px и 140px, пауза 300ms, заморозка после resize visualViewport,
+     точки перехвата __headerHide и __headerHold. Спящий код однажды вернулся бы вместе
+     с дефектом. Шапка теперь приклеена на всех ширинах и не двигается никогда.
+     Класс .shrunk оставлен: он отвечает за уплотнение от 1000px и работает.
+     Оговорка про заморозку тела остаётся в силе. При открытом окне scrollY обнуляется,
+     и без этой проверки шапка на выходе из окна разжималась бы на 16px, утаскивая
+     вёрстку ниже. Дефект жил с v4, поймала приёмка v5. */
   (function(){
     var h=document.querySelector("header");
     if(!h) return;
-    var STEP=48,   /* ход в одну сторону, после которого шапка реагирует */
-        PAUSE=300, /* минимум между сменами состояния */
-        QUIET=400; /* заморозка после смены размера окна */
-    var t=false,hidden=false,held=false,tick=false;
-    var lastY=0,anchorY=0,dir=0,flipAt=0,quietTill=0;
-    function now(){return window.performance&&performance.now?performance.now():+new Date}
-    function set(v){
-      if(v===hidden)return;
-      if(now()-flipAt<PAUSE)return;
-      hidden=v;flipAt=now();h.classList.toggle("hide",v);
-    }
-    function reset(){anchorY=lastY=Math.max(0,window.pageYOffset);dir=0}
+    var t=false,tick=false;
     function read(){
       tick=false;
-      /* Слушатель молчит, пока тело заморожено открытым окном. В v5 при заморозке
-         scrollY обнулялся, слушатель снимал класс, шапка вырастала на 16px и вёрстка
-         ниже уезжала. Здесь та же ловушка: шапка выпрыгнула бы поверх открытого листа. */
       if(document.documentElement.classList.contains("no-scroll"))return;
       if(document.body.classList.contains("no-scroll"))return;
-      var y=Math.max(0,window.pageYOffset);
-      var sc=y>40;
+      var sc=Math.max(0,window.pageYOffset)>40;
       if(sc!==t){ t=sc; h.classList.toggle("shrunk",sc); }
-      h.classList.toggle("stuck",y>8);
-      /* Пока идёт наш собственный переход по якорю или пока окно меняет размер,
-         положение шапки не пересчитываем, только запоминаем точку. */
-      if(held||now()<quietTill){ anchorY=lastY=y; return }
-      /* Порог 140 не даёт шапке прятаться внутри первого экрана. */
-      if(y<60){ set(false); anchorY=lastY=y; dir=0; return }
-      if(y>lastY){ if(dir!==1){dir=1;anchorY=lastY} }
-      else if(y<lastY){ if(dir!==-1){dir=-1;anchorY=lastY} }
-      lastY=y;
-      if(dir===1&&y>140&&y-anchorY>STEP){ set(true); anchorY=y }
-      else if(dir===-1&&anchorY-y>STEP){ set(false); anchorY=y }
     }
     addEventListener("scroll",function(){
       if(tick)return; tick=true;
       if(window.requestAnimationFrame)requestAnimationFrame(read); else read();
     },{passive:true});
-    function calm(){quietTill=now()+QUIET}
-    if(window.visualViewport&&visualViewport.addEventListener)visualViewport.addEventListener("resize",calm);
-    addEventListener("resize",calm);
-    /* При открытии любого окна шапке принудительно ставится hide, при закрытии
-       снимается. Точка перехвата одна на все окна, это счётчик замков. Пауза здесь
-       обходится: это не дрожание, а осознанная команда. */
-    window.__headerHide=function(on){hidden=!!on;flipAt=0;h.classList.toggle("hide",!!on);if(!on)reset()};
-    /* Удержание на время нашего плавного перехода по якорю: шапка обязана стоять
-       на месте, иначе раздел приедет под уехавшую шапку. */
-    window.__headerHold=function(on){held=!!on;if(on){hidden=false;flipAt=0;h.classList.remove("hide")}else reset()};
   })();
 
-  /* ================= ПЛАВНЫЙ ПЕРЕХОД ПО ЯКОРЯМ =================
-     На странице стоит html{scroll-behavior:smooth}, и на стенде переход из меню
-     действительно плавный: замер дал 49 разных положений за 51 кадр. Но у клиента
-     во встроенном браузере Telegram перенос мгновенный, то есть на это свойство
-     полагаться нельзя. Причин ровно две, и обе вне нашего контроля: движок может
-     не поддерживать плавную прокрутку по якорю, либо у человека включено системное
-     «уменьшение движения». Первую мы обязаны обойти, вторую обязаны уважать.
+  /* ================= ПЕРЕХОД ПО ЯКОРЯМ: РОДНАЯ ОСНОВНАЯ, JS ЗАПАСНОЙ =================
+     Порядок задан решением Тахира и он правильный: движок делает это лучше нас. Родная
+     прокрутка ВЕДЁТ элемент, то есть сама доводит до цели, даже если по дороге поменялся
+     размер окна. Наш цикл этого не умеет бесплатно, поэтому он запасной.
 
-     Поэтому переход считается сами: requestAnimationFrame плюс кубическая кривая.
-     Это работает в любом движке, не зависит от scroll-behavior и заодно даёт то,
-     чего у родного перехода нет: шапка на время переезда удерживается на месте,
-     а посадка считается от её ЖИВОЙ высоты, а не от заранее вбитого scroll-margin.
+     ПРОВЕРКА, А НЕ ДОГАДКА О ПОДДЕРЖКЕ. Спрашивать движок «умеешь ли ты smooth» нечем:
+     CSS.supports отвечает про синтаксис, а не про поведение. Поэтому вызываем родную
+     прокрутку и через ДВА КАДРА смотрим, сдвинулось ли положение. Не сдвинулось значит
+     не поехало, включаем запасную ветку. Два кадра, а не один: первый кадр анимация
+     может ещё не начать.
 
-     ВАЖНО про scrollTo внутри цикла: только behavior "instant". С поведением по
-     умолчанию каждый шаг цикла сам стал бы плавной анимацией и дрался бы с циклом.
-     Ровно на этом сначала сломался мой собственный стенд: замер дрожания шапки
-     показывал 2 переключения вместо 24, потому что шаги имитации не доезжали. */
+     ⚠️ ЗАПАСНАЯ ВЕТКА ПЕРЕСЧИТЫВАЕТ ЦЕЛЬ НА КАЖДОМ КАДРЕ. Это второй дефект с живого
+     iPhone, а не украшение: прежняя версия считала цель ОДИН раз на старте, и в это окно
+     попадало складывание адресной строки. Высота окна менялась, а анимация доводила до
+     числа, посчитанного для прежней высоты, отсюда промах на 60-100px и жалоба, что
+     якорь садится на низ предыдущего блока. Пересчёт от живого getBoundingClientRect
+     делает ветку самокорректирующейся.
+
+     ⚠️ scrollTo внутри цикла ТОЛЬКО с behavior "instant". С поведением по умолчанию
+     каждый шаг сам стал бы плавной анимацией и дрался бы с циклом. На этом однажды
+     сломался мой собственный стенд: замер дрожания шапки показывал 2 переключения
+     вместо 24, потому что шаги имитации не доезжали до цели. */
   (function(){
     var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches;
     var head=document.querySelector("header"),menu=document.getElementById("menuOv");
     function jump(y){try{window.scrollTo({top:y,left:0,behavior:"instant"})}catch(e){window.scrollTo(0,y)}}
-    /* Высота берётся только у ЛИПКОЙ шапки. На ширинах 761-899px она статическая,
-       уезжает вместе со страницей, и вычитать её было бы дырой в 65px. */
+    /* Высота живая и берётся у ЛИПКОЙ шапки. Шапка теперь приклеена на всех ширинах,
+       но проверку положения оставляю: она стоит копейку и страхует от будущей правки,
+       где шапку снова сделают статической, а посадку молча уведёт на её высоту. */
     function headH(){
       if(!head)return 0;
       return getComputedStyle(head).position==="sticky"?head.getBoundingClientRect().height:0;
     }
-    function glide(el){
-      var doc=document.documentElement;
-      var max=Math.max(0,doc.scrollHeight-window.innerHeight);
-      var from=window.pageYOffset;
-      var to=Math.max(0,Math.min(max,from+el.getBoundingClientRect().top-headH()-12));
-      var d=to-from;
-      if(reduce||Math.abs(d)<2||!window.requestAnimationFrame){jump(to);return}
-      /* Время от расстояния: короткий переход не тянется, длинный не превращается
-         в поездку. Потолок 900ms, пол 380ms. */
-      var ms=Math.min(900,Math.max(380,Math.abs(d)*0.55));
+    /* 11px воздуха, ровно как в scroll-margin-top: 65+11 на телефоне, 69+11 на десктопе.
+       Число одно на оба пути, поэтому родная и запасная прокрутка садятся одинаково. */
+    function target(el){
+      var max=Math.max(0,document.documentElement.scrollHeight-window.innerHeight);
+      return Math.max(0,Math.min(max,window.pageYOffset+el.getBoundingClientRect().top-headH()-11));
+    }
+    /* Кривая cubic-bezier(.45,.05,.25,1) решается по Ньютону: у CSS она есть даром,
+       а в цикле её надо считать самому. Пять итераций дают ошибку меньше пикселя. */
+    function bez(p1x,p1y,p2x,p2y){
+      function A(a,b){return 1-3*b+3*a}
+      function B(a,b){return 3*b-6*a}
+      function C(a){return 3*a}
+      function calc(t,a,b){return ((A(a,b)*t+B(a,b))*t+C(a))*t}
+      function slope(t,a,b){return 3*A(a,b)*t*t+2*B(a,b)*t+C(a)}
+      return function(x){
+        var t=x,i,sl;
+        for(i=0;i<5;i++){ sl=slope(t,p1x,p2x); if(!sl)break; t-=(calc(t,p1x,p2x)-x)/sl; }
+        if(t<0)t=0; if(t>1)t=1;
+        return calc(t,p1y,p2y);
+      };
+    }
+    var ease=bez(.45,.05,.25,1);
+    function glide(el,from){
+      /* Счётчик нужен приёмке: требование «при работающей родной прокрутке запасная
+         ветка не включается вовсе» иначе нечем подтвердить снаружи. Одна строка. */
+      window.__anchorFallback=(window.__anchorFallback||0)+1;
+      if(!window.requestAnimationFrame){jump(target(el));return}
+      /* Время от расстояния, вилка 700-1100ms. */
+      var ms=Math.min(1100,Math.max(700,Math.abs(target(el)-from)*0.6));
       var t0=null;
-      if(window.__headerHold)window.__headerHold(true);
       requestAnimationFrame(function step(ts){
         if(t0===null)t0=ts;
         var k=Math.min(1,(ts-t0)/ms);
-        var e=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
-        jump(from+d*e);
+        var to=target(el);                    /* ПЕРЕСЧЁТ ЦЕЛИ НА КАЖДОМ КАДРЕ */
+        jump(from+(to-from)*ease(k));
         if(k<1)requestAnimationFrame(step);
-        else if(window.__headerHold)window.__headerHold(false);
       });
+    }
+    /* ⚠️ УПЛОТНЯЕМ ШАПКУ ДО ВЫЧИСЛЕНИЯ ЦЕЛИ, и это не микрооптимизация.
+       От 1000px .shrunk срезает поля .nav, то есть УМЕНЬШАЕТ ВЫСОТУ ШАПКИ на 16px.
+       Шапка липкая, но лежит в потоке, поэтому вся страница при уплотнении уезжает
+       вверх на те же 16px. Если кликнуть по разделу из самого верха, порядок был такой:
+       браузер считает цель по НЕуплотнённой вёрстке, начинает ехать, на первом же кадре
+       прокрутка переваливает 40px, шапка уплотняется, вёрстка уезжает, и раздел садится
+       на 16px ниже. Замер это и показал: разброс посадки на 1440 был 16px при допуске 8.
+       Уплотняем синхронно и БЕЗ перехода, чтобы высота стала конечной сразу, а не за
+       350 мс. Переход возвращаем на следующем кадре, иначе он пропадёт навсегда. */
+    function preShrink(){
+      if(!head||window.innerWidth<1000||head.classList.contains("shrunk"))return;
+      var nav=head.querySelector(".nav");
+      head.style.transition="none"; if(nav)nav.style.transition="none";
+      head.classList.add("shrunk");
+      void head.offsetHeight;
+      requestAnimationFrame(function(){head.style.transition="";if(nav)nav.style.transition=""});
+    }
+    function go(el){
+      preShrink();
+      var from=window.pageYOffset;
+      var to=target(el);
+      if(Math.abs(to-from)<2)return;
+      /* Уважение к системному «уменьшению движения»: мгновенно, без обеих анимаций. */
+      if(reduce){jump(to);return}
+      try{window.scrollTo({top:to,left:0,behavior:"smooth"})}catch(e){jump(to);return}
+      if(!window.requestAnimationFrame){return}
+      /* ⚠️ ДВЕ ПАРЫ КАДРОВ, А НЕ ОДНА, и это поправка по замеру. С одной парой запасная
+         ветка включалась 1-3 раза из шести на прогоне, где родная прокрутка работала:
+         если кадр пропущен под нагрузкой, сдвига в первой паре ещё нет, и проверка
+         ошибочно решает, что движок не поехал. Вторая пара убирает ложное срабатывание,
+         не меняя смысла: если прокрутка не тронулась и за четыре кадра, она не поедет.
+         Цена ошибки несимметрична: лишний запуск запасной ветки это две анимации
+         одновременно, а лишние два кадра ожидания человек не заметит. */
+      var pairs=0;
+      (function check(){
+        requestAnimationFrame(function(){requestAnimationFrame(function(){
+          if(Math.abs(window.pageYOffset-from)>=1) return;
+          if(++pairs<2) return check();
+          glide(el,window.pageYOffset);
+        })});
+      })();
     }
     document.addEventListener("click",function(ev){
       if(ev.defaultPrevented||ev.button||ev.metaKey||ev.ctrlKey||ev.shiftKey)return;
@@ -3190,7 +3267,7 @@ var I18N = {
       if(!el)return;
       ev.preventDefault();
       if(menu)menu.classList.remove("open");
-      glide(el);
+      go(el);
       if(history.replaceState)history.replaceState(null,"",href);
     },false);
   })();
