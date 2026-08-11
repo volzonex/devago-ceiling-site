@@ -270,20 +270,49 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
    у остальных пяти. Разброс посадки якорей задан не больше 8px, 10 в него не влезали. */
 .combo-wrap{margin-top:0}
 .combo-text .kick{margin-bottom:12px}
-.combo-t-mob{font-weight:400;letter-spacing:.02em;font-size:clamp(1.7rem,4.4vw,2.2rem);color:var(--text)}
-.combo-t-desk{display:none}
+/* ⚠️ ЗАГОЛОВОК СЕКЦИИ ОДИН НА ВСЕХ ШИРИНАХ. Мобильный вариант «Интерьер №3.
+   Комбинация» убран: он остался от раскладки, где секция была карточкой проекта, и на
+   телефоне подписывал снимок номером несуществующего интерьера. Кегль взят вилкой,
+   чтобы на узком экране заголовок не распирал колонку. */
+.combo-t-desk{display:block;font-weight:400;letter-spacing:.02em;font-size:clamp(1.7rem,4.4vw,2.7rem);color:var(--text)}
 /* Описание видно НА ВСЕХ ширинах. Правило целиком переехало сюда из блока от 900px,
    значения не тронуты: кегль и цвет остались теми же, что были на десктопе. */
 .combo-p{display:block;color:var(--t2);font-size:.98rem;margin-top:18px;max-width:44ch}
 .combo{position:relative;margin-top:22px;border:1px solid var(--hairline)}
-.combo img{width:100%;aspect-ratio:16/10.5;object-fit:cover;height:auto;object-position:35% 20%}
-.ann{position:absolute;font:500 .6875rem/1.35 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text);text-shadow:0 1px 8px rgba(11,10,8,.95)}
-.ann::before{content:"";position:absolute;background:var(--gold);opacity:.85}
-.ann.up::before{left:8px;bottom:100%;width:1px;height:26px}
-.ann.dn::before{left:8px;top:100%;width:1px;height:26px}
-.ann i{font-style:normal;display:inline-block;width:5px;height:5px;background:var(--gold);border-radius:50%;margin-right:6px;vertical-align:1px}
+/* ⚠️ КАДР ЦЕЛИКОМ, соотношение файла 2456x908. Раньше стояло 16/10.5 и 16/10, то есть
+   контейнер РЕЗАЛ фотографию, а object-position сдвигал видимое окно. Из-за этого доли
+   изображения и доли контейнера не совпадали, и координаты выносок, снятые с файла,
+   попадали мимо объектов. При совпадении соотношений cover ничего не режет, а
+   object-position становится не нужен. */
+.combo img{width:100%;aspect-ratio:2456/908;object-fit:cover;height:auto}
+/* ⚠️ КООРДИНАТА СТАВИТ ТОЧКУ НА ОБЪЕКТ, а не подпись. Подпись отводится в сторону и
+   соединяется с точкой горизонтальной линией, которая кончается на подписи.
+   Порядок в строке задаётся order, потому что ::before в потоке флекса идёт первым,
+   а точка должна быть у объекта: точка, линия, подпись.
+   Отвод влево это .ann--l: строка разворачивается и сдвигается на свою ширину, чтобы
+   точка осталась на месте. Так подписи 3 и 4 уходят внутрь кадра, а не за правый край. */
+.ann{position:absolute;display:flex;align-items:center;transform:translateY(-50%);
+  font:500 .6875rem/1.35 var(--sans);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text);text-shadow:0 1px 8px rgba(11,10,8,.95)}
+.ann i{order:0;flex:none;font-style:normal;display:block;width:6px;height:6px;
+  background:var(--gold);border-radius:50%;margin:0}
+.ann::before{content:"";order:1;flex:none;width:22px;height:1px;
+  background:var(--gold);opacity:.85;transform-origin:left center}
+.ann > span{order:2;display:block}
+.ann--l{flex-direction:row-reverse;transform:translate(-100%,-50%)}
+.ann--l::before{transform-origin:right center}
+/* ⚠️ КЕГЛЬ СТУПЕНЬКОЙ, И ЭТО ВЫНУЖДЕНО ШИРИНОЙ ФОТОГРАФИИ, а не вкусом. Замер ширины
+   кадра: 818px на 900, 961 на 1100, но всего 584 на 1200 и 668 на 1440, потому что от
+   1200 снимок уезжает во вторую колонку. Четыре подписи по 11px в 584-668 не помещаются
+   ни при каком отводе, проверено шестью конфигурациями на семи ширинах. */
+.ann{font-size:.625rem}
+.ann::before{width:18px}
+@media(min-width:1200px){.ann{font-size:.55rem}.ann::before{width:14px}}
 .combo-btn{margin-top:20px}
-@media(min-width:1100px){
+/* ⚠️ ПОРОГ 1200, А НЕ 1100. Замер: на 1100 фотография в двухколоночной раскладке
+   выходит всего 528px шириной, и четыре подписи туда не влезают НИ ПРИ КАКОМ кегле,
+   проверено пятью конфигурациями. От 1200 колонка даёт 590px и выше, там уже помещаются. */
+@media(min-width:1200px){
   .combo-wrap{display:grid;grid-template-columns:.82fr 1.18fr;grid-template-rows:auto auto;gap:0 48px;align-items:center}
   /* ⚠️ ТЕКСТОВАЯ КОЛОНКА ПРИЖАТА К ВЕРХУ, картинка по-прежнему по центру ряда.
      Причина посадки якоря найдена здесь: align-items:center центрировал текст против
@@ -293,10 +322,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
   .combo-text{grid-column:1;grid-row:1;align-self:start}
   .combo{grid-column:2;grid-row:1/3}
   .combo-btn{grid-column:1;grid-row:2;align-self:start;margin-top:24px}
-  .combo-t-mob{display:none}
-  .combo-t-desk{display:block;font-weight:400;letter-spacing:.02em;font-size:clamp(2rem,3.2vw,2.7rem);color:var(--text)}
   .combo{margin-top:0}
-  .combo img{aspect-ratio:16/10}
 }
 
 /* ==================== 4 · STARRY ==================== */
@@ -521,7 +547,7 @@ h2.title{letter-spacing:.18em;line-height:1.26}
 /* В спеке CDO v1 стоял селектор .combo-t, такого класса в разметке НЕТ (есть combo-t-mob
    и combo-t-desk), поэтому правило не применялось ни у него, ни здесь. Исправлено GM,
    в v2 селектор сразу правильный. */
-.combo-t-mob,.combo-t-desk{letter-spacing:.14em;line-height:1.3}
+.combo-t-desk{letter-spacing:.14em;line-height:1.3}
 .kick{font-weight:400;letter-spacing:.34em}
 .lead{line-height:1.75;max-width:60ch;margin-top:var(--s4)}
 .sub{line-height:1.7}
@@ -732,7 +758,7 @@ section.in::after,section.lit::after{opacity:1}
    заметно шире Jost, поэтому набор капсом стал плотным. Пересчёт. --- */
 .hero h1{line-height:1.14;letter-spacing:.19em}
 h2.title{line-height:1.28;letter-spacing:.20em}
-.combo-t-mob,.combo-t-desk{line-height:1.32;letter-spacing:.10em;font-weight:400}
+.combo-t-desk{line-height:1.32;letter-spacing:.10em;font-weight:400}
 .kick{letter-spacing:.36em;font-weight:500}
 .hero .sub2{letter-spacing:.32em}
 .dnav a{letter-spacing:.16em;font-weight:500}
@@ -1048,12 +1074,12 @@ body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
   .combo .ann:nth-of-type(3){transition-delay:.16s}
   .combo .ann:nth-of-type(4){transition-delay:.24s}
   .combo .ann:nth-of-type(5){transition-delay:.32s}
-  .ann::before{transform:scaleY(0);transition:transform .5s cubic-bezier(.22,.61,.36,1) .2s}
-  .ann.dn::before{transform-origin:top}
-  .ann.up::before,.ann.nn::before{transform-origin:bottom}
-  .reveal.in .ann::before{transform:scaleY(1)}
+  /* Линия горизонтальная, поэтому растёт по X, а не по Y. Точка отсчёта у левого
+     отвода справа, у правого слева, иначе линия выезжала бы из подписи, а не из точки. */
+  .ann::before{transform:scaleX(0);transition:transform .5s cubic-bezier(.22,.61,.36,1) .2s}
+  .reveal.in .ann::before{transform:scaleX(1)}
 }
-@media(prefers-reduced-motion:reduce){.ann{opacity:1}.ann::before{transform:scaleY(1)}}
+@media(prefers-reduced-motion:reduce){.ann{opacity:1}.ann::before{transform:scaleX(1)}}
 
 /* Поповер, от 900px. Позицию считает JS, чтобы не вылезал за края фото. */
 .pop{position:absolute;z-index:8;width:280px;max-width:calc(100% - 16px);
@@ -1267,7 +1293,7 @@ footer{text-align:left}
    хватает). Применено ко ВСЕМ сеткам файла, не только к новым. */
 .sol-list,.steps,.pp-grid,.ann-legend,.final-wrap,.combo-wrap{min-width:0}
 @media(min-width:900px){.sol-list{grid-template-columns:repeat(6,minmax(0,1fr))}}
-@media(min-width:1100px){.combo-wrap{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)}}
+@media(min-width:1200px){.combo-wrap{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)}}
 .sol,.step,.pp,.prj,.ann,.btn,.dnav a,.lang button,.prj-more,.car-ctl button{
   -webkit-tap-highlight-color:rgba(201,162,75,.18)}
 /* Минимальный кегль 14px: ниже него вес не опускаем. */
@@ -1289,7 +1315,7 @@ footer{text-align:left}
   .wall{position:absolute;height:100lvh}
   .sol-list .sol{opacity:1;transform:none;transition-delay:0s}
   .ann{opacity:1}
-  .ann::before{transform:scaleY(1)}
+  .ann::before{transform:scaleX(1)}
   .sol .ic svg > *{stroke-dasharray:none;stroke-dashoffset:0}
   .deep{position:absolute;height:100lvh}
 }
@@ -1687,6 +1713,9 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
      на сам элемент, видимый кружок ушёл в ::before. Сдвиг на половину бокса нужен,
      чтобы центр кнопки встал ровно на процентный якорь: проценты отсчитываются от
      левого верхнего угла, и без него все пять маркеров уехали бы вправо и вниз. */
+  /* Сброс десктопного отвода: на телефоне выноска это кружок с цифрой, подпись живёт
+     в легенде. Кружок центрируется НА координате, чтобы точка стояла на объекте. */
+  .ann,.ann--l{display:block;flex-direction:row;transform:translate(-50%,-50%)}
   .ann{width:44px;height:44px;background:none;box-shadow:none;border-radius:0;
        display:grid;place-items:center;transform:translate(-22px,-22px)}
   .ann::after{display:none}          /* прежняя накладка, иначе зона удвоится */
@@ -1704,22 +1733,11 @@ body.renders-visual .vis-note{margin-inline:auto;text-align:center}
   .ann.on::before,.ann:focus-visible::before{background:var(--gold);border-color:var(--gold);color:#171204}
   /* 2. Хвостик-указатель: маркер стал крупнее и закрывал бы саму линию на кадре.
      Берём уже существующий .ann i, новых узлов не заводим. */
-  .ann i{display:block;position:absolute;width:1px;height:14px;
-         background:var(--gold);opacity:.7;left:50%;margin-left:-.5px;
-         border-radius:0;margin-right:0}
-  .ann.up i{bottom:calc(50% + 14px)}
-  .ann.dn i{top:calc(50% + 14px)}
-  .ann.nn i{display:none}
+  .ann i{display:none}
   /* 3. Мобильные якоря отдельными значениями. Десктопные проценты НЕ трогаются:
      на них завязана арифметика зазоров из v3.1 и починенные дефекты 3 и 4 из v4. */
-  /* ⚠️ ТАБЛИЦА ПЕРЕСОБРАНА ЦЕЛИКОМ, а не сдвинута по номерам. Ключ здесь data-ann,
-     то есть ЛИЧНОСТЬ выноски, а не её цифра: после перенумерации сдвиг номеров навесил
-     бы мобильные проценты не на те элементы. Пара --mx1/--my1 принадлежала теневому
-     профилю и удалена вместе с ним. Выноски 4 и 5 своих мобильных значений не имели
-     и не получают: их десктопные проценты на телефоне проверены замером. */
-  .ann[data-ann="2"]{left:var(--mx2)!important;top:var(--my2)!important}
-  .ann[data-ann="3"]{left:var(--mx3)!important;top:var(--my3)!important}
-  .combo{--mx2:35%;--my2:16%;--mx3:56%;--my3:15%}
+  /* Мобильных якорей больше нет: кадр один и набор координат один. Пара --mx/--my
+     из v8 удалена вместе со вторым кадром. */
   /* 4. Легенда это второй, БОЛЬШИЙ способ нажать: строка около 160x44 против
      кружка 44x44, то есть втрое больше по площади. */
   .ann-legend li{align-items:center}
@@ -2059,34 +2077,23 @@ body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
   .step .th{margin-top:var(--s5)}
 }
 
-/* ================= ПЯТАЯ ПЛИТКА ПОЛОСЫ ЦИФР (11.08) =================
-   Широкая плитка на всю строку. Блок стоит в КОНЦЕ файла намеренно: правило гашения
-   вертикального разделителя весит столько же, сколько .facts .f + .f::before из блока
-   от 1000px, и выигрывает только порядком. Выше по файлу оно бы молча не сработало. */
+/* ================= ПЯТАЯ ПЛИТКА ПОЛОСЫ ЦИФР =================
+   ⚠️ ПРАВКА ТАХИРА 11.08: «пятый блок такой же как и другие». Прежняя широкая строка
+   на всю ширину с горизонтальной линией и флексом ОТМЕНЕНА целиком, а не перекрыта:
+   старые правила лежали ниже по файлу и выигрывали порядком у любой попытки их перебить.
+
+   От 1000px сетка становится ПЯТИКОЛОНОЧНОЙ, и пятая плитка ничем не отличается от
+   соседних: те же поля, тот же вертикальный разделитель слева, число над подписью.
+   На 600-999 колонок всего две, и пятая там остаётся во всю ширину: иначе она встаёт
+   в половину строки с пустой ячейкой рядом, что читается как обрыв, а не как плитка.
+   Ниже 600 полоса это список, там пятая идёт пятым пунктом и правил не требует. */
 .facts .f--geo{grid-column:1/-1}
-/* ⚠️ ВОЗДУХ ВОКРУГ ЛИНИИ СЧИТАЕТСЯ ОТ КРАСКИ, а не от боксов, и он был разным в вилках.
-   Замер до правки, от нижней краски ряда выше до линии: 22px на 900-999 и ВСЕГО 8px
-   от 1000, потому что там поле плиток сжимается с 22 до 8. Под линией везде 21.
-   Отсюда и ощущение, что широкая плитка приклеена к ряду выше. Разводим до 32 с обеих
-   сторон: снизу это padding-top плитки, сверху margin-top, и margin в двух вилках
-   РАЗНЫЙ именно потому, что разное поле у ряда выше. */
-@media(min-width:900px){
-  .facts .f--geo{display:flex;align-items:baseline;justify-content:center;
-    gap:var(--s5);padding-top:32px;margin-top:10px;
-    border-top:1px solid rgba(201,162,75,.16)}
-  .facts .f--geo b{font-size:clamp(1.6rem,2vw,2rem)}
-  .facts .f--geo span{margin-top:0;text-align:left}
-  /* Вертикальную линию слева широкой плитке гасим: её отделяет горизонтальная сверху. */
-  .facts .f--geo::before{display:none}
+@media(min-width:1000px){
+  .facts{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .facts .f--geo{grid-column:auto}
+  .facts .f{padding:8px 16px}
+  .facts .f b{font-size:clamp(1.5rem,1.9vw,2.2rem)}
 }
-/* Вилка 600-899 в спеке не описана, а без правила пятая плитка там висит без разделителя:
-   крест из линий рисуется по nth-child и до неё не достаёт. Даём ту же горизонтальную
-   линию, что и выше 900, раскладку не трогаем. */
-@media(min-width:600px) and (max-width:899px){
-  .facts .f--geo{border-top:1px solid rgba(201,162,75,.16);margin-top:8px;padding-top:26px}
-}
-/* От 1000 у ряда выше поле 8px вместо 22, поэтому сверху добирать надо больше. */
-@media(min-width:1000px){.facts .f--geo{margin-top:24px}}
 
 /* ================= ЛОЗУНГ СЕКЦИИ КОМБИНАЦИИ (11.08) =================
    Утверждение, а не подпись: крупнее описания и золотом, но БЕЗ капса. Капс с трекингом
@@ -2227,7 +2234,6 @@ body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
     <div class="combo-wrap">
       <div class="combo-text">
         <div class="kick" data-i18n="c_kick">Комбинированное решение DEVAGO</div>
-        <h2 class="combo-t-mob" data-i18n="c_title">Интерьер №3<br>Комбинация</h2>
         <h2 class="combo-t-desk" data-i18n="c_title2">Идеальная комбинация</h2>
         <!-- Описание и лозунг РАЗНЫЕ узлы, а не один абзац с двойным переносом.
              Выделить лозунг из склейки можно было только разбором <br>, а это ломается
@@ -2244,10 +2250,10 @@ body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
             sizes="(min-width:900px) 60vw, 100vw">
           <img src="assets/cn-combo.jpg" alt="Комбинированное потолочное решение: теневой профиль, световые линии, магнитные треки и скрытый карниз в одном интерьере" width="1228" height="454" loading="lazy">
         </picture>
-        <button type="button" data-n="2" data-ann="2" class="ann dn" style="left:35%;top:6%" aria-label="Световые линии"><i></i><span data-i18n="a2">Световые линии</span></button>
-        <button type="button" data-n="3" data-ann="3" class="ann dn" style="left:56%;top:5%" aria-label="Магнитные трековые системы"><i></i><span data-i18n="a3">Магнитные трековые системы</span></button>
-        <button type="button" data-n="4" data-ann="4" class="ann dn" style="left:76%;top:18%" aria-label="Скрытый карниз"><i></i><span data-i18n="a4">Скрытый карниз</span></button>
-        <button type="button" data-n="1" data-ann="5" class="ann dn" style="left:12%;top:24%" aria-label="Парящая подсветка"><i></i><span data-i18n="a5">Парящая подсветка</span></button>
+        <button type="button" data-n="2" data-ann="2" class="ann" style="left:30%;top:22%" aria-label="Световые линии"><i></i><span data-i18n="a2">Световые линии</span></button>
+        <button type="button" data-n="3" data-ann="3" class="ann" style="left:58.5%;top:23.5%" aria-label="Магнитные трековые системы"><i></i><span data-i18n="a3">Магнитные трековые системы</span></button>
+        <button type="button" data-n="4" data-ann="4" class="ann ann--l" style="left:88%;top:25%" aria-label="Скрытый карниз"><i></i><span data-i18n="a4">Скрытый карниз</span></button>
+        <button type="button" data-n="1" data-ann="5" class="ann" style="left:13%;top:22%" aria-label="Парящая подсветка"><i></i><span data-i18n="a5">Парящая подсветка</span></button>
         <!-- ПОПОВЕР ВЫНОСКИ (CDO v4, пункт 4). Один на все пять точек, от 900px.
              Ниже 900px точки открывают общее модальное окно, поповера там нет. -->
         <div class="pop" id="annPop" role="dialog" aria-modal="false" aria-labelledby="popTitle" hidden>
