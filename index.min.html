@@ -333,6 +333,7 @@ body.no-reviews .prj .prj-more,
 body.no-reviews .prj .who,
 body.no-reviews .prj .role{display:none}
 body.no-reviews .prj .bx{padding-bottom:var(--s5)}
+body.no-reviews-section #reviews{display:none}
 body{background:#000}
 .deep{background:
 radial-gradient(140% 70% at 50% -10%,rgba(222,188,119,.16),rgba(222,188,119,.04) 45%,transparent 70%),
@@ -1620,7 +1621,8 @@ var PHONE_TEL = "+998901234567";
 var TG_URL = "https://t.me/TG_PLACEHOLDER"; 
 var FORM_ENDPOINT = "FORM_ENDPOINT_PLACEHOLDER"; 
 var ENABLE_STICKY_CTA = true;  
-var ENABLE_REVIEWS = false;
+var ENABLE_PRJ_CARD_QUOTES = false;   
+var ENABLE_REVIEWS_SECTION = false;
 var RENDERS_ARE_VISUALS = true;
 var I18N = {
 ru:{meta_desc:"DEVAGO Ceiling - премиальные натяжные потолки: теневые системы, световые линии, магнитные треки, скрытые карнизы, звёздное небо, фотопечать. Ташкент, Узбекистан.",
@@ -1798,7 +1800,8 @@ x.onclick=function(){apply(x.getAttribute("data-l"))};});
 var lang0="ru";try{if(localStorage.getItem("devago-lang")==="uz")lang0="uz"}catch(e){}
 apply(lang0);
 if(ENABLE_STICKY_CTA)document.body.classList.add("sticky-on");
-if(!ENABLE_REVIEWS)document.body.classList.add("no-reviews");
+if(!ENABLE_PRJ_CARD_QUOTES)document.body.classList.add("no-reviews");
+if(!ENABLE_REVIEWS_SECTION)document.body.classList.add("no-reviews-section");
 document.querySelectorAll("a.tg-link").forEach(function(a){a.setAttribute("href",TG_URL)});
 document.querySelectorAll("a.inst-link").forEach(function(a){a.setAttribute("href",INST_URL)});
 document.querySelectorAll("a.tel-link").forEach(function(a){
