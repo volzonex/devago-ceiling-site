@@ -1,6 +1,8 @@
 {
   "routes": [
     { "src": "/", "dest": "/index.min.html" },
+    { "src": "/privacy", "dest": "/privacy.html" },
+    { "src": "/offer", "dest": "/offer.html" },
     { "handle": "filesystem" }
   ]
 }
