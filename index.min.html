@@ -1192,15 +1192,16 @@ transparent 56%,rgba(201,162,75,.45) 60%,rgba(201,162,75,.10) 100%)}
 .facts .f--geo{grid-column:1/-1}
 @media(min-width:900px){
 .facts .f--geo{display:flex;align-items:baseline;justify-content:center;
-gap:var(--s5);padding-top:20px;
+gap:var(--s5);padding-top:32px;margin-top:10px;
 border-top:1px solid rgba(201,162,75,.16)}
 .facts .f--geo b{font-size:clamp(1.6rem,2vw,2rem)}
 .facts .f--geo span{margin-top:0;text-align:left}
 .facts .f--geo::before{display:none}
 }
 @media(min-width:600px) and (max-width:899px){
-.facts .f--geo{border-top:1px solid rgba(201,162,75,.16);margin-top:2px;padding-top:18px}
+.facts .f--geo{border-top:1px solid rgba(201,162,75,.16);margin-top:8px;padding-top:26px}
 }
+@media(min-width:1000px){.facts .f--geo{margin-top:24px}}
 .combo-claim{position:relative;margin-top:22px;padding-top:18px;
 font:400 1.08rem/1.45 var(--sans);letter-spacing:.01em;color:var(--gold-l)}
 .combo-claim::before{content:"";position:absolute;left:0;top:0;width:48px;height:1px;

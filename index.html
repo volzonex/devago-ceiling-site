@@ -2060,9 +2060,15 @@ body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
    вертикального разделителя весит столько же, сколько .facts .f + .f::before из блока
    от 1000px, и выигрывает только порядком. Выше по файлу оно бы молча не сработало. */
 .facts .f--geo{grid-column:1/-1}
+/* ⚠️ ВОЗДУХ ВОКРУГ ЛИНИИ СЧИТАЕТСЯ ОТ КРАСКИ, а не от боксов, и он был разным в вилках.
+   Замер до правки, от нижней краски ряда выше до линии: 22px на 900-999 и ВСЕГО 8px
+   от 1000, потому что там поле плиток сжимается с 22 до 8. Под линией везде 21.
+   Отсюда и ощущение, что широкая плитка приклеена к ряду выше. Разводим до 32 с обеих
+   сторон: снизу это padding-top плитки, сверху margin-top, и margin в двух вилках
+   РАЗНЫЙ именно потому, что разное поле у ряда выше. */
 @media(min-width:900px){
   .facts .f--geo{display:flex;align-items:baseline;justify-content:center;
-    gap:var(--s5);padding-top:20px;
+    gap:var(--s5);padding-top:32px;margin-top:10px;
     border-top:1px solid rgba(201,162,75,.16)}
   .facts .f--geo b{font-size:clamp(1.6rem,2vw,2rem)}
   .facts .f--geo span{margin-top:0;text-align:left}
@@ -2073,8 +2079,10 @@ body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
    крест из линий рисуется по nth-child и до неё не достаёт. Даём ту же горизонтальную
    линию, что и выше 900, раскладку не трогаем. */
 @media(min-width:600px) and (max-width:899px){
-  .facts .f--geo{border-top:1px solid rgba(201,162,75,.16);margin-top:2px;padding-top:18px}
+  .facts .f--geo{border-top:1px solid rgba(201,162,75,.16);margin-top:8px;padding-top:26px}
 }
+/* От 1000 у ряда выше поле 8px вместо 22, поэтому сверху добирать надо больше. */
+@media(min-width:1000px){.facts .f--geo{margin-top:24px}}
 
 /* ================= ЛОЗУНГ СЕКЦИИ КОМБИНАЦИИ (11.08) =================
    Утверждение, а не подпись: крупнее описания и золотом, но БЕЗ капса. Капс с трекингом
