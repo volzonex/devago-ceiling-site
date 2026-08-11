@@ -1,6 +1,21 @@
 {
+  "buildCommand": "python3 tools/minify.py",
+  "outputDirectory": ".",
   "routes": [
+    {
+      "src": "/(.*)",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "geolocation=(), microphone=(), camera=(), payment=(), usb=()",
+        "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload"
+      },
+      "continue": true
+    },
+    { "src": "/tools/(.*)", "status": 404 },
     { "src": "/", "dest": "/index.min.html" },
+    { "src": "/uz", "dest": "/uz.min.html" },
     { "src": "/privacy", "dest": "/privacy.html" },
     { "src": "/offer", "dest": "/offer.html" },
     { "handle": "filesystem" }

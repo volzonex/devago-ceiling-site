@@ -32,6 +32,11 @@
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://devago-ceiling-site.vercel.app/">
+<!-- hreflang. Абсолютные адреса пока указывают на технический хост: боевого домена
+     ещё нет, задача 7 спеки заблокирована до DNS. Меняются здесь и в sitemap.xml. -->
+<link rel="alternate" hreflang="ru" href="https://devago-ceiling-site.vercel.app/">
+<link rel="alternate" hreflang="uz" href="https://devago-ceiling-site.vercel.app/uz">
+<link rel="alternate" hreflang="x-default" href="https://devago-ceiling-site.vercel.app/">
 <meta name="theme-color" content="#0B0A08">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/apple-touch.png">
@@ -229,8 +234,8 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .menu-ov .lang{margin:22px 0}
 .menu-ov .btn{margin-top:auto}
 .lang{display:flex;border:1px solid var(--hairline)}
-.lang button{background:transparent;border:none;color:var(--mut);font:400 .68rem/1 var(--sans);letter-spacing:.1em;padding:10px 13px;cursor:pointer;min-height:38px}
-.lang button.on{background:var(--gold);color:#171204}
+.lang :is(button,a){background:transparent;border:none;color:var(--mut);font:400 .68rem/1 var(--sans);letter-spacing:.1em;padding:10px 13px;cursor:pointer;min-height:38px}
+.lang :is(button,a).on{background:var(--gold);color:#171204}
 
 /* ==================== 1 · HERO ==================== */
 .hero{position:relative;min-height:clamp(560px,84vh,800px);display:flex;align-items:flex-end;overflow:hidden;padding:0}
@@ -679,8 +684,8 @@ header{border-bottom:1px solid rgba(237,230,214,.07)}
   transition:right .35s cubic-bezier(.22,.61,.36,1)}
 .dnav a:hover::after,.dnav a:focus-visible::after{right:0}
 :focus-visible{outline:2px solid var(--gold-l);outline-offset:4px}
-.sol,.prj,.btn,.dnav a,.lang button{-webkit-tap-highlight-color:rgba(201,162,75,.18)}
-.lang button{min-height:44px;padding:13px 16px}
+.sol,.prj,.btn,.dnav a,.lang :is(button,a){-webkit-tap-highlight-color:rgba(201,162,75,.18)}
+.lang :is(button,a){min-height:44px;padding:13px 16px}
 /* кнопка закрытия меню была 43.5 px по ширине, то есть на полпикселя не дотягивала
    до порога приёмки. Ловится только замером с ОТКРЫТЫМ меню. */
 .close{min-width:44px}
@@ -958,7 +963,7 @@ body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
   .dnav a{font-size:.63rem;letter-spacing:.10em}
   .nav-right{gap:10px}
   .nav-right .cta{padding:12px 13px;font-size:.66rem;letter-spacing:.10em}
-  .lang button{padding:13px 10px}
+  .lang :is(button,a){padding:13px 10px}
 }
 
 
@@ -1280,7 +1285,7 @@ footer{text-align:left}
 .sol-list,.steps,.pp-grid,.ann-legend,.final-wrap,.combo-wrap{min-width:0}
 @media(min-width:900px){.sol-list{grid-template-columns:repeat(6,minmax(0,1fr))}}
 @media(min-width:1200px){.combo-wrap{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)}}
-.sol,.step,.pp,.prj,.ann,.btn,.dnav a,.lang button,.prj-more,.car-ctl button{
+.sol,.step,.pp,.prj,.ann,.btn,.dnav a,.lang :is(button,a),.prj-more,.car-ctl button{
   -webkit-tap-highlight-color:rgba(201,162,75,.18)}
 /* Минимальный кегль 14px: ниже него вес не опускаем. */
 .pp .bx b,.step .tx b,.sol .tx b,.prj .obj{font-weight:500}
@@ -1521,10 +1526,10 @@ section[id],div[id]{scroll-margin-top:80px}
 /* 1. Переключатель языка становится утилитой: сегментный контроль, состояние
    различается ДВУМЯ каналами (подложка и вес), а не только цветом. */
 .lang{border:1px solid rgba(201,162,75,.22);border-radius:3px;overflow:hidden}
-.lang button{min-width:56px;color:var(--t2);transition:background-color .25s,color .25s}
-.lang button+button{border-left:1px solid rgba(201,162,75,.16)}
-.lang button.on{background:rgba(201,162,75,.14);color:var(--gold-l);font-weight:500}
-.lang button:hover:not(.on){color:var(--text);background:rgba(237,230,214,.04)}
+.lang :is(button,a){min-width:56px;color:var(--t2);transition:background-color .25s,color .25s}
+.lang :is(button,a)+:is(button,a){border-left:1px solid rgba(201,162,75,.16)}
+.lang :is(button,a).on{background:rgba(201,162,75,.14);color:var(--gold-l);font-weight:500}
+.lang :is(button,a):hover:not(.on){color:var(--text);background:rgba(237,230,214,.04)}
 /* 2. Подпись кнопки не ломается. Провал теперь не тихий: он вылезет переполнением. */
 .btn{white-space:nowrap}
 /* 4. Текущий раздел. Механику подчёркивания не изобретаем, у .dnav a::after
@@ -1560,7 +1565,7 @@ section[id],div[id]{scroll-margin-top:80px}
   .dnav a{font-size:.64rem;letter-spacing:.10em}
   .nav-right{gap:8px}
   .nav-right .cta{padding:12px 14px;font-size:.66rem;letter-spacing:.10em}
-  .lang button{min-width:44px;padding:13px 8px}
+  .lang :is(button,a){min-width:44px;padding:13px 8px}
 }
 
 /* ================= ПРАВКИ ПО ЖИВОМУ ПРОГОНУ НА iPhone (06.08) =================
@@ -1645,10 +1650,10 @@ section[id],div[id]{scroll-margin-top:80px}
   .nav-right .cta{letter-spacing:.12em}
   /* Рамка переключателя снята, вместо неё волосяная черта между сегментами. */
   .lang{border:none;position:relative;overflow:visible}
-  .lang button+button{border-left:none}
-  .lang button+button::before{content:"";position:absolute;left:0;top:50%;
+  .lang :is(button,a)+:is(button,a){border-left:none}
+  .lang :is(button,a)+:is(button,a)::before{content:"";position:absolute;left:0;top:50%;
     margin-top:-6px;width:1px;height:12px;background:rgba(201,162,75,.28)}
-  .lang button{position:relative}
+  .lang :is(button,a){position:relative}
 }
 /* ЗАМЕР ПОСЛЕ ПРАВКИ: пара 22/48 не помещается в русском, переполнение 9px на 1200.
    Инвариант спеки («зазор бренд-меню не меньше ДВУХ зазоров между пунктами») держим,
@@ -2220,6 +2225,15 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
 /* Согласие под кнопкой формы. Мелкий служебный текст, но не мельче 12px. */
 .fm-consent{margin-top:10px;font-size:.76rem;line-height:1.5;color:var(--mut);text-align:center}
 .fm-consent a{color:var(--t2);text-decoration:underline;text-underline-offset:3px}
+
+/* Переключатель языка стал ССЫЛКАМИ (спека 11.08, задача 3): язык задаёт адрес.
+   Селекторы выше переведены на :is(button,a), но у ссылки свои умолчания, которых
+   у кнопки не было: подчёркивание, наследование цвета и inline-раскладка. Гасим их
+   здесь, чтобы вид сегментного контрола не поехал. */
+.lang :is(button,a){display:inline-flex;align-items:center;justify-content:center;
+  text-decoration:none;text-align:center}
+.lang a{color:var(--t2)}
+.lang a.on{color:var(--gold-l)}
 </style>
 </head>
 <body>
@@ -2250,7 +2264,7 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
       <!-- ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА В ШАПКЕ (CDO v4, пункт 1). Обязателен вместе со скрытием
            бургера от 1000px: RU/UZ жил ТОЛЬКО внутри .menu-ov, и без этой копии он бы
            просто исчез на десктопе. Обе пары кнопок ведёт один обработчик по data-l. -->
-      <div class="lang lang-desk" role="group" data-i18n-label="lang_group" aria-label="Язык сайта"><button type="button" data-l="ru" lang="ru" aria-pressed="true" class="on">RU</button><button type="button" data-l="uz" lang="uz" aria-pressed="false">UZ</button></div>
+      <div class="lang lang-desk" role="group" data-i18n-label="lang_group" aria-label="Язык сайта"><a data-l="ru" lang="ru" hreflang="ru" href="/" aria-current="true" class="on">RU</a><a data-l="uz" lang="uz" hreflang="uz" href="/uz">UZ</a></div>
       <a class="btn btn-out cta" href="#final" data-i18n="cta_main">Получить консультацию</a>
       <a class="nav-ico tel tel-link" href="#" data-goal="phone_click" data-i18n-label="call_lbl" aria-label="Позвонить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></a><a class="nav-ico inst-link" href="#" target="_blank" rel="noopener" data-goal="inst_click" data-i18n-label="inst_lbl" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></a><button class="burger" id="burger" aria-label="Меню"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
@@ -2265,7 +2279,7 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
   <a class="mi pp-nav" href="#photoprint" data-i18n="nav_pp">Фотопечать</a>
   <a class="mi" href="#standards" data-i18n="nav_std">Стандарты</a>
   <a class="mi" href="#final" data-i18n="nav_con">Контакты</a>
-  <div class="lang" role="group" data-i18n-label="lang_group" aria-label="Язык сайта"><button id="lang-ru2" data-l="ru" lang="ru" aria-pressed="true" class="on" type="button">RU</button><button id="lang-uz2" data-l="uz" lang="uz" aria-pressed="false" type="button">UZ</button></div>
+  <div class="lang" role="group" data-i18n-label="lang_group" aria-label="Язык сайта"><a data-l="ru" lang="ru" hreflang="ru" href="/" aria-current="true" class="on">RU</a><a data-l="uz" lang="uz" hreflang="uz" href="/uz">UZ</a></div>
   <a class="btn btn-gold cta" href="#final" data-i18n="cta_main2">Получить консультацию</a>
 </div>
 
@@ -3005,15 +3019,19 @@ var I18N = {
       if(d.stdc_step)e.setAttribute("aria-label",d.stdc_step.replace("%n",i+1));});
     /* Пар кнопок теперь ДВЕ: в меню и в шапке (от 1000px бургера нет). Ведём обе
        по data-l, чтобы копия не разъехалась с оригиналом по состоянию. */
-    document.querySelectorAll(".lang button[data-l]").forEach(function(x){
+    document.querySelectorAll(".lang [data-l]").forEach(function(x){
       var on=x.getAttribute("data-l")===l;
-      x.classList.toggle("on",on);x.setAttribute("aria-pressed",on?"true":"false");});
+      x.classList.toggle("on",on);
+      if(on)x.setAttribute("aria-current","true");else x.removeAttribute("aria-current");});
     /* Открытое модальное окно перерисовываем: иначе оно осталось бы на старом языке. */
     if(typeof curModal!=="undefined"&&curModal)renderModal(curModal);
-    try{localStorage.setItem("devago-lang",l)}catch(e){}}
-  document.querySelectorAll(".lang button[data-l]").forEach(function(x){
-    x.onclick=function(){apply(x.getAttribute("data-l"))};});
-  var lang0="ru";try{if(localStorage.getItem("devago-lang")==="uz")lang0="uz"}catch(e){}
+    }
+  /* ЯЗЫК ЗАДАЁТ АДРЕС, А НЕ ПАМЯТЬ БРАУЗЕРА. Переключатель стал ссылками на / и /uz:
+     иначе узбекская версия недостижима ни поисковику, ни человеку по ссылке, и hreflang
+     указывать некуда. Обработчик клика снят намеренно, вместе с чтением localStorage:
+     при сохранённом «uz» русский адрес молча перекрашивался в узбекский, и это прямо
+     противоречило бы canonical и hreflang на той же странице. */
+  var lang0=document.documentElement.lang==="uz"?"uz":"ru";
   apply(lang0);
   if(ENABLE_STICKY_CTA)document.body.classList.add("sticky-on");
   /* Флаги ставятся классами на body ДО показа, поэтому скрытое не успевает мигнуть.

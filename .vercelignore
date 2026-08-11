@@ -7,8 +7,13 @@ CLAUDE.md
 *.md
 review/
 examples/
-tools/
 assets.bak-*
+
+# tools/ БОЛЬШЕ НЕ ИГНОРИРУЕТСЯ, и это не оплошность. Сборщик Vercel запускает
+# tools/minify.py как buildCommand, а игнор удаляет каталог ДО сборки: попытка
+# собрать с ним падала на «python3: can't open file .../tools/minify.py».
+# Публичный доступ к каталогу закрыт не игнором, а маршрутом в vercel.json:
+# {"src":"/tools/(.*)","status":404} стоит ДО handle:filesystem.
 
 # ловушка: каталог вложенный, не только в корне
 .wikimoth/
