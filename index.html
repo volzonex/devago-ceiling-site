@@ -271,7 +271,10 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .combo-wrap{margin-top:0}
 .combo-text .kick{margin-bottom:12px}
 .combo-t-mob{font-weight:400;letter-spacing:.02em;font-size:clamp(1.7rem,4.4vw,2.2rem);color:var(--text)}
-.combo-t-desk,.combo-p{display:none}
+.combo-t-desk{display:none}
+/* Описание видно НА ВСЕХ ширинах. Правило целиком переехало сюда из блока от 900px,
+   значения не тронуты: кегль и цвет остались теми же, что были на десктопе. */
+.combo-p{display:block;color:var(--t2);font-size:.98rem;margin-top:18px;max-width:44ch}
 .combo{position:relative;margin-top:22px;border:1px solid var(--hairline)}
 .combo img{width:100%;aspect-ratio:16/10.5;object-fit:cover;height:auto;object-position:35% 20%}
 .ann{position:absolute;font:500 .6875rem/1.35 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text);text-shadow:0 1px 8px rgba(11,10,8,.95)}
@@ -292,7 +295,6 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
   .combo-btn{grid-column:1;grid-row:2;align-self:start;margin-top:24px}
   .combo-t-mob{display:none}
   .combo-t-desk{display:block;font-weight:400;letter-spacing:.02em;font-size:clamp(2rem,3.2vw,2.7rem);color:var(--text)}
-  .combo-p{display:block;color:var(--t2);font-size:.98rem;margin-top:18px;max-width:44ch}
   .combo{margin-top:0}
   .combo img{aspect-ratio:16/10}
 }
@@ -2073,6 +2075,20 @@ body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
 @media(min-width:600px) and (max-width:899px){
   .facts .f--geo{border-top:1px solid rgba(201,162,75,.16);margin-top:2px;padding-top:18px}
 }
+
+/* ================= ЛОЗУНГ СЕКЦИИ КОМБИНАЦИИ (11.08) =================
+   Утверждение, а не подпись: крупнее описания и золотом, но БЕЗ капса. Капс с трекингом
+   превратил бы его в рекламный слоган, а тон у страницы спокойный премиальный.
+   Линия сверху это тот же мотив светового разрыва, что под номерами этапов и в
+   разделителях секций: ширина и пропорции разрыва взяты оттуда, а не придуманы заново.
+   Зазор до описания задаёт margin-top САМОГО лозунга: на схлопывание полей полагаться
+   нельзя, у страницы стоит *{margin:0} и схлопывать нечего. */
+.combo-claim{position:relative;margin-top:22px;padding-top:18px;
+  font:400 1.08rem/1.45 var(--sans);letter-spacing:.01em;color:var(--gold-l)}
+.combo-claim::before{content:"";position:absolute;left:0;top:0;width:48px;height:1px;
+  background:linear-gradient(90deg,var(--gold) 0,var(--gold) 37.5%,transparent 37.5%,
+    transparent 62.5%,var(--gold) 62.5%,var(--gold) 100%)}
+@media(min-width:900px){.combo-claim{font-size:1.25rem;margin-top:26px;padding-top:20px}}
 </style>
 </head>
 <body>
@@ -2201,7 +2217,11 @@ body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
         <div class="kick" data-i18n="c_kick">Комбинированное решение DEVAGO</div>
         <h2 class="combo-t-mob" data-i18n="c_title">Интерьер №3<br>Комбинация</h2>
         <h2 class="combo-t-desk" data-i18n="c_title2">Идеальная комбинация</h2>
-        <p class="combo-p" data-i18n="c_p">Соединяем теневые системы, световые линии, треки и скрытые карнизы в единую архитектурную композицию.<br><br>Это не просто потолок.<br>Это целостная система света.</p>
+        <!-- Описание и лозунг РАЗНЫЕ узлы, а не один абзац с двойным переносом.
+             Выделить лозунг из склейки можно было только разбором <br>, а это ломается
+             от любой правки текста. Второй ключ дешевле и надёжнее. -->
+        <p class="combo-p" data-i18n="c_p">Соединяем теневые системы, световые линии, треки и скрытые карнизы в единую архитектурную композицию.</p>
+        <p class="combo-claim" data-i18n="c_claim">Это не просто потолок.<br>Это целостная система света.</p>
       </div>
       <div class="combo">
         <!-- STOCK -->
@@ -2538,7 +2558,7 @@ var I18N = {
  s5_h:"Звёздное небо",s5_p:"Премиальные инсталляции эффектного неба",
  s6_h:"<span class='dt'>Авторские световые решения</span><span class='mb'>Авторские решения</span>",s6_p:"Индивидуальные сценарии под ваш интерьер",
  c_kick:"Комбинированное решение DEVAGO",c_title:"Интерьер №3<br>Комбинация",c_title2:"Идеальная комбинация",
- c_p:"Соединяем теневые системы, световые линии, треки и скрытые карнизы в единую архитектурную композицию.<br><br>Это не просто потолок.<br>Это целостная система света.",
+ c_p:"Соединяем теневые системы, световые линии, треки и скрытые карнизы в единую архитектурную композицию.",c_claim:"Это не просто потолок.<br>Это целостная система света.",
  a1:"Теневой профиль",a2:"Световые линии",a3:"Магнитные трековые системы",a4:"Скрытый карниз",a5:"Парящая подсветка",
  st_kick:"Премиальное решение",st_title:"Звёздное небо",
  st_p:"Реалистичное звёздное небо для особой атмосферы в спальне, кинотеатре, SPA-зоне или лаунж-пространстве.",
@@ -2610,7 +2630,7 @@ var I18N = {
  s5_h:"Yulduzli osmon",s5_p:"Taʼsirli osmonning premium installyatsiyalari",
  s6_h:"<span class='dt'>Mualliflik yorugʻlik yechimlari</span><span class='mb'>Mualliflik yechimlari</span>",s6_p:"Interyeringiz uchun individual stsenariylar",
  c_kick:"DEVAGO kombinatsiyalangan yechimi",c_title:"Interyer №3<br>Kombinatsiya",c_title2:"Ideal kombinatsiya",
- c_p:"Soya tizimlari, yorugʻlik chiziqlari, treklar va yashirin karnizlarni yagona arxitektura kompozitsiyasiga birlashtiramiz.<br><br>Bu shunchaki shift emas.<br>Bu yaxlit yorugʻlik tizimi.",
+ c_p:"Soya tizimlari, yorugʻlik chiziqlari, treklar va yashirin karnizlarni yagona arxitektura kompozitsiyasiga birlashtiramiz.",c_claim:"Bu shunchaki shift emas.<br>Bu yaxlit yorugʻlik tizimi.",
  a1:"Soya profili",a2:"Yorugʻlik chiziqlari",a3:"Magnitli trek tizimlari",a4:"Yashirin karniz",a5:"Muallaq yoritish",
  st_kick:"Premium yechim",st_title:"Yulduzli osmon",
  st_p:"Yotoqxona, kinoteatr, SPA yoki launj makonida oʻzgacha muhit uchun realistik yulduzli osmon.",
