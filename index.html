@@ -344,27 +344,13 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 }
 
 /* ==================== 5 · STANDARDS ==================== */
-.steps{display:flex;flex-direction:column;gap:12px}
-.step{display:grid;grid-template-columns:1fr 42%;gap:14px;background:var(--card);border:1px solid var(--line);padding:14px;overflow:hidden}
-.step .tx{min-width:0;padding:4px 0 4px 4px}
-.step .no{display:inline-block;font:400 1.05rem/1 var(--sans);letter-spacing:.08em;color:var(--gold);margin-right:10px;vertical-align:1px}
-.step .tx b{display:inline;font:500 1.02rem/1.35 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text)}
-.step .tx .sp{display:block;font-size:.95rem;color:var(--t2);margin-top:8px}
-.step .th{margin:-14px -14px -14px 0;overflow:hidden;position:relative}
-.step .th img{width:100%;height:100%;object-fit:cover}
-.step .th::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--card),transparent 45%)}
 @media(min-width:900px){
-  .steps{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
-  .step{display:flex;flex-direction:column;gap:10px;padding:18px 16px 0;}
-  .step .tx{padding:0}
-  .step .no{display:block;font-size:1.2rem;margin:0 0 8px}
-  .step .tx b{display:block;font-size:1rem;letter-spacing:.1em}
-  .step .tx .sp{font-size:.95rem;margin-top:6px}
-  .step .th{margin:14px -16px 0;height:118px}
-  .step .th::after{background:linear-gradient(180deg,var(--card),transparent 45%)}
 }
 .std-cta{text-align:center;margin-top:32px}
-@media(min-width:900px){.std-cta{display:none}}
+/* Скрытие от 900px снято 11.08: стандарты стали каруселью, и кнопки внутри слайдов
+   не переносились намеренно (шесть слайдов дали бы двенадцать одинаковых кнопок в
+   обходе с клавиатуры). Единственный зов к действию у секции теперь этот, и он обязан
+   быть виден на всех ширинах. */
 
 /* ==================== 6 · PROJECTS: карусель ==================== */
 .car-vp{overflow:hidden}
@@ -483,9 +469,6 @@ body.no-reviews .prj .role{display:none}
 /* Карточка без цитаты становится ниже, поэтому подпираем низ, чтобы фото и текст
    не слиплись и ряд не поехал по высоте. */
 body.no-reviews .prj .bx{padding-bottom:var(--s5)}
-.vis-note{display:none}
-body.renders-visual .vis-note{display:block;margin-top:var(--s4);max-width:70ch;
-  font-size:.92rem;color:var(--mut)}
 
 
 /* ==================== ГЛУБИНА: ДОВОДКА GM 04.08 ====================
@@ -585,13 +568,7 @@ header{border-bottom:1px solid rgba(237,230,214,.08)}
 @media(min-width:900px){.combo-wrap{gap:0 var(--s8)}}
 #starry .feats{gap:var(--s6) var(--s5);margin-top:var(--s6)}
 @media(min-width:900px){#starry .grid{gap:var(--s8)}#starry .feats{gap:var(--s5)}}
-.steps{gap:var(--s3)}
-.step{padding:var(--s4);gap:var(--s4)}
-.step .th{margin:calc(var(--s4)*-1) calc(var(--s4)*-1) calc(var(--s4)*-1) 0}
 @media(min-width:900px){
-  .steps{gap:var(--s4)}
-  .step{padding:var(--s5) var(--s5) 0}
-  .step .th{margin:var(--s5) calc(var(--s5)*-1) 0}
 }
 .std-cta{margin-top:var(--s7)}
 .prj-track{gap:var(--s4)}
@@ -987,8 +964,8 @@ body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
    Здесь скобки рисуются ФОНОМ на одном полноразмерном слое: восемь полосок, по две на
    угол. Слой лежит по кромке карточки (inset:-1px), поэтому все четыре угла попадают
    ровно туда, куда смотрит Тахир, а ::after освобождается совсем. */
-.sol,.step,.pp,.prj,.final-act{position:relative}
-.sol::before,.step::before,.pp::before,.final-act::before{
+.sol,.step,.pp,.prj,.rev,.final-act{position:relative}
+.sol::before,.step::before,.pp::before,.rev::before,.final-act::before{
   content:"";position:absolute;inset:-1px;pointer-events:none;
   opacity:.28;transition:opacity .35s ease;background-repeat:no-repeat;
   background-image:
@@ -1002,16 +979,12 @@ body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 /* ЛОВУШКА ИЗ СПЕКИ, подтверждена замером: у .step стоит overflow:hidden, и он действует
    на ОБЕИХ ширинах, на 390 и на 1440. Со смещением -1px слой обрезался бы по кромке и
    внешний угол пропадал. Поэтому у стандартов, и только у них, смещение нулевое. */
-.step::before{inset:0}
-.sol:hover::before,.step:hover::before,.pp:hover::before,
+.sol:hover::before,.step:hover::before,.pp:hover::before,.rev:hover::before,
 .sol:focus-visible::before,.step:focus-visible::before,
 .pp:focus-visible::before{opacity:.5}
 .final-act::before{opacity:.5}
 
 /* 2.3 Подчёркивание номеров 01-06: линия 24px с разрывом 6px посередине. */
-.step .no{position:relative;padding-bottom:9px}
-.step .no::after{content:"";position:absolute;left:0;bottom:0;width:24px;height:1px;opacity:.35;
-  background:linear-gradient(90deg,var(--gold) 0,var(--gold) 37.5%,transparent 37.5%,transparent 62.5%,var(--gold) 62.5%,var(--gold) 100%)}
 
 
 /* ==================================================================================
@@ -1127,30 +1100,9 @@ body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
    заголовка на две строки и колонки грида через minmax(0,1fr). Именно НУЛЕВОЙ минимум
    чинит переполнение в CSS Grid: у колонки по умолчанию min-width:auto, и она
    распирается самым длинным неразрывным словом. */
-.steps{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
-.step{appearance:none;-webkit-appearance:none;width:100%;font:inherit;color:inherit;cursor:pointer;
-  display:flex;flex-direction:column;gap:0;padding:0;overflow:hidden;text-align:left;
-  background:var(--card);min-width:0}
-.step .th{order:2;display:block;position:relative;margin:14px 0 0;height:auto;
-  aspect-ratio:16/9;overflow:hidden;width:100%}
-.step .th img{width:100%;height:100%;object-fit:cover}
-.step .th::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,transparent 38%,var(--card))}
-.step .tx{order:1;display:block;padding:var(--s5) var(--s5) 0;min-width:0}
-.step .no{display:block;font:400 1.2rem/1 var(--sans);letter-spacing:.08em;color:var(--gold);margin:0 0 10px}
-.step .tx b{display:block;font:500 1rem/1.35 var(--sans);letter-spacing:.1em;text-transform:uppercase;
-  color:var(--text);overflow-wrap:anywhere;min-height:2.8em}
-.step .tx .sp{display:block;font-size:.95rem;color:var(--t2);margin-top:7px}
-.step .arr{order:3;width:15px;height:15px;color:var(--gold);flex:none;
-  align-self:flex-end;margin:-26px 12px 12px 0;position:relative;z-index:1;
-  transition:transform .3s cubic-bezier(.22,.61,.36,1)}
-.step:hover .arr,.step:focus-visible .arr{transform:translateX(4px)}
-@media(min-width:600px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(min-width:900px){.steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s4)}}
-@media(min-width:1240px){.steps{grid-template-columns:repeat(6,minmax(0,1fr))}
-  .step .tx{padding:var(--s4) var(--s4) 0}
-  .step .tx b{font-size:1rem;letter-spacing:.1em}
-  .step .no{font-size:1.05rem}
+@media(min-width:600px){}
+@media(min-width:900px){}
+@media(min-width:1240px){
 }
 
 
@@ -1604,19 +1556,8 @@ section[id],div[id]{scroll-margin-top:80px}
   .ann::before{color:#0B0A08;font:600 11px/1 var(--sans)}
 }
 
-/* 3. ПОДПИСЬ О ВИЗУАЛИЗАЦИЯХ ЛЕЖАЛА НА КАРУСЕЛИ.
-   Замер на 390px: низ абзаца 227px, верх карусели 227px, зазор РОВНО НОЛЬ, поэтому
-   строка «по мере сдачи работ» касалась верхней кромки фотографии и читалась как
-   наложенная на неё. Причина в том, что подпись унаследовала класс .lead: у лида есть
-   верхний отступ и нет нижнего, он не рассчитан стоять перед блоком.
-   Заодно снимаем с неё вес лида. Это техническая оговорка, а не подзаголовок секции,
-   и набирать её кеглем крупнее подписей внутри карточек неправильно. */
-body.renders-visual .vis-note{
-  font-size:.84rem;line-height:1.6;margin-top:var(--s3);margin-bottom:var(--s5);
-  max-width:56ch;color:var(--mut)}
-@media(min-width:900px){
-  body.renders-visual .vis-note{font-size:.88rem;margin-bottom:var(--s6)}
-}
+/* 3. ПОДПИСЬ О ВИЗУАЛИЗАЦИЯХ снята 11.08 по указанию Тахира вместе со своими
+   правилами: узла .vis-note в разметке больше нет. */
 
 /* ================= CDO v7. Блок последний, как все предыдущие спеки. ================= */
 
@@ -1645,18 +1586,7 @@ body.renders-visual .vis-note{
   .sol .tx > span{min-height:2.8em}
 }
 
-/* --- ЗАДАЧА 3. Служебная оговорка.
-   ЗАМЕР ПО ЗАПРОСУ СПЕКИ: узел отрисован Jost и для кириллицы (34 глифа), и для
-   подстроки DEVAGO (6 глифов), перебивать некому, донор UzApos заперт на U+02BB.
-   Значит вопрос был в кегле и выключке.
-   СЛИЯНИЕ, А НЕ ЗАМЕНА: пока бриф шёл, GM коммитом fb4f5ec уже уменьшил кегль
-   (.84 на телефоне и .88 от 900), поставил интерлиньяж 1.6, меру 56ch и цвет --mut,
-   и починил нулевой зазор до карусели своими отступами. Всё это ЗАМЕРЕНО им, поэтому
-   я не переписываю его значения спековыми (.86 / 1.62 / --t2 / margin:0 auto var(--s6)):
-   последнее обнулило бы верхний отступ, ради которого его правка и делалась.
-   Добавляю только то, чего у него нет и что спека просит по существу: выключку по
-   центру под центрованный заголовок секции. Расхождение по цвету вынесено в recap. */
-body.renders-visual .vis-note{margin-inline:auto;text-align:center}
+/* --- ЗАДАЧА 3. Служебная оговорка. Узел снят 11.08, правило удалено вместе с ним. */
 
 /* --- ЗАДАЧА 5. Двойная рамка и нулевой радиус.
    Радиус 0 на весь сайт (решение Тахира). НЕ трогаем точку карусели и ручку листа:
@@ -2038,17 +1968,10 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
 .kick,.prj .role,.foot-tx .small,.ann-legend .lg-btn{line-height:1.5}
 .prj q,.im-list li,.why span{line-height:1.55}
 
-/* B. ПОДПИСЬ ПОД ЗАГОЛОВКОМ ПРИНАДЛЕЖИТ ЗАГОЛОВКУ.
-   Замер до правки на десктопе: от заголовка до подписи 76px (64 у .sec-head плюс 12
-   у самой подписи), от подписи до карточек 32px. То есть подпись была в 2.4 раза ближе
-   к фотографиям, чем к заголовку, который она объясняет. Селектор сужен до #projects
-   и до включённого флага, заголовки остальных секций не трогаются. */
-body.renders-visual #projects .sec-head{margin-bottom:var(--s4)}
-body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
-@media(min-width:900px){
-  body.renders-visual #projects .sec-head{margin-bottom:var(--s5)}
-  body.renders-visual .vis-note{margin-bottom:var(--s8)}
-}
+/* B. ПОДПИСЬ ПОД ЗАГОЛОВКОМ ПРИНАДЛЕЖИТ ЗАГОЛОВКУ. Правка сжимала зазор под
+   заголовком именно потому, что между ним и карточками стояла служебная подпись.
+   Подпись снята 11.08, зазор возвращается к общесайтовому .sec-head: иначе
+   заголовок «Галерея наших работ» лип бы к фотографиям без причины. */
 
 /* D. СЕРЫЙ ТЕКСТ В КАРТОЧКАХ СТАНДАРТОВ. Причина НЕ в отступах, поэтому прежние
    правки ритма её и не брали: у .step .tx b стоит min-height:2.8em, то есть заголовок
@@ -2068,13 +1991,6 @@ body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
    чтобы отрезок у номера читался как раньше, дальше полутон, световой разрыв по центру
    и затухание к правому краю. Десктоп не трогаем: там черта работает как задумана. */
 @media(max-width:599px){
-  .step .no::after{width:auto;right:0;opacity:1;
-    background:linear-gradient(90deg,var(--gold) 0%,var(--gold) 7%,
-      rgba(201,162,75,.45) 12%,rgba(201,162,75,.45) 44%,transparent 48%,
-      transparent 56%,rgba(201,162,75,.45) 60%,rgba(201,162,75,.10) 100%)}
-  .step .tx b{min-height:0}
-  .step .tx .sp{margin-top:6px}
-  .step .th{margin-top:var(--s5)}
 }
 
 /* ================= ПЯТАЯ ПЛИТКА ПОЛОСЫ ЦИФР =================
@@ -2108,6 +2024,105 @@ body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
   background:linear-gradient(90deg,var(--gold) 0,var(--gold) 37.5%,transparent 37.5%,
     transparent 62.5%,var(--gold) 62.5%,var(--gold) 100%)}
 @media(min-width:900px){.combo-claim{font-size:1.25rem;margin-top:26px;padding-top:20px}}
+
+/* ==================== СЕКЦИЯ ОТЗЫВОВ (11.08, указание Тахира) ====================
+   ⚠️ ТЕКСТЫ ЗАВЕДОМО СЛУЖЕБНЫЕ. Ставить сюда правдоподобные выдуманные цитаты
+   нельзя: ровно из-за них отзывы внутри карточек проектов выключены флагом
+   ENABLE_REVIEWS=false. Здесь стоят подписи, которые невозможно принять за живой
+   отзыв, и заменить их обязан копирайтер реальными словами клиентов Икрома.
+
+   Сетка та же, что у стандартов: одна колонка на телефоне, две от 600, три от 1000.
+   Карточка держит собственный фон и рамку, орнаментные скобки берутся из общего
+   правила .sol,.step,.pp,.prj,.final-act, куда добавлен .rev, а не рисуются заново. */
+.revs{display:grid;grid-template-columns:1fr;gap:var(--s4)}
+@media(min-width:600px){.revs{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s5)}}
+@media(min-width:1000px){.revs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.rev{position:relative;display:flex;flex-direction:column;
+  background:var(--card);border:1px solid var(--line);padding:var(--s5) var(--s4) var(--s4)}
+@media(min-width:600px){.rev{padding:var(--s5)}}
+/* Кавычка декоративная и лежит ЗА текстом, поэтому у неё aria-hidden и низкая альфа:
+   она метка жанра, а не знак препинания. Сам <q> набран без автокавычек, иначе на
+   карточке оказалось бы две пары «» подряд. */
+.rev .qm{position:absolute;top:6px;left:12px;font:400 3.4rem/1 var(--display);
+  color:var(--gold);opacity:.16;pointer-events:none;user-select:none}
+.rev q{position:relative;display:block;quotes:none;flex:1 1 auto;
+  font:400 .95rem/1.6 var(--sans);color:var(--t2);margin-bottom:var(--s4)}
+/* Разделитель перед подписью повторяет разрыв со всех остальных линий сайта. */
+.rev .sig{position:relative;padding-top:var(--s3)}
+.rev .sig::before{content:"";position:absolute;left:0;top:0;width:48px;height:1px;
+  background:linear-gradient(90deg,var(--gold) 0,var(--gold) 37.5%,transparent 37.5%,
+    transparent 62.5%,var(--gold) 62.5%,var(--gold) 100%);opacity:.7}
+.rev .who{font:500 .78rem/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold-l)}
+.rev .role{font-size:.76rem;line-height:1.5;color:var(--mut);margin-top:4px}
+
+/* ============ СТАНДАРТЫ: СЕТКА СТАЛА КАРУСЕЛЬЮ (бриф CDO 11.08) ============
+   Механика НАМЕРЕННО другая, чем у карусели проектов. Там лента едет transform,
+   здесь едет сам вьюпорт: переход это scrollTo, активный слайд считается по
+   scrollLeft. Причина в брифе и она верная: при peek на телефоне два слайда
+   одновременно пересекают порог, и IntersectionObserver даёт дребезг на границе.
+   Префикс .stdc отдельный, .prj-track не трогаем ни строкой. */
+.stdc{position:relative}
+.stdc-vp{display:flex;align-items:stretch;gap:var(--s4);
+  overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none}
+.stdc-vp::-webkit-scrollbar{display:none}
+/* Вьюпорт достижим клавиатурой (tabindex в разметке), значит обязан показывать фокус. */
+.stdc-vp:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+/* До 700px слайд занимает 88% ширины, и справа виден край следующего. Это единственный
+   способ сказать пальцем, что лента продолжается: ряда номеров под ней для этого мало. */
+.stdc-slide{flex:0 0 88%;scroll-snap-align:start;display:flex;flex-direction:column;
+  background:var(--card);border:1px solid var(--line);overflow:hidden}
+.stdc-ph{flex:none}
+.stdc-ph img{display:block;width:100%;aspect-ratio:16/10;height:auto;object-fit:cover}
+.stdc-tx{display:flex;flex-direction:column;padding:var(--s4);min-width:0}
+.stdc-tx .kick{display:block}
+.stdc-tx .no{display:block;margin-top:var(--s3);font:400 .8rem/1 var(--sans);
+  letter-spacing:.18em;color:var(--gold-l);opacity:.75}
+.stdc-tx h3{margin-top:6px;font:500 1.15rem/1.25 var(--display);letter-spacing:.06em;
+  text-transform:uppercase;color:var(--text)}
+.stdc-tx .sp{margin-top:10px;font-size:.95rem;line-height:1.5;color:var(--t2)}
+.stdc-tx .mp{margin-top:var(--s3);font-size:.9rem;line-height:1.6;color:var(--mut)}
+@media(min-width:700px){
+  .stdc-slide{flex-basis:100%}
+  .stdc-tx{padding:var(--s5)}
+}
+/* От 1000px раскладка окна: фото слева на всю высоту слайда, текст справа по центру.
+   Peek здесь не нужен, объём ленты уже показывает ряд из шести номеров. */
+@media(min-width:1000px){
+  .stdc-slide{flex-direction:row;min-height:400px}
+  .stdc-ph{flex:0 0 52%}
+  .stdc-ph img{height:100%;aspect-ratio:auto}
+  .stdc-tx{flex:1 1 auto;justify-content:center;padding:var(--s6)}
+  .stdc-tx h3{font-size:1.4rem}
+}
+/* Ряд управления. Самое узкое место макета это 360: шесть номеров плюс две стрелки при
+   цели 44. Замер там же и задаёт gap, поэтому он ступенчатый, а не одинаковый. */
+.stdc-ctl{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:26px}
+.stdc-nums{display:flex;align-items:center;justify-content:center;gap:0}
+/* ЗАМЕР, А НЕ ПОДБОР ЗАЗОРА. Бриф просит «подобрать gap так, чтобы не было переноса
+   при цели 44», но одна арифметика это закрывает: восемь целей по 44 это 352px даже
+   при НУЛЕВЫХ зазорах, а в колонке контента 312px на 360 и 342 на 390. В одну строку
+   восемь целей по 44 не встают ни при каком зазоре, порог одной строки это 408px
+   ширины окна. Уступка выбрана самая дешёвая: переносится ТОЛЬКО ряд номеров, три
+   плюс три, стрелки остаются по бокам, как нарисовано в брифе. Порядок в DOM при этом
+   не переставляется, поэтому обход с клавиатуры совпадает с тем, что человек видит. */
+@media(max-width:429px){.stdc-nums{flex-wrap:wrap;width:132px}}
+.stdc-arr,.stdc-num{min-width:44px;min-height:44px;display:inline-flex;
+  align-items:center;justify-content:center;background:none;border:0;padding:0;
+  color:var(--t2);cursor:pointer;border-radius:0}
+.stdc-arr svg{width:20px;height:20px}
+.stdc-arr:hover:not(:disabled),.stdc-num:hover{color:var(--gold-l)}
+/* Именно disabled, а не aria-disabled: на краях ленты стрелка обязана выпадать из
+   обхода табуляцией, иначе человек жмёт кнопку, которая ничего не делает. */
+.stdc-arr:disabled{opacity:.3;cursor:default}
+.stdc-num{font:400 13px/1 var(--sans);letter-spacing:.08em}
+.stdc-num[aria-current="true"]{color:var(--gold);font-weight:500}
+.stdc-arr:focus-visible,.stdc-num:focus-visible{outline:2px solid var(--gold);outline-offset:-4px}
+@media(min-width:600px){.stdc-ctl{gap:10px}.stdc-nums{gap:6px}}
+/* Плавность отключается вместе со всей остальной анимацией страницы: цикл scrollTo
+   в скрипте читает ту же медиазапись и переключается на мгновенный переход. */
+@media(prefers-reduced-motion:reduce){.stdc-vp{scroll-behavior:auto}}
 </style>
 </head>
 <body>
@@ -2309,13 +2324,89 @@ body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
 <section id="standards">
   <div class="wrap reveal">
     <div class="sec-head"><span class="kick" data-i18n="std_kick">Стандарты DEVAGO</span></div>
-    <div class="steps">
-      <button type="button" class="step" data-modal="std-1"><span class="th"><img src="assets/cn-std1.webp" alt="Проектирование световых сценариев: чертёж потолка" width="226" height="120" loading="lazy"></span><span class="tx"><span class="no">01</span><b data-i18n="std1_h">Проектирование</b><span class="sp" data-i18n="std1_p">Детальная проработка световых сценариев</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <button type="button" class="step" data-modal="std-2"><span class="th"><img src="assets/cn-std2.webp" alt="Точные замеры помещения лазерным дальномером" width="226" height="120" loading="lazy"></span><span class="tx"><span class="no">02</span><b data-i18n="std2_h">Точные замеры</b><span class="sp" data-i18n="std2_p">Миллиметровая точность для идеального результата</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <button type="button" class="step" data-modal="std-3"><span class="th"><img src="assets/cn-std3.webp" alt="Подготовка объекта: мебель укрыта защитной плёнкой" width="226" height="96" loading="lazy"></span><span class="tx"><span class="no">03</span><b data-i18n="std3_h">Подготовка объекта</b><span class="sp" data-i18n="std3_p">Чистота и защита вашего интерьера</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <button type="button" class="step" data-modal="std-4"><span class="th"><img src="assets/cn-std4.webp" alt="Мастер выполняет монтаж натяжного потолка" width="222" height="96" loading="lazy"></span><span class="tx"><span class="no">04</span><b data-i18n="std4_h">Профессиональный монтаж</b><span class="sp" data-i18n="std4_p">Опытные мастера и качественные материалы</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <button type="button" class="step" data-modal="std-5"><span class="th"><img src="assets/cn-std5.webp" alt="Контроль качества: проверка трековой системы освещения" width="226" height="120" loading="lazy"></span><span class="tx"><span class="no">05</span><b data-i18n="std5_h">Контроль качества</b><span class="sp" data-i18n="std5_p">Многоступенчатая проверка на каждом этапе</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <button type="button" class="step" data-modal="std-6"><span class="th"><img src="assets/cn-std6.webp" alt="Готовый интерьер с потолочной подсветкой под гарантией" width="226" height="120" loading="lazy"></span><span class="tx"><span class="no">06</span><b data-i18n="std6_h">Гарантия результата</b><span class="sp" data-i18n="std6_p">Гарантия до 10 лет на все работы и материалы</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    <!-- КАРУСЕЛЬ ЭТАПОВ (бриф CDO 11.08). Пришла на смену сетке .steps и шести
+         модальным окнам std-1…std-6: содержимое окна переехало в слайд целиком,
+         поэтому ключи std_kick, std{N}_h, std{N}_p и mp_std остались прежними,
+         а записи окон из MODALS удалены вместе с data-modal у карточек.
+         tabindex="0" на вьюпорте обязателен по WCAG 2.1.1: прокручиваемая область
+         должна достигаться клавиатурой, иначе шесть этапов недоступны без мыши. -->
+    <div class="stdc" role="group" aria-roledescription="carousel" aria-label="Этапы работ DEVAGO" data-i18n-label="stdc_lbl">
+      <div class="stdc-vp" id="stdcVp" tabindex="0" role="group" aria-label="Этапы работ" data-i18n-label="stdc_vp" aria-live="polite">
+        <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="1 из 6">
+          <div class="stdc-ph"><img src="assets/cn-std1.webp" alt="Проектирование световых сценариев: чертёж потолка" width="678" height="360" loading="eager" decoding="async"></div>
+          <div class="stdc-tx">
+            <span class="kick" data-i18n="std_kick">Стандарты DEVAGO</span>
+            <span class="no">01</span>
+            <h3 data-i18n="std1_h">Проектирование</h3>
+            <p class="sp" data-i18n="std1_p">Детальная проработка световых сценариев</p>
+            <p class="mp" data-i18n="mp_std">Этап обязателен на каждом объекте, независимо от площади. Результат фиксируем и передаём заказчику до перехода к следующему шагу.</p>
+          </div>
+        </article>
+        <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="2 из 6">
+          <div class="stdc-ph"><img src="assets/cn-std2.webp" alt="Точные замеры помещения лазерным дальномером" width="678" height="360" loading="lazy" decoding="async"></div>
+          <div class="stdc-tx">
+            <span class="kick" data-i18n="std_kick">Стандарты DEVAGO</span>
+            <span class="no">02</span>
+            <h3 data-i18n="std2_h">Точные замеры</h3>
+            <p class="sp" data-i18n="std2_p">Миллиметровая точность для идеального результата</p>
+            <p class="mp" data-i18n="mp_std">Этап обязателен на каждом объекте, независимо от площади. Результат фиксируем и передаём заказчику до перехода к следующему шагу.</p>
+          </div>
+        </article>
+        <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="3 из 6">
+          <div class="stdc-ph"><img src="assets/cn-std3.webp" alt="Подготовка объекта: мебель укрыта защитной плёнкой" width="678" height="360" loading="lazy" decoding="async"></div>
+          <div class="stdc-tx">
+            <span class="kick" data-i18n="std_kick">Стандарты DEVAGO</span>
+            <span class="no">03</span>
+            <h3 data-i18n="std3_h">Подготовка объекта</h3>
+            <p class="sp" data-i18n="std3_p">Чистота и защита вашего интерьера</p>
+            <p class="mp" data-i18n="mp_std">Этап обязателен на каждом объекте, независимо от площади. Результат фиксируем и передаём заказчику до перехода к следующему шагу.</p>
+          </div>
+        </article>
+        <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="4 из 6">
+          <div class="stdc-ph"><img src="assets/cn-std4.webp" alt="Мастер выполняет монтаж натяжного потолка" width="678" height="360" loading="lazy" decoding="async"></div>
+          <div class="stdc-tx">
+            <span class="kick" data-i18n="std_kick">Стандарты DEVAGO</span>
+            <span class="no">04</span>
+            <h3 data-i18n="std4_h">Профессиональный монтаж</h3>
+            <p class="sp" data-i18n="std4_p">Опытные мастера и качественные материалы</p>
+            <p class="mp" data-i18n="mp_std">Этап обязателен на каждом объекте, независимо от площади. Результат фиксируем и передаём заказчику до перехода к следующему шагу.</p>
+          </div>
+        </article>
+        <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="5 из 6">
+          <div class="stdc-ph"><img src="assets/cn-std5.webp" alt="Контроль качества: проверка трековой системы освещения" width="678" height="360" loading="lazy" decoding="async"></div>
+          <div class="stdc-tx">
+            <span class="kick" data-i18n="std_kick">Стандарты DEVAGO</span>
+            <span class="no">05</span>
+            <h3 data-i18n="std5_h">Контроль качества</h3>
+            <p class="sp" data-i18n="std5_p">Многоступенчатая проверка на каждом этапе</p>
+            <p class="mp" data-i18n="mp_std">Этап обязателен на каждом объекте, независимо от площади. Результат фиксируем и передаём заказчику до перехода к следующему шагу.</p>
+          </div>
+        </article>
+        <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="6 из 6">
+          <div class="stdc-ph"><img src="assets/cn-std6.webp" alt="Готовый интерьер с потолочной подсветкой под гарантией" width="678" height="360" loading="lazy" decoding="async"></div>
+          <div class="stdc-tx">
+            <span class="kick" data-i18n="std_kick">Стандарты DEVAGO</span>
+            <span class="no">06</span>
+            <h3 data-i18n="std6_h">Гарантия результата</h3>
+            <p class="sp" data-i18n="std6_p">Гарантия до 10 лет на все работы и материалы</p>
+            <p class="mp" data-i18n="mp_std">Этап обязателен на каждом объекте, независимо от площади. Результат фиксируем и передаём заказчику до перехода к следующему шагу.</p>
+          </div>
+        </article>
+      </div>
+      <!-- Номер этапа стоит и в слайде, и в ряду: в слайде он говорит «ты на третьем
+           из шести», в ряду работает кнопкой перехода. -->
+      <div class="stdc-ctl">
+        <button type="button" class="stdc-arr prev" aria-label="Предыдущий этап" data-i18n-label="stdc_prev" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+        <div class="stdc-nums">
+        <button type="button" class="stdc-num" data-go="0" aria-current="true">01</button>
+        <button type="button" class="stdc-num" data-go="1">02</button>
+        <button type="button" class="stdc-num" data-go="2">03</button>
+        <button type="button" class="stdc-num" data-go="3">04</button>
+        <button type="button" class="stdc-num" data-go="4">05</button>
+        <button type="button" class="stdc-num" data-go="5">06</button>
+        </div>
+        <button type="button" class="stdc-arr next" aria-label="Следующий этап" data-i18n-label="stdc_next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
     </div>
     <div class="std-cta"><a class="btn btn-gold btn-w cta" href="#final" data-i18n="cta_main4">Получить консультацию</a></div>
   </div>
@@ -2324,9 +2415,10 @@ body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
 <!-- 6 · PROJECTS + REVIEWS: карусель (десктоп 4 в ряд + стрелки/точки, мобайл столбец) -->
 <section id="projects">
   <div class="wrap reveal">
-    <div class="sec-head"><span class="kick" data-i18n="p_kick">Реализованные проекты и отзывы</span></div>
-    <!-- Честная подпись кадров, показывается только при RENDERS_ARE_VISUALS. -->
-    <p class="lead vis-note" data-i18n="p_vis_note">Компьютерные визуализации решений DEVAGO. Фотографии выполненных объектов появятся здесь по мере сдачи работ.</p>
+    <div class="sec-head"><span class="kick" data-i18n="p_kick">Реализованные проекты</span></div>
+    <!-- Служебная подпись о визуализациях снята по прямому указанию Тахира 11.08,
+         тогда же заголовок секции стал «Галерея наших работ». Флаг
+         RENDERS_ARE_VISUALS оставлен: он и подменяет заголовок. -->
     <!-- ⚠️ ПЛЕЙСХОЛДЕР-проекты из канон-мокапа: заменить реальными кейсами клиента -->
     <!-- ⚠️ ПЛЕЙСХОЛДЕРЫ. Кадры взяты из ассетов репозитория 1600 px: прежние обрезки
          канон-мокапа были 170-210 px шириной и в слот 16:10 на карточке ~560 px не
@@ -2409,6 +2501,43 @@ body.renders-visual .vis-note{margin-top:0;margin-bottom:var(--s7)}
          лента со scroll-snap на телефоне), статичная пара точек была неверной. -->
     <div class="car-ctl" id="carCtl"></div>
     <div class="car-more"><a class="btn btn-out btn-w" href="#projects" data-i18n="cta_all">Смотреть все проекты</a></div>
+  </div>
+</section>
+
+<!-- 6.1 · REVIEWS. Секция заведена 11.08 по указанию Тахира, сразу после галереи.
+     ⚠️ ВСЕ ТРИ ОТЗЫВА ЭТО ПЛЕЙСХОЛДЕРЫ, и написаны они так, чтобы их нельзя было
+     принять за живые: правдоподобная выдумка здесь опаснее пустоты, именно из-за неё
+     отзывы внутри карточек проектов выключены флагом ENABLE_REVIEWS. Заменяет их
+     копирайтер реальными словами клиентов, до замены на боевой не выкладывать. -->
+<section id="reviews">
+  <div class="wrap reveal">
+    <div class="sec-head"><span class="kick" data-i18n="r_kick">Отзывы клиентов</span></div>
+    <div class="revs">
+      <article class="rev">
+        <span class="qm" aria-hidden="true">«</span>
+        <q data-i18n="r1_q">Плейсхолдер 1. Здесь встанет реальный отзыв клиента: что заказывали, что было важно и как прошла работа. Текст даёт копирайтер.</q>
+        <div class="sig">
+          <div class="who" data-i18n="r1_w">Имя клиента</div>
+          <div class="role" data-i18n="r1_r">Тип объекта, город</div>
+        </div>
+      </article>
+      <article class="rev">
+        <span class="qm" aria-hidden="true">«</span>
+        <q data-i18n="r2_q">Плейсхолдер 2. Здесь встанет реальный отзыв клиента: что заказывали, что было важно и как прошла работа. Текст даёт копирайтер.</q>
+        <div class="sig">
+          <div class="who" data-i18n="r2_w">Имя клиента</div>
+          <div class="role" data-i18n="r2_r">Тип объекта, город</div>
+        </div>
+      </article>
+      <article class="rev">
+        <span class="qm" aria-hidden="true">«</span>
+        <q data-i18n="r3_q">Плейсхолдер 3. Здесь встанет реальный отзыв клиента: что заказывали, что было важно и как прошла работа. Текст даёт копирайтер.</q>
+        <div class="sig">
+          <div class="who" data-i18n="r3_w">Имя клиента</div>
+          <div class="role" data-i18n="r3_r">Тип объекта, город</div>
+        </div>
+      </article>
+    </div>
   </div>
 </section>
 
@@ -2582,6 +2711,19 @@ var I18N = {
  st_kick:"Премиальное решение",st_title:"Звёздное небо",
  st_p:"Реалистичное звёздное небо для особой атмосферы в спальне, кинотеатре, SPA-зоне или лаунж-пространстве.",
  f1:"Оптоволоконные технологии",f2:"Полная интеграция с освещением",f3:"Любые сценарии мерцания",f4:"Долговечность и безопасность",
+ /* Карусель стандартов. Ключ stdc_of это ШАБЛОН: %n заменяется номером слайда в
+    apply(). Отдельным шаблоном, а не склейкой в скрипте, потому что порядок слов
+    в узбекском обратный русскому, и склейка «номер плюс хвост» его бы сломала. */
+ stdc_lbl:"Этапы работ DEVAGO",stdc_vp:"Этапы работ",stdc_of:"%n из 6",
+ stdc_prev:"Предыдущий этап",stdc_next:"Следующий этап",stdc_step:"Этап %n",
+ /* Отзывы. ⚠️ ПЛЕЙСХОЛДЕРЫ, живые цитаты даёт копирайтер. */
+ r_kick:"Отзывы клиентов",
+ r1_q:"Плейсхолдер 1. Здесь встанет реальный отзыв клиента: что заказывали, что было важно и как прошла работа. Текст даёт копирайтер.",
+ r1_w:"Имя клиента",r1_r:"Тип объекта, город",
+ r2_q:"Плейсхолдер 2. Здесь встанет реальный отзыв клиента: что заказывали, что было важно и как прошла работа. Текст даёт копирайтер.",
+ r2_w:"Имя клиента",r2_r:"Тип объекта, город",
+ r3_q:"Плейсхолдер 3. Здесь встанет реальный отзыв клиента: что заказывали, что было важно и как прошла работа. Текст даёт копирайтер.",
+ r3_w:"Имя клиента",r3_r:"Тип объекта, город",
  std_kick:"Стандарты DEVAGO",
  std1_h:"Проектирование",std1_p:"Детальная проработка световых сценариев",
  std2_h:"Точные замеры",std2_p:"Миллиметровая точность для идеального результата",
@@ -2589,10 +2731,13 @@ var I18N = {
  std4_h:"Профессиональный монтаж",std4_p:"Опытные мастера и качественные материалы",
  std5_h:"Контроль качества",std5_p:"Многоступенчатая проверка на каждом этапе",
  std6_h:"Гарантия результата",std6_p:"Гарантия до 10 лет на все работы и материалы",
- p_kick:"Реализованные проекты и отзывы",
- /* Подпись на время, пока живых фото нет. Возвращается снятием RENDERS_ARE_VISUALS. */
- p_kick_v:"Визуализация возможностей",
- p_vis_note:"Компьютерные визуализации решений DEVAGO. Фотографии выполненных объектов появятся здесь по мере сдачи работ.",
+ /* Запасной заголовок, показывается при снятом RENDERS_ARE_VISUALS. Слова «и отзывы»
+    сняты 11.08: отзывы уехали в собственную секцию #reviews, и обещать их здесь значит
+    обещать то, чего в секции нет. */
+ p_kick:"Реализованные проекты",
+ /* Заголовок секции на время, пока живых фото нет. Формулировка Тахира 11.08.
+    Возвращается к p_kick снятием RENDERS_ARE_VISUALS. */
+ p_kick_v:"Галерея наших работ",
  p1_o:"Пентхаус 240 м²",p1_c:"<span class='dt'>Ташкент</span><span class='mb'>Tashkent City</span>",
  p1_q:"Искали подрядчика, который сможет объединить <span class='dt'>разные потолочные</span><span class='mb'>световые</span> решения в единую концепцию. Результат превзошёл ожидания.<span class='dt'> Пространство стало совершенно другим.</span>",
  p1_w:"Александр и Мария",p1_r:"Владельцы пентхауса",
@@ -2654,6 +2799,15 @@ var I18N = {
  st_kick:"Premium yechim",st_title:"Yulduzli osmon",
  st_p:"Yotoqxona, kinoteatr, SPA yoki launj makonida oʻzgacha muhit uchun realistik yulduzli osmon.",
  f1:"Optik tolali texnologiyalar",f2:"Yoritish bilan toʻliq integratsiya",f3:"Istalgan jimirlash stsenariylari",f4:"Uzoq umr va xavfsizlik",
+ stdc_lbl:"DEVAGO ish bosqichlari",stdc_vp:"Ish bosqichlari",stdc_of:"6 dan %n",
+ stdc_prev:"Oldingi bosqich",stdc_next:"Keyingi bosqich",stdc_step:"%n-bosqich",
+ r_kick:"Mijozlar fikri",
+ r1_q:"Plelsxolder 1. Bu yerda mijozning haqiqiy fikri turadi: nima buyurtma qilingani, nima muhim boʻlgani va ish qanday oʻtgani. Matnni kopirayter beradi.",
+ r1_w:"Mijoz ismi",r1_r:"Obyekt turi, shahar",
+ r2_q:"Plelsxolder 2. Bu yerda mijozning haqiqiy fikri turadi: nima buyurtma qilingani, nima muhim boʻlgani va ish qanday oʻtgani. Matnni kopirayter beradi.",
+ r2_w:"Mijoz ismi",r2_r:"Obyekt turi, shahar",
+ r3_q:"Plelsxolder 3. Bu yerda mijozning haqiqiy fikri turadi: nima buyurtma qilingani, nima muhim boʻlgani va ish qanday oʻtgani. Matnni kopirayter beradi.",
+ r3_w:"Mijoz ismi",r3_r:"Obyekt turi, shahar",
  std_kick:"DEVAGO standartlari",
  std1_h:"Loyihalash",std1_p:"Yorugʻlik stsenariylarini batafsil ishlab chiqish",
  std2_h:"Aniq oʻlchovlar",std2_p:"Ideal natija uchun millimetr aniqligi",
@@ -2661,9 +2815,8 @@ var I18N = {
  std4_h:"Professional montaj",std4_p:"Tajribali ustalar va sifatli materiallar",
  std5_h:"Sifat nazorati",std5_p:"Har bosqichda koʻp pogʻonali tekshiruv",
  std6_h:"Natija kafolati",std6_p:"Barcha ish va materiallarga 10 yilgacha kafolat",
- p_kick:"Amalga oshirilgan loyihalar va fikrlar",
- p_kick_v:"Imkoniyatlar vizualizatsiyasi",
- p_vis_note:"DEVAGO yechimlarining kompyuter vizualizatsiyalari. Bajarilgan obyektlarning suratlari ishlar topshirilishi bilan shu yerda paydo boʻladi.",
+ p_kick:"Amalga oshirilgan loyihalar",
+ p_kick_v:"Ishlarimiz galereyasi",
  p1_o:"Pentxaus 240 m²",p1_c:"<span class='dt'>Toshkent</span><span class='mb'>Tashkent City</span>",
  p1_q:"Turli shift yechimlarini yagona konsepsiyaga birlashtira oladigan pudratchi izladik. Natija kutilganidan oshdi.<span class='dt'> Makon butunlay oʻzgardi.</span>",
  p1_w:"Aleksandr va Mariya",p1_r:"Pentxaus egalari",
@@ -2720,6 +2873,13 @@ var I18N = {
       var pk=document.querySelector('[data-i18n="p_kick"]');
       if(pk&&d.p_kick_v)pk.innerHTML=d.p_kick_v;
     }
+    /* Подписи слайдов и кнопок-номеров собираются ЗДЕСЬ по шаблону с %n: обычный
+       data-i18n-label не годится, у шести узлов подпись отличается номером, а порядок
+       слов в узбекском обратный русскому, поэтому склейкой в скрипте не обойтись. */
+    document.querySelectorAll(".stdc-slide").forEach(function(e,i){
+      if(d.stdc_of)e.setAttribute("aria-label",d.stdc_of.replace("%n",i+1));});
+    document.querySelectorAll(".stdc-num").forEach(function(e,i){
+      if(d.stdc_step)e.setAttribute("aria-label",d.stdc_step.replace("%n",i+1));});
     /* Пар кнопок теперь ДВЕ: в меню и в шапке (от 1000px бургера нет). Ведём обе
        по data-l, чтобы копия не разъехалась с оригиналом по состоянию. */
     document.querySelectorAll(".lang button[data-l]").forEach(function(x){
@@ -2737,7 +2897,8 @@ var I18N = {
      Скрываем именно отзывы: цитату, кнопку раскрытия и подпись автора. Фото, тип
      объекта и город остаются, они описывают сам кадр, а не выдуманного человека. */
   if(!ENABLE_REVIEWS)document.body.classList.add("no-reviews");
-  if(RENDERS_ARE_VISUALS)document.body.classList.add("renders-visual");
+  /* Класс renders-visual на body снят 11.08 вместе с подписью: правил под него
+     больше нет, а флаг продолжает работать через подмену заголовка в apply(). */
   document.querySelectorAll("a.tg-link").forEach(function(a){a.setAttribute("href",TG_URL)});
   document.querySelectorAll("a.inst-link").forEach(function(a){a.setAttribute("href",INST_URL)});
   document.querySelectorAll("a.tel-link").forEach(function(a){
@@ -2841,12 +3002,11 @@ var I18N = {
    "ann-3":{k:"c_kick",t:"a3",img:"assets/cn-combo-1228.webp",p:["mp_ann"],l:[]},
    "ann-4":{k:"c_kick",t:"a4",img:"assets/cn-combo-1228.webp",p:["mp_ann"],l:[]},
    "ann-5":{k:"c_kick",t:"a5",img:"assets/cn-combo-1228.webp",p:["mp_ann"],l:[]},
-   "std-1":{k:"std_kick",t:"std1_h",img:"assets/cn-std1.webp",p:["std1_p","mp_std"],l:[]},
-   "std-2":{k:"std_kick",t:"std2_h",img:"assets/cn-std2.webp",p:["std2_p","mp_std"],l:[]},
-   "std-3":{k:"std_kick",t:"std3_h",img:"assets/cn-std3.webp",p:["std3_p","mp_std"],l:[]},
-   "std-4":{k:"std_kick",t:"std4_h",img:"assets/cn-std4.webp",p:["std4_p","mp_std"],l:[]},
-   "std-5":{k:"std_kick",t:"std5_h",img:"assets/cn-std5.webp",p:["std5_p","mp_std"],l:[]},
-   "std-6":{k:"std_kick",t:"std6_h",img:"assets/cn-std6.webp",p:["std6_p","mp_std"],l:[]}
+   /* Записи std-1…std-6 удалены 11.08: стандарты стали каруселью, и то же самое
+      содержимое теперь лежит прямо в слайде. Ключи std_kick, std{N}_h, std{N}_p и
+      mp_std НЕ трогаем, они питают слайд. Обработчик окон делегированный и висит на
+      [data-modal], поэтому атрибутов у карточек хватило снять, мёртвых слушателей
+      после этого не остаётся. */
   };
   for(var _i=1;_i<=8;_i++) MODALS["pp"+_i]={k:"pp_kick",t:"pp"+_i+"_h",img:"assets/pp"+_i+".webp",
     p:["pp"+_i+"_p","mp_pp"],l:[]};
@@ -3343,6 +3503,80 @@ var I18N = {
       go(el);
       if(history.replaceState)history.replaceState(null,"",href);
     },false);
+  })();
+
+  /* ================= КАРУСЕЛЬ СТАНДАРТОВ (бриф CDO 11.08) =================
+     Переход это scrollTo ПО ВЬЮПОРТУ, не transform, и активный слайд считается
+     из scrollLeft: idx = round(scrollLeft / шаг). Шаг берётся не из ширины слайда
+     плюс gap руками, а из разницы offsetLeft соседей: так он остаётся верным при
+     любой смене раскладки (88% с peek, 100%, ряд от 1000px) без синхронизации
+     чисел между CSS и скриптом. Зацикливания нет намеренно: это этапы от
+     проектирования к гарантии, прыжок с шестого на первый противоречит процессу. */
+  (function(){
+    var vp=document.getElementById("stdcVp");if(!vp)return;
+    var slides=[].slice.call(vp.querySelectorAll(".stdc-slide")),
+        ctl=document.querySelector(".stdc-ctl");
+    if(!slides.length||!ctl)return;
+    var nums=[].slice.call(ctl.querySelectorAll(".stdc-num")),
+        prev=ctl.querySelector(".stdc-arr.prev"),
+        next=ctl.querySelector(".stdc-arr.next"),
+        last=slides.length-1,cur=0,raf=0;
+    function reduced(){return window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches}
+    function step(){
+      if(slides.length<2)return vp.clientWidth||1;
+      var s=slides[1].offsetLeft-slides[0].offsetLeft;
+      return s>0?s:(vp.clientWidth||1);
+    }
+    function idxNow(){
+      return Math.max(0,Math.min(last,Math.round(vp.scrollLeft/step())));
+    }
+    function paint(){
+      nums.forEach(function(b,i){
+        if(i===cur)b.setAttribute("aria-current","true");else b.removeAttribute("aria-current");
+      });
+      /* Стрелку на краю выключаем ПО-НАСТОЯЩЕМУ, поэтому она выпадает из обхода.
+         Если гасим ту, на которой сейчас фокус, фокус уводим на соседнюю: иначе он
+         улетает на body посреди секции и клавиатурный проход рвётся. */
+      var lose=document.activeElement;
+      if(prev){prev.disabled=cur===0;if(prev.disabled&&lose===prev&&next)next.focus();}
+      if(next){next.disabled=cur===last;if(next.disabled&&lose===next&&prev)prev.focus();}
+    }
+    function go(i){
+      i=Math.max(0,Math.min(last,i));
+      cur=i;paint();
+      vp.scrollTo({left:i*step(),behavior:reduced()?"instant":"smooth"});
+    }
+    vp.addEventListener("scroll",function(){
+      if(raf)return;
+      raf=requestAnimationFrame(function(){
+        raf=0;var i=idxNow();
+        if(i!==cur){cur=i;paint();}
+      });
+    },{passive:true});
+    if(prev)prev.addEventListener("click",function(){go(cur-1)});
+    if(next)next.addEventListener("click",function(){go(cur+1)});
+    nums.forEach(function(b){
+      b.addEventListener("click",function(){go(parseInt(b.getAttribute("data-go"),10)||0)});
+    });
+    /* Ключи гасим своим preventDefault: у прокручиваемой области стрелки и Home/End
+       уже имеют РОДНОЕ поведение (сдвиг на несколько пикселей), и без этого оно
+       спорило бы с нашим переходом на соседний слайд. */
+    vp.addEventListener("keydown",function(e){
+      var k=e.key,d=null;
+      if(k==="ArrowRight")d=cur+1;else if(k==="ArrowLeft")d=cur-1;
+      else if(k==="Home")d=0;else if(k==="End")d=last;
+      if(d===null)return;
+      e.preventDefault();go(d);
+    });
+    /* Смена раскладки меняет шаг, поэтому положение пересобираем от ТЕКУЩЕГО слайда,
+       а не от пикселей: иначе после поворота экрана лента встаёт между слайдами. */
+    var rt=0;
+    window.addEventListener("resize",function(){
+      clearTimeout(rt);rt=setTimeout(function(){
+        vp.scrollTo({left:cur*step(),behavior:"instant"});
+      },160);
+    },{passive:true});
+    paint();
   })();
 })();
 </script>
