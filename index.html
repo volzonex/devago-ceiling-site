@@ -2281,6 +2281,15 @@ footer{padding-bottom:104px}
 }
 /* Плашка свап-точки не должна прижиматься к соседней строке ни на какой ширине. */
 .swap{margin:1px 0}
+
+/* КАВЫЧКА В КАРТОЧКЕ ОТЗЫВА ПЕРЕЕХАЛА В НИЖНИЙ ПРАВЫЙ УГОЛ (правка Тахира 11.08).
+   В верхнем левом она лежала ровно под началом первой строки: замер пересечением
+   прямоугольников подтверждал наложение на текст цитаты. Прозрачности .16 мало,
+   глиф крупный и штрих у него толстый, поэтому первые буквы читались хуже.
+   Заодно развёрнута в ЗАКРЫВАЮЩУЮ: открывающая внизу справа читается как ошибка
+   набора, закрывающая на этом месте уместна. Правый нижний угол свободен по
+   построению: подпись и роль прижаты влево, а высоту карточке задаёт цитата. */
+.rev .qm{top:auto;left:auto;right:14px;bottom:8px;opacity:.14}
 </style>
 </head>
 <body>
@@ -2652,7 +2661,7 @@ footer{padding-bottom:104px}
     <div class="sec-head"><span class="kick" data-i18n="r_kick">Отзывы клиентов</span></div>
     <div class="revs">
       <article class="rev">
-        <span class="qm" aria-hidden="true">«</span>
+        <span class="qm" aria-hidden="true">»</span>
         <q data-i18n="r1_q">Плейсхолдер 1. Здесь встанет реальный отзыв клиента: что заказывали, что было важно и как прошла работа. Текст даёт копирайтер.</q>
         <div class="sig">
           <div class="who" data-i18n="r1_w">Имя клиента</div>
@@ -2660,7 +2669,7 @@ footer{padding-bottom:104px}
         </div>
       </article>
       <article class="rev">
-        <span class="qm" aria-hidden="true">«</span>
+        <span class="qm" aria-hidden="true">»</span>
         <q data-i18n="r2_q">Плейсхолдер 2. Здесь встанет реальный отзыв клиента: что заказывали, что было важно и как прошла работа. Текст даёт копирайтер.</q>
         <div class="sig">
           <div class="who" data-i18n="r2_w">Имя клиента</div>
@@ -2668,7 +2677,7 @@ footer{padding-bottom:104px}
         </div>
       </article>
       <article class="rev">
-        <span class="qm" aria-hidden="true">«</span>
+        <span class="qm" aria-hidden="true">»</span>
         <q data-i18n="r3_q">Плейсхолдер 3. Здесь встанет реальный отзыв клиента: что заказывали, что было важно и как прошла работа. Текст даёт копирайтер.</q>
         <div class="sig">
           <div class="who" data-i18n="r3_w">Имя клиента</div>
