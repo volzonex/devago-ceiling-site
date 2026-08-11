@@ -118,7 +118,16 @@ function devagoTrack(goal){
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+/* ⚠️ overflow-x:hidden НА BODY СНЯТ 11.08, И ВОЗВРАЩАТЬ ЕГО НЕЛЬЗЯ.
+   По спецификации, если одна ось не visible, вторая вычисляется в auto. То есть это
+   правило делало body СКРОЛЛ-КОНТЕЙНЕРОМ (замер: computed overflow был «hidden auto»),
+   и position:sticky у шапки цеплялся за скроллпорт body, а не за окно. В Chromium это
+   незаметно, потому что overflow всплывает с body на окно, а во встроенном браузере
+   Telegram на iOS шапка из-за этого отрывается от верха и уезжает вместе с контентом.
+   Проверено ПЕРЕД снятием: реальное горизонтальное переполнение документа равно НУЛЮ
+   на 14 ширинах в двух языках и без этого правила, то есть оно не скрывало ничего.
+   Появится переполнение, чинить его источник, а не прятать здесь. */
+body{background:var(--bg);color:var(--text);font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--gold);color:#171204}
@@ -2123,6 +2132,20 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
 /* Плавность отключается вместе со всей остальной анимацией страницы: цикл scrollTo
    в скрипте читает ту же медиазапись и переключается на мгновенный переход. */
 @media(prefers-reduced-motion:reduce){.stdc-vp{scroll-behavior:auto}}
+
+/* ============ ИНТЕРЛИНЬЯЖ ОПИСАНИЙ СЖАТ (правка Тахира 11.08) ============
+   Заказ дословно: расстояние между «идеально ровные стыки» и «чистая геометрия»
+   сократить. Это ОДНО предложение в две строки, то есть речь про интерлиньяж.
+
+   ЗАМЕР ДО ПРАВКИ вскрыл, что дело не в подборе, а в разнобое: на ОДНОМ кегле 15.2px
+   описание решений шло 26.14px (1.72), а стандартов и фотопечати 22.8 (1.5). Значение
+   1.72 никто не задавал, это body, унаследованный туда, где своего правила нет. Тот же
+   класс дефекта уже ловили 07.08 на .pp .pp-d.
+
+   Поэтому сведено к двум ступеням: короткая подпись карточки 1.4, бегущий абзац 1.55.
+   Кегли не тронуты, их поднимали отдельным заказом 11.08 и претензий к ним не было. */
+.sol .tx > span,.stdc-tx .sp,.pp .pp-d{line-height:1.4}
+.hero .sub,.combo-p,.stdc-tx .mp,.rev q{line-height:1.55}
 </style>
 </head>
 <body>
