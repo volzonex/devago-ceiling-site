@@ -2,7 +2,13 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- viewport-fit=cover СНЯТ 11.08. Он растягивал layout viewport ПОД системную
+     обвязку и под полупрозрачную шапку встроенного браузера Telegram, то есть top:0
+     переставал означать «верх видимой области». Компенсацией служил
+     padding-top:env(safe-area-inset-top) у шапки, но 08.08 его сняли до 1000px, чтобы
+     у липкой шапки не прыгала высота. В итоге растяжение осталось, а компенсация ушла.
+     Без cover инсеты равны нулю и компенсировать нечего: top:0 это настоящий верх. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--
   DEVAGO CEILING · боевая версия v4 (канон: examples/4.jpg десктоп, examples/5.jpg мобайл).
   Свап-точки: PHONE (+998 90 123 45 67), CTA_TARGET (#final), STOCK-кадры (ждём hi-res рендеры),
@@ -187,6 +193,20 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
    встроенный браузер меняет инсет, когда схлопывает свою обвязку, а это и есть скачок
    высоты у липкой шапки. Выше 1000px инсет оставлен, там обвязки браузера нет. */
 @media(max-width:999px){header{background:var(--bg);padding-top:0}}
+/* ШАПКА НА ТЕЛЕФОНЕ СТАЛА FIXED, А НЕ STICKY (11.08, третий заход по этому дефекту).
+   Это ровно тот план, который записан в разделе 20.1 памяти проекта как «следующая
+   попытка»: липкое смещение iOS считает на потоке прокрутки, а отрисовку на главном,
+   и во время инерционной прокрутки они расходятся, отчего шапка видимо отстаёт и
+   выглядит отцепившейся от верха. У fixed этой пары нет, слой композитный.
+   ПОРОГ 760 ВЗЯТ НЕ ПОДБОРОМ, А ИЗ САМОГО ФАЙЛА: компактные поля .nav (10px сверху и
+   снизу), из которых и складывается высота 65, задаются в @media(max-width:760px).
+   Распорка обязана совпадать с высотой шапки до пикселя, поэтому она обязана жить в
+   ТОЙ ЖЕ вилке. Первая попытка с порогом 766 сдвинула вёрстку на 12px именно здесь:
+   на 761-766 шапка уже 77px, а распорка оставалась 65. */
+@media(max-width:760px){
+  header{position:fixed;left:0;right:0;top:0}
+  body{padding-top:65px}
+}
 .nav{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;gap:16px}
 .brand{display:flex;align-items:center;gap:12px;flex:none}
 .brand img{width:40px;height:40px;object-fit:contain}
@@ -2497,20 +2517,6 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
         </article>
         <article class="prj">
           <div class="ph"><picture>
-            <source type="image/webp" srcset="assets/cn-rev4-560.webp 560w, assets/cn-rev4.webp 1120w" sizes="(min-width:1000px) 560px, (min-width:600px) 46vw, 84vw">
-            <img src="assets/cn-rev4-560.webp" alt="Проект: звёздное небо в домашнем кинотеатре" width="560" height="350" loading="lazy">
-          </picture></div>
-          <div class="bx">
-            <div class="obj" data-i18n="p4_o">Домашний кинотеатр</div>
-            <div class="city" data-i18n="p4_c">Частный проект</div>
-            <q data-i18n="p4_q">Звёздное небо от DEVAGO - это нечто! Атмосфера как в настоящем кинотеатре. Реализация выше всяких похвал.</q>
-            <button type="button" class="prj-more" data-modal="prj-4"><span data-i18n="read_more">Читать полностью</span></button>
-            <div class="who" data-i18n="p4_w">Тимур А.</div>
-            <div class="role" data-i18n="p4_r">Владелец проекта</div>
-          </div>
-        </article>
-        <article class="prj">
-          <div class="ph"><picture>
             <source type="image/webp" srcset="assets/cn-rev5-560.webp 560w, assets/cn-rev5.webp 1120w" sizes="(min-width:1000px) 560px, (min-width:600px) 46vw, 84vw">
             <img src="assets/cn-rev5-560.webp" alt="Проект: световые линии и скрытый карниз в SPA-зоне 150 м²" width="560" height="350" loading="lazy">
           </picture></div>
@@ -2784,7 +2790,6 @@ var I18N = {
  p1_w:"Александр и Мария",p1_r:"Владельцы пентхауса",
  p2_o:"Частный дом 420 м²",p2_c:"Ташкентская область",p2_q:"DEVAGO предложили решение, которое полностью изменило восприятие пространства. Качество исполнения на высочайшем уровне.",p2_w:"Бахром Р.",p2_r:"Владелец дома",
  p3_o:"Квартира 180 м²",p3_c:"Tashkent City",p3_q:"Безупречное качество, аккуратность и внимание к деталям. Световые решения идеально подчеркнули архитектуру интерьера.",p3_w:"Дильноза К.",p3_r:"Владелица квартиры",
- p4_o:"Домашний кинотеатр",p4_c:"Частный проект",p4_q:"Звёздное небо от DEVAGO - это нечто! Атмосфера как в настоящем кинотеатре. <span class='dt'>Реализация выше всяких похвал.</span><span class='mb'>Реализовали нашу мечту.</span>",p4_w:"Тимур А.",p4_r:"Владелец проекта",
  p5_o:"SPA-зона 150 м²",p5_c:"Частный проект",p5_q:"Световые линии и скрытый карниз создали идеальную атмосферу релакса и уюта.",p5_w:"Бахром Р.",
  w_kick:"Почему выбирают DEVAGO",
  w1:"Архитектурный подход к каждому проекту",w2:"Премиальные материалы и комплектующие",
@@ -2863,7 +2868,6 @@ var I18N = {
  p1_w:"Aleksandr va Mariya",p1_r:"Pentxaus egalari",
  p2_o:"Xususiy uy 420 m²",p2_c:"Toshkent viloyati",p2_q:"DEVAGO makon idrokini butunlay oʻzgartirgan yechimni taklif qildi. Ijro sifati eng yuqori darajada.",p2_w:"Bahrom R.",p2_r:"Uy egasi",
  p3_o:"Kvartira 180 m²",p3_c:"Tashkent City",p3_q:"Benuqson sifat, ozodalik va detallarga eʼtibor. Yorugʻlik yechimlari interyer arxitekturasini ideal taʼkidladi.",p3_w:"Dilnoza K.",p3_r:"Kvartira egasi",
- p4_o:"Uy kinoteatri",p4_c:"Xususiy loyiha",p4_q:"DEVAGO yulduzli osmoni - bu ajoyib! Muhit xuddi haqiqiy kinoteatrdagidek. <span class='dt'>Ijro har qanday maqtovdan ustun.</span><span class='mb'>Orzuimizni amalga oshirdik.</span>",p4_w:"Timur A.",p4_r:"Loyiha egasi",
  p5_o:"SPA-zona 150 m²",p5_c:"Xususiy loyiha",p5_q:"Yorugʻlik chiziqlari va yashirin karniz relaks va shinamlikning ideal muhitini yaratdi.",p5_w:"Bahrom R.",
  w_kick:"Nega DEVAGO tanlashadi",
  w1:"Har bir loyihaga arxitektura yondashuvi",w2:"Premium materiallar va butlovchilar",

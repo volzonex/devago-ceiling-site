@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DEVAGO Ceiling - премиальные натяжные потолки | Архитектура света и пространства</title>
 <meta name="description" content="DEVAGO Ceiling - премиальные натяжные потолки: теневые системы, световые линии, магнитные треки, скрытые карнизы, звёздное небо, фотопечать. Ташкент, Узбекистан.">
 <meta property="og:type" content="website">
@@ -112,6 +112,10 @@ html{scroll-behavior:auto}
 }
 header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bottom:1px solid var(--hairline);padding-top:env(safe-area-inset-top)}
 @media(max-width:999px){header{background:var(--bg);padding-top:0}}
+@media(max-width:766px){
+header{position:fixed;left:0;right:0;top:0}
+body{padding-top:65px}
+}
 .nav{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;gap:16px}
 .brand{display:flex;align-items:center;gap:12px;flex:none}
 .brand img{width:40px;height:40px;object-fit:contain}
@@ -1459,20 +1463,6 @@ sizes="(min-width:900px) 60vw, 100vw">
 </article>
 <article class="prj">
 <div class="ph"><picture>
-<source type="image/webp" srcset="assets/cn-rev4-560.webp 560w, assets/cn-rev4.webp 1120w" sizes="(min-width:1000px) 560px, (min-width:600px) 46vw, 84vw">
-<img src="assets/cn-rev4-560.webp" alt="Проект: звёздное небо в домашнем кинотеатре" width="560" height="350" loading="lazy">
-</picture></div>
-<div class="bx">
-<div class="obj" data-i18n="p4_o">Домашний кинотеатр</div>
-<div class="city" data-i18n="p4_c">Частный проект</div>
-<q data-i18n="p4_q">Звёздное небо от DEVAGO - это нечто! Атмосфера как в настоящем кинотеатре. Реализация выше всяких похвал.</q>
-<button type="button" class="prj-more" data-modal="prj-4"><span data-i18n="read_more">Читать полностью</span></button>
-<div class="who" data-i18n="p4_w">Тимур А.</div>
-<div class="role" data-i18n="p4_r">Владелец проекта</div>
-</div>
-</article>
-<article class="prj">
-<div class="ph"><picture>
 <source type="image/webp" srcset="assets/cn-rev5-560.webp 560w, assets/cn-rev5.webp 1120w" sizes="(min-width:1000px) 560px, (min-width:600px) 46vw, 84vw">
 <img src="assets/cn-rev5-560.webp" alt="Проект: световые линии и скрытый карниз в SPA-зоне 150 м²" width="560" height="350" loading="lazy">
 </picture></div>
@@ -1673,7 +1663,6 @@ p1_q:"Искали подрядчика, который сможет объед�
 p1_w:"Александр и Мария",p1_r:"Владельцы пентхауса",
 p2_o:"Частный дом 420 м²",p2_c:"Ташкентская область",p2_q:"DEVAGO предложили решение, которое полностью изменило восприятие пространства. Качество исполнения на высочайшем уровне.",p2_w:"Бахром Р.",p2_r:"Владелец дома",
 p3_o:"Квартира 180 м²",p3_c:"Tashkent City",p3_q:"Безупречное качество, аккуратность и внимание к деталям. Световые решения идеально подчеркнули архитектуру интерьера.",p3_w:"Дильноза К.",p3_r:"Владелица квартиры",
-p4_o:"Домашний кинотеатр",p4_c:"Частный проект",p4_q:"Звёздное небо от DEVAGO - это нечто! Атмосфера как в настоящем кинотеатре. <span class='dt'>Реализация выше всяких похвал.</span><span class='mb'>Реализовали нашу мечту.</span>",p4_w:"Тимур А.",p4_r:"Владелец проекта",
 p5_o:"SPA-зона 150 м²",p5_c:"Частный проект",p5_q:"Световые линии и скрытый карниз создали идеальную атмосферу релакса и уюта.",p5_w:"Бахром Р.",
 w_kick:"Почему выбирают DEVAGO",
 w1:"Архитектурный подход к каждому проекту",w2:"Премиальные материалы и комплектующие",
@@ -1748,7 +1737,6 @@ p1_q:"Turli shift yechimlarini yagona konsepsiyaga birlashtira oladigan pudratch
 p1_w:"Aleksandr va Mariya",p1_r:"Pentxaus egalari",
 p2_o:"Xususiy uy 420 m²",p2_c:"Toshkent viloyati",p2_q:"DEVAGO makon idrokini butunlay oʻzgartirgan yechimni taklif qildi. Ijro sifati eng yuqori darajada.",p2_w:"Bahrom R.",p2_r:"Uy egasi",
 p3_o:"Kvartira 180 m²",p3_c:"Tashkent City",p3_q:"Benuqson sifat, ozodalik va detallarga eʼtibor. Yorugʻlik yechimlari interyer arxitekturasini ideal taʼkidladi.",p3_w:"Dilnoza K.",p3_r:"Kvartira egasi",
-p4_o:"Uy kinoteatri",p4_c:"Xususiy loyiha",p4_q:"DEVAGO yulduzli osmoni - bu ajoyib! Muhit xuddi haqiqiy kinoteatrdagidek. <span class='dt'>Ijro har qanday maqtovdan ustun.</span><span class='mb'>Orzuimizni amalga oshirdik.</span>",p4_w:"Timur A.",p4_r:"Loyiha egasi",
 p5_o:"SPA-zona 150 m²",p5_c:"Xususiy loyiha",p5_q:"Yorugʻlik chiziqlari va yashirin karniz relaks va shinamlikning ideal muhitini yaratdi.",p5_w:"Bahrom R.",
 w_kick:"Nega DEVAGO tanlashadi",
 w1:"Har bir loyihaga arxitektura yondashuvi",w2:"Premium materiallar va butlovchilar",
