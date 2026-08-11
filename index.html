@@ -619,7 +619,7 @@ header{border-bottom:1px solid rgba(237,230,214,.08)}
 /* Узкий телефон: расширенные поля выдавливали 1 px переполнения на 360 в узбекском,
    виновник длинное «Ilhomlantiruvchi» в финальном заголовке. Найдено CDO при замере. */
 @media(max-width:400px){
-  .final-l h2{letter-spacing:.06em;overflow-wrap:anywhere}
+  .final-l h2{letter-spacing:.06em;overflow-wrap:break-word}
 }
 
 /* ================= CDO v2: локап, золото как материал, состояния =================
@@ -704,7 +704,7 @@ header{border-bottom:1px solid rgba(237,230,214,.07)}
   transition:opacity .9s cubic-bezier(.22,.61,.36,1),transform .9s cubic-bezier(.22,.61,.36,1)}
 
 /* --- 10. Узкий телефон: длинное узбекское Ilhomlantiruvchi в финальном заголовке --- */
-@media(max-width:400px){.final-l h2{letter-spacing:.10em;overflow-wrap:anywhere}}
+@media(max-width:400px){.final-l h2{letter-spacing:.10em;overflow-wrap:break-word}}
 /* ================= CDO v3: мембрана и зазор, подписи, метрики под Jost =================
    Отменяет v2 в части типографики (Tenor Sans снят решением Тахира), остальное из v2
    в силе. Блок стоит последним намеренно: перекрывает прежние значения по каскаду. */
@@ -1115,7 +1115,7 @@ body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .pp .ph{display:block;aspect-ratio:4/3;overflow:hidden}
 .pp .ph img{width:100%;height:100%;object-fit:cover}
 .pp .bx{display:block;padding:12px 12px 14px}
-.pp .bx b{display:block;font:500 1rem/1.35 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-l);overflow-wrap:anywhere}
+.pp .bx b{display:block;font:500 1rem/1.35 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-l);overflow-wrap:break-word}
 .pp .bx b i{font-style:normal;color:var(--gold);margin-right:6px}
 .pp .pp-d{display:block;font-size:.95rem;color:var(--t2);margin-top:5px}
 @media(hover:hover){.pp:hover .ph img{transform:scale(1.03)}
@@ -1130,7 +1130,7 @@ body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
    CDO v4 · ПУНКТ 6. СЕКЦИЯ «СТАНДАРТЫ DEVAGO»
    ==================================================================================
    ДЕФЕКТ: на кадре «ПРОФЕССИОНАЛЬНЫЙ МОНТАЖ» вылезал за правую границу карточки.
-   Лечится тремя вещами сразу: overflow-wrap:anywhere на заголовке, минимальная высота
+   Лечилось тремя вещами сразу: overflow-wrap:anywhere на заголовке (11.08 заменён на break-word), минимальная высота
    заголовка на две строки и колонки грида через minmax(0,1fr). Именно НУЛЕВОЙ минимум
    чинит переполнение в CSS Grid: у колонки по умолчанию min-width:auto, и она
    распирается самым длинным неразрывным словом. */
@@ -1156,7 +1156,7 @@ body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .prj .ph{order:0;display:block;overflow:hidden}
 .prj .ph img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover}
 .prj .bx{padding:var(--s5);min-width:0;display:flex;flex-direction:column;flex:1}
-.prj .obj{font:500 .8rem/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-l);overflow-wrap:anywhere}
+.prj .obj{font:500 .8rem/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-l);overflow-wrap:break-word}
 .prj .city{font-size:.76rem;color:var(--t2);margin-top:3px}
 .prj q{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;
   font-size:.88rem;line-height:1.6;color:var(--t2);margin:14px 0 0;quotes:"\00ab" "\00bb"}
@@ -2134,14 +2134,21 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
    цели 44. Замер там же и задаёт gap, поэтому он ступенчатый, а не одинаковый. */
 .stdc-ctl{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:26px}
 .stdc-nums{display:flex;align-items:center;justify-content:center;gap:0}
-/* ЗАМЕР, А НЕ ПОДБОР ЗАЗОРА. Бриф просит «подобрать gap так, чтобы не было переноса
-   при цели 44», но одна арифметика это закрывает: восемь целей по 44 это 352px даже
-   при НУЛЕВЫХ зазорах, а в колонке контента 312px на 360 и 342 на 390. В одну строку
-   восемь целей по 44 не встают ни при каком зазоре, порог одной строки это 408px
-   ширины окна. Уступка выбрана самая дешёвая: переносится ТОЛЬКО ряд номеров, три
-   плюс три, стрелки остаются по бокам, как нарисовано в брифе. Порядок в DOM при этом
-   не переставляется, поэтому обход с клавиатуры совпадает с тем, что человек видит. */
-@media(max-width:429px){.stdc-nums{flex-wrap:wrap;width:132px}}
+/* УСТУПКА НА УЗКИХ ЭКРАНАХ ПЕРЕДЕЛАНА 11.08. Арифметика прежняя и она не оспаривается:
+   восемь целей по 44 это 352px даже при НУЛЕВЫХ зазорах, а в колонке контента 312px на
+   360 и 342 на 390, то есть в одну строку они не встают ни при каком зазоре. Но прежняя
+   уступка (перенос номеров три плюс три) читалась как поломка, а не как замысел.
+   Теперь до 429 вместо шести кнопок стоит СЧЁТЧИК «01 / 06»: ряд снова одна строка
+   [←] 01 / 06 [→]. Прямой переход к произвольному слайду на телефоне закрывает свайп,
+   он там основной способ. Счётчик это не кнопка, поэтому тап-целей он не добавляет и
+   из обхода с клавиатуры выпадает намеренно. */
+.stdc-count{display:none;font:400 13px/1 var(--sans);letter-spacing:.08em;color:var(--mut);
+  white-space:nowrap;padding:0 10px;min-width:64px;text-align:center}
+.stdc-count b{font-weight:500;color:var(--gold)}
+@media(max-width:429px){
+  .stdc-nums{display:none}
+  .stdc-count{display:block}
+}
 .stdc-arr,.stdc-num{min-width:44px;min-height:44px;display:inline-flex;
   align-items:center;justify-content:center;background:none;border:0;padding:0;
   color:var(--t2);cursor:pointer;border-radius:0}
@@ -2189,6 +2196,14 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
 .ann-legend .lg-btn{font-size:.88rem;line-height:1.4}
 .ann-hint{font-size:.88rem;line-height:1.4}
 .facts .f > span{font-size:.88rem;line-height:1.4}
+
+/* Строка доверия вплотную к кнопкам финального блока (усиление 5 из брифа 11.08).
+   Приём стандартный: сильнейший сигнал доверия ставится рядом с действием, которое он
+   поддерживает, а не только наверху страницы. Разделитель точкой, не тире: длинные тире
+   на этом проекте запрещены. Кегль .78rem это середина заданной вилки .74-.8. */
+.final-trust{margin-top:16px;font-size:.78rem;line-height:1.5;color:var(--gold-l);
+  letter-spacing:.02em;text-align:center;opacity:.9}
+.final-trust + .final-note{margin-top:6px}
 </style>
 </head>
 <body>
@@ -2370,7 +2385,6 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
      получило собственное модальное окно с прежними тезисами st_p / f1-f4. -->
 <section id="photoprint">
   <div class="wrap reveal">
-    <div class="sec-head"><span class="kick" data-i18n="pp_kick">Варианты фотопечати</span></div>
     <h2 class="title pp-title" data-i18n="pp_title">Варианты фотопечати на потолке</h2>
     <p class="lead" data-i18n="pp_sub">Премиальные решения для интерьеров</p>
     <div class="pp-grid">
@@ -2401,7 +2415,6 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
         <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="1 из 6">
           <div class="stdc-ph"><img src="assets/cn-std1.webp" alt="Проектирование световых сценариев: чертёж потолка" width="678" height="360" loading="eager" decoding="async"></div>
           <div class="stdc-tx">
-            <span class="kick" data-i18n="std_kick">Стандарты DEVAGO</span>
             <span class="no">01</span>
             <h3 data-i18n="std1_h">Проектирование</h3>
             <p class="sp" data-i18n="std1_p">Детальная проработка световых сценариев</p>
@@ -2411,7 +2424,6 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
         <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="2 из 6">
           <div class="stdc-ph"><img src="assets/cn-std2.webp" alt="Точные замеры помещения лазерным дальномером" width="678" height="360" loading="lazy" decoding="async"></div>
           <div class="stdc-tx">
-            <span class="kick" data-i18n="std_kick">Стандарты DEVAGO</span>
             <span class="no">02</span>
             <h3 data-i18n="std2_h">Точные замеры</h3>
             <p class="sp" data-i18n="std2_p">Миллиметровая точность для идеального результата</p>
@@ -2421,7 +2433,6 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
         <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="3 из 6">
           <div class="stdc-ph"><img src="assets/cn-std3.webp" alt="Подготовка объекта: мебель укрыта защитной плёнкой" width="678" height="360" loading="lazy" decoding="async"></div>
           <div class="stdc-tx">
-            <span class="kick" data-i18n="std_kick">Стандарты DEVAGO</span>
             <span class="no">03</span>
             <h3 data-i18n="std3_h">Подготовка объекта</h3>
             <p class="sp" data-i18n="std3_p">Чистота и защита вашего интерьера</p>
@@ -2431,7 +2442,6 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
         <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="4 из 6">
           <div class="stdc-ph"><img src="assets/cn-std4.webp" alt="Мастер выполняет монтаж натяжного потолка" width="678" height="360" loading="lazy" decoding="async"></div>
           <div class="stdc-tx">
-            <span class="kick" data-i18n="std_kick">Стандарты DEVAGO</span>
             <span class="no">04</span>
             <h3 data-i18n="std4_h">Профессиональный монтаж</h3>
             <p class="sp" data-i18n="std4_p">Опытные мастера и качественные материалы</p>
@@ -2441,7 +2451,6 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
         <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="5 из 6">
           <div class="stdc-ph"><img src="assets/cn-std5.webp" alt="Контроль качества: проверка трековой системы освещения" width="678" height="360" loading="lazy" decoding="async"></div>
           <div class="stdc-tx">
-            <span class="kick" data-i18n="std_kick">Стандарты DEVAGO</span>
             <span class="no">05</span>
             <h3 data-i18n="std5_h">Контроль качества</h3>
             <p class="sp" data-i18n="std5_p">Многоступенчатая проверка на каждом этапе</p>
@@ -2451,7 +2460,6 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
         <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="6 из 6">
           <div class="stdc-ph"><img src="assets/cn-std6.webp" alt="Готовый интерьер с потолочной подсветкой под гарантией" width="678" height="360" loading="lazy" decoding="async"></div>
           <div class="stdc-tx">
-            <span class="kick" data-i18n="std_kick">Стандарты DEVAGO</span>
             <span class="no">06</span>
             <h3 data-i18n="std6_h">Гарантия результата</h3>
             <p class="sp" data-i18n="std6_p">Гарантия до 10 лет на все работы и материалы</p>
@@ -2471,6 +2479,7 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
         <button type="button" class="stdc-num" data-go="4">05</button>
         <button type="button" class="stdc-num" data-go="5">06</button>
         </div>
+        <span class="stdc-count" aria-hidden="true"><b>01</b> / 06</span>
         <button type="button" class="stdc-arr next" aria-label="Следующий этап" data-i18n-label="stdc_next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
     </div>
@@ -2628,6 +2637,10 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
         <a class="btn btn-gold form-open" href="#form" data-goal="final_form_click" data-i18n="cta_form2">Оставить заявку</a>
         <a class="btn btn-out tg-btn tg-link" href="#" data-goal="final_tg_click" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.6l-3.1 14.5c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-.9.5l.3-4.6L18.2 7c.4-.3-.1-.5-.6-.2L7.3 13.3 2.9 12c-1-.3-1-1 .2-1.4l17.5-6.7c.8-.3 1.5.2 1.3 1.7z"/></svg><span data-i18n="cta_tg2">Связаться в Telegram</span></a>
       </div>
+      <!-- Строка доверия вплотную к действию. Собрана ИЗ СУЩЕСТВУЮЩИХ формулировок,
+           ничего не сочинено: «16 лет» из fact1_n, «20 000+ объектов» из fact2_n и
+           fact2_t, «гарантия до 10 лет» из std6_p. -->
+      <p class="final-trust" data-i18n="fin_trust">16 лет · 20 000+ объектов · гарантия до 10 лет</p>
       <p class="final-note" data-i18n="fin_note">Ответим в течение рабочего дня. Замер и расчёт бесплатны.</p>
     </div>
   </div>
@@ -2831,6 +2844,11 @@ var I18N = {
  pp6_h:"Флоральные мотивы",pp6_p:"Деликатные растительные узоры в современном исполнении",
  pp7_h:"Космос",pp7_p:"Глубина вселенной для уникальных интерьеров",
  pp8_h:"Архитектура",pp8_p:"Городские мотивы и архитектурные композиции",
+ /* Строка доверия. Собрана ИЗ УЖЕ УТВЕРЖДЁННЫХ формулировок, не сочинена:
+    «16 лет» это fact1_n, «20 000+ объектов» это fact2_n плюс fact2_t, «гарантия до
+    10 лет» это std6_p. Слова «опыта» из примера брифа НЕТ ни в одном ключе, поэтому
+    его не ставлю: правило «ничего не сочинять» сильнее примера. */
+ fin_trust:"16 лет · 20 000+ объектов · гарантия до 10 лет",
  fin_tg_line:"Мы на связи в Telegram",fin_note:"Ответим в течение рабочего дня. Замер и расчёт бесплатны.",
  /* mp_* это ПЛЕЙСХОЛДЕРЫ тела модальных окон. Тексты придёт от копирайтера; менять
     надо ключ в MODALS, структура окна при этом не трогается. Утверждения в mp_l*
@@ -2918,6 +2936,7 @@ var I18N = {
  pp6_h:"Floral motivlar",pp6_p:"Zamonaviy ijrodagi nafis oʻsimlik naqshlari",
  pp7_h:"Kosmos",pp7_p:"Betakror interyerlar uchun olam teranligi",
  pp8_h:"Arxitektura",pp8_p:"Shahar motivlari va arxitektura kompozitsiyalari",
+ fin_trust:"16 yil · 20 000+ obyekt · 10 yilgacha kafolat",
  fin_tg_line:"Telegramda aloqadamiz",fin_note:"Ish kuni davomida javob beramiz. Oʻlchov va hisob-kitob bepul.",
  mp_sol:"Yechimni aniq xona uchun tanlaymiz: yorugʻlik stsenariylari, profil va quvvatni hisoblaymiz, natijani montajdan oldin koʻrsatamiz.",
  mp_ann:"Kombinatsiyalangan yechim elementi. Bitta shiftda u qolganlari bilan birga ishlaydi, shuning uchun ularni yagona tizim sifatida loyihalaymiz.",
@@ -2969,6 +2988,14 @@ var I18N = {
      больше нет, а флаг продолжает работать через подмену заголовка в apply(). */
   document.querySelectorAll("a.tg-link").forEach(function(a){a.setAttribute("href",TG_URL)});
   document.querySelectorAll("a.inst-link").forEach(function(a){a.setAttribute("href",INST_URL)});
+  /* JSON-LD тоже держит номер, и он НЕ был завязан на свап-точку: замена телефона
+     оставила бы структурные данные со старым. Пишем из той же переменной. Оговорка
+     честная: статическое значение в разметке всё равно надо держать в синхроне для
+     сборщиков, которые не исполняют скрипт, полностью «одной правкой» это закрывается
+     только сборкой. */
+  try{var ld=document.querySelector('script[type="application/ld+json"]');
+    if(ld){var j=JSON.parse(ld.textContent);
+      if(j.telephone){j.telephone=PHONE_TEL;ld.textContent=JSON.stringify(j);}}}catch(e){}
   document.querySelectorAll("a.tel-link").forEach(function(a){
     a.setAttribute("href","tel:"+PHONE_TEL);
     var b=a.querySelector("b");if(b)b.textContent=PHONE_DISPLAY;});
@@ -3605,6 +3632,8 @@ var I18N = {
       /* Стрелку на краю выключаем ПО-НАСТОЯЩЕМУ, поэтому она выпадает из обхода.
          Если гасим ту, на которой сейчас фокус, фокус уводим на соседнюю: иначе он
          улетает на body посреди секции и клавиатурный проход рвётся. */
+      var cnt=ctl.querySelector(".stdc-count b");
+      if(cnt)cnt.textContent=("0"+(cur+1)).slice(-2);
       var lose=document.activeElement;
       if(prev){prev.disabled=cur===0;if(prev.disabled&&lose===prev&&next)next.focus();}
       if(next){next.disabled=cur===last;if(next.disabled&&lose===next&&prev)prev.focus();}
