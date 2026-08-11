@@ -1189,6 +1189,18 @@ transparent 56%,rgba(201,162,75,.45) 60%,rgba(201,162,75,.10) 100%)}
 .step .tx .sp{margin-top:6px}
 .step .th{margin-top:var(--s5)}
 }
+.facts .f--geo{grid-column:1/-1}
+@media(min-width:900px){
+.facts .f--geo{display:flex;align-items:baseline;justify-content:center;
+gap:var(--s5);padding-top:20px;
+border-top:1px solid rgba(201,162,75,.16)}
+.facts .f--geo b{font-size:clamp(1.6rem,2vw,2rem)}
+.facts .f--geo span{margin-top:0;text-align:left}
+.facts .f--geo::before{display:none}
+}
+@media(min-width:600px) and (max-width:899px){
+.facts .f--geo{border-top:1px solid rgba(201,162,75,.16);margin-top:2px;padding-top:18px}
+}
 </style>
 </head>
 <body>
@@ -1254,12 +1266,12 @@ sizes="100vw">
 <section id="facts">
 <div class="wrap reveal">
 <div class="facts">
-<div class="f"><b data-i18n="fact1_n">16 лет</b><span data-i18n="fact1_t">на рынке: 2010-2022 Москва, с 2022 Узбекистан</span></div>
-<div class="f"><b data-i18n="fact2_n">10 000+</b><span data-i18n="fact2_t">выполненных объектов в Узбекистане</span></div>
-<div class="f"><b data-i18n="fact3_n">600 000 м²</b><span data-i18n="fact3_t">натянутого полотна</span></div>
-<div class="f"><b data-i18n="fact4_n">12 бригад</b><span data-i18n="fact4_t">собственный монтаж</span></div>
+<div class="f"><b data-i18n="fact1_n">16<span class="fu">лет</span></b><span data-i18n="fact1_t">на рынке: 2010-2022 Москва, с 2022 Узбекистан</span></div>
+<div class="f"><b data-i18n="fact2_n">20 000+</b><span data-i18n="fact2_t">выполненных объектов, Москва и Узбекистан</span></div>
+<div class="f"><b data-i18n="fact3_n">600 000<span class="fu">м²</span></b><span data-i18n="fact3_t">натянутого полотна, Москва и Узбекистан</span></div>
+<div class="f"><b data-i18n="fact4_n">9<span class="fu">бригад</span></b><span data-i18n="fact4_t">укомплектованных монтажников</span></div>
+<div class="f f--geo"><b data-i18n="fact5_n">5<span class="fu">цехов</span></b><span data-i18n="fact5_t">Ташкент, Самарканд, Навои, Бухара, Кашкадарья</span></div>
 </div>
-<p class="facts-note"><span data-i18n="facts_hist">2010-2022 Москва, с 2022 Узбекистан</span><br><span data-i18n="facts_geo">Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья</span></p>
 </div>
 </section>
 <section id="solutions">
@@ -1579,7 +1591,7 @@ fin_title:"Создадим пространство,<br>которое вдох
 fin_p:"<span class='dt'>Получите консультацию и расчёт стоимости вашего проекта бесплатно.</span><span class='mb'>Получите консультацию специалиста и расчёт стоимости вашего проекта.</span>",
 fin_city:"Ташкент, Узбекистан",fin_tag:"Архитектура света и пространства",
 nav_pp:"Фотопечать",read_more:"Читать полностью",skip:"К содержимому",lang_group:"Язык сайта",ann_hint:"нажмите на цифры",pop_more:"подробнее",
-fact1_n:"16<span class='fu'>лет</span>",fact1_t:"на рынке",fact2_n:"10 000+",fact2_t:"выполненных объектов в Узбекистане",fact3_n:"600 000<span class='fu'>м²</span>",fact3_t:"натянутого полотна",fact4_n:"12<span class='fu'>бригад</span>",fact4_t:"собственный монтаж",facts_hist:"2010-2022 Москва, с 2022 Узбекистан",facts_geo:"Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья",call_lbl:"Позвонить",inst_lbl:"Instagram",arrow_lbl:"К следующему разделу",
+fact1_n:"16<span class='fu'>лет</span>",fact1_t:"на рынке: 2010-2022 Москва, с 2022 Узбекистан",fact2_n:"20 000+",fact2_t:"выполненных объектов, Москва и Узбекистан",fact3_n:"600 000<span class='fu'>м²</span>",fact3_t:"натянутого полотна, Москва и Узбекистан",fact4_n:"9<span class='fu'>бригад</span>",fact4_t:"укомплектованных монтажников",fact5_n:"5<span class='fu'>цехов</span>",fact5_t:"Ташкент, Самарканд, Навои, Бухара, Кашкадарья",facts_hist:"2010-2022 Москва, с 2022 Узбекистан",facts_geo:"Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья",call_lbl:"Позвонить",inst_lbl:"Instagram",arrow_lbl:"К следующему разделу",
 pp_kick:"Варианты фотопечати",pp_title:"Варианты фотопечати на потолке",pp_sub:"Премиальные решения для интерьеров",
 pp1_h:"Мрамор / оникс с подсветкой",pp1_p:"Эффект полупрозрачного камня",
 pp2_h:"Бетон",pp2_p:"Современная текстура для стильных интерьеров",
@@ -1646,7 +1658,7 @@ fin_title:"Ilhomlantiruvchi makon<br>yaratamiz",
 fin_p:"<span class='dt'>Konsultatsiya va loyihangiz narxining hisob-kitobini bepul oling.</span><span class='mb'>Mutaxassis konsultatsiyasi va loyihangiz narxining hisob-kitobini oling.</span>",
 fin_city:"Toshkent, Oʻzbekiston",fin_tag:"Yorugʻlik va makon arxitekturasi",
 nav_pp:"Fotopechat",read_more:"Toʻliq oʻqish",skip:"Mazmunga oʻtish",lang_group:"Sayt tili",ann_hint:"raqamlarni bosing",pop_more:"batafsil",
-fact1_n:"16<span class='fu'>yil</span>",fact1_t:"bozorda",fact2_n:"10 000+",fact2_t:"Oʻzbekistonda bajarilgan obyektlar",fact3_n:"600 000<span class='fu'>m²</span>",fact3_t:"tortilgan polotno",fact4_n:"12<span class='fu'>brigada</span>",fact4_t:"oʻz montajimiz",facts_hist:"2010-2022 Moskva, 2022 dan Oʻzbekiston",facts_geo:"Oʻz ishlab chiqarishimiz: Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",call_lbl:"Qoʻngʻiroq",inst_lbl:"Instagram",arrow_lbl:"Keyingi boʻlimga",
+fact1_n:"16<span class='fu'>yil</span>",fact1_t:"bozorda",fact2_n:"20 000+",fact2_t:"Oʻzbekistonda bajarilgan obyektlar",fact3_n:"600 000<span class='fu'>m²</span>",fact3_t:"tortilgan polotno",fact4_n:"9<span class='fu'>brigada</span>",fact4_t:"oʻz montajimiz",fact5_n:"5<span class='fu'>ishlab chiqarish</span>",fact5_t:"Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",facts_hist:"2010-2022 Moskva, 2022 dan Oʻzbekiston",facts_geo:"Oʻz ishlab chiqarishimiz: Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",call_lbl:"Qoʻngʻiroq",inst_lbl:"Instagram",arrow_lbl:"Keyingi boʻlimga",
 pp_kick:"Fotopechat variantlari",pp_title:"Shiftdagi fotopechat variantlari",pp_sub:"Interyerlar uchun premium yechimlar",
 pp1_h:"Marmar / oniks yoritish bilan",pp1_p:"Yarim shaffof tosh effekti",
 pp2_h:"Beton",pp2_p:"Zamonaviy interyerlar uchun tekstura",
