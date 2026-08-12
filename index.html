@@ -2403,6 +2403,23 @@ footer{padding-bottom:104px}
 .im-dot[aria-current="true"]::before{background:var(--gold-l);transform:scale(1.35)}
 .im-media{position:relative}
 @media(prefers-reduced-motion:reduce){.im-gal-vp{scroll-behavior:auto}}
+
+/* Стрелки просмотра кадров объекта. 44x44 по правилу тап-целей, видимый кружок
+   меньше: бокс меряет Lighthouse, а глазу нужен аккуратный знак, а не плашка.
+   На краях набора кнопка гаснет через disabled, а не прячется: исчезающая кнопка
+   дёргает раскладку и путает палец. */
+.im-arw{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;
+  display:grid;place-items:center;border:none;padding:0;cursor:pointer;
+  background:none;color:var(--text);z-index:2}
+.im-arw::before{content:"";position:absolute;width:34px;height:34px;border-radius:50%;
+  background:rgba(11,10,8,.68);box-shadow:0 2px 10px rgba(0,0,0,.45);transition:background .25s}
+.im-arw svg{position:relative;width:18px;height:18px}
+.im-arw:hover::before{background:rgba(11,10,8,.85)}
+.im-arw:hover{color:var(--gold-l)}
+.im-arw--p{left:4px}
+.im-arw--n{right:4px}
+.im-arw[disabled]{opacity:.35;cursor:default}
+.im-arw[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -2914,6 +2931,10 @@ footer{padding-bottom:104px}
     <div class="im-media"><img id="imImg" src="" alt="" width="720" height="450" loading="lazy">
       <div class="im-gal" id="imGal" hidden>
         <div class="im-gal-vp" id="imGalVp" tabindex="0"></div>
+        <button type="button" class="im-arw im-arw--p" id="imPrev" aria-label="Предыдущее фото">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button type="button" class="im-arw im-arw--n" id="imNext" aria-label="Следующее фото">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
         <div class="im-dots" id="imDots"></div>
       </div></div>
     <div class="im-body">
@@ -3396,6 +3417,7 @@ var I18N = {
     var list=(m.imgs&&m.imgs.length>1)?m.imgs:null,alt=plain(tr(m.t));
     if(!list){
       imGal.hidden=true;imGalVp.innerHTML="";imDots.innerHTML="";
+      if(imPrev){imPrev.hidden=true;imNext.hidden=true;}
       imImg.hidden=false;imImg.setAttribute("src",m.img);imImg.setAttribute("alt",alt);
       return;
     }
@@ -3412,6 +3434,7 @@ var I18N = {
     }).join("");
     imGalVp.setAttribute("aria-label",alt+", "+list.length+" кадра");
     imGalVp.scrollLeft=0;
+    if(imPrev){imPrev.hidden=false;imNext.hidden=false;imPrev.disabled=true;imNext.disabled=(list.length<2);}
   }
   function imGalMark(){
     var imgs=imGalVp.children;if(!imgs.length)return;
@@ -3422,7 +3445,19 @@ var I18N = {
     Array.prototype.forEach.call(imDots.children,function(d,k){
       if(k===i)d.setAttribute("aria-current","true");else d.removeAttribute("aria-current");
     });
+    if(imPrev){imPrev.disabled=(i<=0);imNext.disabled=(i>=imgs.length-1);}
   }
+  var imPrev=document.getElementById("imPrev"),imNext=document.getElementById("imNext");
+  function imStep(){var g=imGalVp.children;
+    return g.length>1?(g[1].offsetLeft-g[0].offsetLeft):(g.length?g[0].offsetWidth:0);}
+  function imGo(dir){
+    var g=imGalVp.children;if(g.length<2)return;
+    var st=imStep(),i=Math.round(imGalVp.scrollLeft/st)+dir;
+    i=Math.max(0,Math.min(g.length-1,i));
+    imGalVp.scrollTo({left:st*i,behavior:"smooth"});
+  }
+  imPrev.addEventListener("click",function(){imGo(-1)});
+  imNext.addEventListener("click",function(){imGo(1)});
   imGalVp.addEventListener("scroll",function(){
     if(imGalVp.__t)cancelAnimationFrame(imGalVp.__t);
     imGalVp.__t=requestAnimationFrame(imGalMark);
