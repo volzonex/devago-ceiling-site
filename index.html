@@ -3306,13 +3306,15 @@ var I18N = {
      кадр, что стоит на карточке в ленте. Один файл в списке (или его отсутствие)
      означает прежнее поведение: одиночная картинка без точек и листания.
      Пример на будущее: 1:["assets/cn-rev1.webp","assets/cn-rev1-2.webp"] */
+  /* НАБОРЫ КАДРОВ ПО ОБЪЕКТАМ. Сгенерированы 13.08 сериями по промптам из
+     warroom/devago-photo-prompts.md: внутри каждого набора один и тот же интерьер,
+     снятый с разных ракурсов, а не четыре случайные квартиры. Первым идёт кадр,
+     который стоит обложкой карточки в ленте. */
   var PRJ_SHOTS={
-    /* ⚠️ ВРЕМЕННО, решение Тахира 13.08: пока нет серий, снятых под каждый объект,
-       сюда положены свободные сгенерированные кадры. Интерьеры в наборе РАЗНЫЕ, то
-       есть это ещё не «один объект с разных ракурсов», а заполнение механики. Как
-       придут серии по warroom/devago-photo-prompts.md, списки заменяются целиком. */
-    1:["assets/cn-rev1.webp","assets/cn-rev1-2.webp","assets/cn-rev1-3.webp"],
-    2:["assets/cn-rev2.webp","assets/cn-rev2-2.webp"]
+    1:["assets/cn-rev1.webp","assets/cn-rev1-2.webp","assets/cn-rev1-3.webp","assets/cn-rev1-4.webp"],
+    2:["assets/cn-rev2.webp","assets/cn-rev2-2.webp","assets/cn-rev2-3.webp","assets/cn-rev2-4.webp"],
+    3:["assets/cn-rev3.webp","assets/cn-rev3-2.webp","assets/cn-rev3-3.webp","assets/cn-rev3-4.webp"],
+    5:["assets/cn-rev5.webp","assets/cn-rev5-2.webp","assets/cn-rev5-3.webp","assets/cn-rev5-4.webp"]
   };
   for(var _j=1;_j<=5;_j++) MODALS["prj-"+_j]={k:"p"+_j+"_c",t:"p"+_j+"_o",img:"assets/cn-rev"+_j+".webp",imgs:PRJ_SHOTS[_j]||null,
     p:["p"+_j+"_q"],l:[],who:"p"+_j+"_w",role:"p"+_j+"_r"};
