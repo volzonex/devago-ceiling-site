@@ -83,15 +83,17 @@
 
 </style>
 
-<!-- МЕТРИКА (просьба Артура): плейсхолдеры, инициализация только при реальных ID -->
+<!-- МЕТРИКА (просьба Артура). ID получены от Артура 12.08.2026, счётчики боевые.
+     Ветка с проверкой на плейсхолдер СОХРАНЕНА намеренно: она же выключает счётчики,
+     если кто-то вернёт значения обратно, и держит devagoTrack безопасным. -->
 <script>
-var YM_COUNTER_ID = 'YM_PLACEHOLDER';
-var PIXEL_ID = 'PIXEL_PLACEHOLDER';
+var YM_COUNTER_ID = '111526857';
+var PIXEL_ID = '1669620631394613';
 (function(){
   if (YM_COUNTER_ID !== 'YM_PLACEHOLDER') {
     (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
     m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,
-    k.src=r,a.parentNode.insertBefore(k,a)})(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");
+    k.src=r,a.parentNode.insertBefore(k,a)})(window,document,"script","https://mc.yandex.ru/metrika/tag.js?id="+YM_COUNTER_ID,"ym");
     ym(YM_COUNTER_ID,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});
   }
   if (PIXEL_ID !== 'PIXEL_PLACEHOLDER') {
@@ -106,6 +108,11 @@ var PIXEL_ID = 'PIXEL_PLACEHOLDER';
 function devagoTrack(goal){
   try{ if(YM_COUNTER_ID!=='YM_PLACEHOLDER' && window.ym) ym(YM_COUNTER_ID,'reachGoal',goal); }catch(e){}
   try{ if(PIXEL_ID!=='PIXEL_PLACEHOLDER' && window.fbq) fbq('trackCustom',goal); }catch(e){}
+  /* ФАКТ ЗАЯВКИ уходит ДОПОЛНИТЕЛЬНО стандартным событием Lead, не вместо trackCustom.
+     Причина: по своим событиям Meta умеет считать, но не умеет оптимизировать показы,
+     а реклама Артура ведётся именно на заявки. Дубль безвреден: trackCustom и track
+     это разные типы событий, в отчётах они не складываются. */
+  try{ if(PIXEL_ID!=='PIXEL_PLACEHOLDER' && window.fbq && goal==='form_submit') fbq('track','Lead'); }catch(e){}
 }
 </script>
 
