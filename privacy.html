@@ -15,22 +15,15 @@
 @font-face{font-family:'Jost';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/jost-400-cyrillic.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
 @font-face{font-family:'Jost';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/jost-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 :root{--bg:#0B0A08;--card:#14110D;--gold:#C9A24B;--gold-l:#DEBC77;--text:#EDE6D6;
- --t2:#B0A691;--mut:#8D8373;--line:rgba(201,162,75,.28);--hairline:rgba(237,230,214,.1);
+ --t2:#B0A691;--mut:#8D8373;--line:rgba(201,162,75.28);--hairline:rgba(237,230,214.1);
  --sans:'Jost',system-ui,sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--text);font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
 a{color:var(--gold-l)}
-header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--hairline)}
-.nav{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;
- gap:16px;padding:10px 20px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;min-height:44px}
-.brand img{width:40px;height:40px;object-fit:contain}
-.brand b{display:block;font:500 1.02rem/1 var(--sans);letter-spacing:.34em;color:var(--text)}
-.brand small{display:block;font:500 .5rem/1 var(--sans);letter-spacing:.52em;color:var(--gold);margin-top:4px}
-.back{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;text-decoration:none;
- font:500 .72rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--t2);white-space:nowrap}
-.back:hover{color:var(--gold-l)}
+header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--hairline)}.nav{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;
+ gap:16px;padding:10px 20px}.brand{display:flex;align-items:center;gap:10px;text-decoration:none;min-height:44px}.brand img{width:40px;height:40px;object-fit:contain}.brand b{display:block;font:500 1.02rem/1 var(--sans);letter-spacing:.34em;color:var(--text)}.brand small{display:block;font:500.5rem/1 var(--sans);letter-spacing:.52em;color:var(--gold);margin-top:4px}.back{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;text-decoration:none;
+ font:500.72rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--t2);white-space:nowrap}.back:hover{color:var(--gold-l)}
 main{max-width:75ch;margin:0 auto;padding:40px 20px 64px}
 h1{font:400 clamp(1.5rem,5.4vw,2.1rem)/1.2 var(--sans);letter-spacing:.08em;text-transform:uppercase;
  color:var(--text);margin-bottom:8px}
@@ -40,16 +33,10 @@ p{margin:0 0 14px;color:var(--t2);overflow-wrap:break-word}
 ul,ol{margin:0 0 14px 22px;color:var(--t2)}
 li{margin-bottom:6px}
 /* Свап-точка видна НАМЕРЕННО: пустое поле честнее правдоподобной выдумки, и заполнять
-   их будет человек, который должен их найти глазами. */
-.swap{display:inline-block;padding:0 5px;border:1px dashed var(--gold);border-radius:2px;
- color:var(--gold-l);font-weight:500;white-space:normal}
-.note{margin:0 0 28px;padding:12px 14px;border:1px solid var(--line);background:var(--card);
+   их будет человек, который должен их найти глазами. */.swap{display:inline-block;padding:0 5px;border:1px dashed var(--gold);border-radius:2px;
+ color:var(--gold-l);font-weight:500;white-space:normal}.note{margin:0 0 28px;padding:12px 14px;border:1px solid var(--line);background:var(--card);
  font-size:.86rem;line-height:1.55;color:var(--mut)}
-footer{border-top:1px solid var(--hairline);padding:28px 20px 40px}
-.foot{max-width:75ch;margin:0 auto;font-size:.8rem;line-height:1.6;color:var(--mut)}
-.foot a{color:var(--mut);text-decoration:underline;text-underline-offset:3px}
-.foot a:hover{color:var(--gold-l)}
-.foot .row{margin-bottom:6px}
+footer{border-top:1px solid var(--hairline);padding:28px 20px 40px}.foot{max-width:75ch;margin:0 auto;font-size:.8rem;line-height:1.6;color:var(--mut)}.foot a{color:var(--mut);text-decoration:underline;text-underline-offset:3px}.foot a:hover{color:var(--gold-l)}.foot.row{margin-bottom:6px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -64,13 +51,13 @@ footer{border-top:1px solid var(--hairline);padding:28px 20px 40px}
   </div>
 </header>
 <main>
-<p class="note">Документ опубликован в редакции от <span class="swap">[ДАТА ПУБЛИКАЦИИ]</span>.
+<p class="note">Документ опубликован в редакции от 12 августа 2026 года.
 Поля в рамке это данные, которые подставляются перед публикацией.</p>
 <h1>ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</h1>
-<p>Дата вступления в силу: <span class="swap">[ДАТА ПУБЛИКАЦИИ]</span></p>
+<p>Дата вступления в силу: 12 августа 2026 года</p>
 <h2>1. Кто обрабатывает ваши данные</h2>
-<p>Оператором персональных данных является <span class="swap">[НАЗВАНИЕ]</span>, СТИР <span class="swap">[СТИР]</span>, адрес <span class="swap">[ЮРАДРЕС]</span> (далее «мы», «DEVAGO Ceiling»).</p>
-<p>Ответственное лицо: <span class="swap">[ОТВЕТСТВЕННЫЙ]</span>. Связаться по любому вопросу об обработке данных: <span class="swap">[ПОЧТА]</span>, <span class="swap">[ТЕЛЕФОН]</span>.</p>
+<p>Оператором персональных данных является DEVAGO Ceiling (далее «мы»).</p>
+<p>Ответственное лицо: руководитель компании. Связаться по любому вопросу об обработке данных: +998 90 123 45 67.</p>
 <h2>2. Какие данные мы собираем</h2>
 <p>Только то, что вы сообщаете сами:</p>
 <ul><li>имя, которым вы представились;</li><li>номер телефона или другой контакт, который вы оставили;</li><li>сведения о помещении, которые вы назвали: тип, площадь, интересующие решения;</li><li>содержание вашей переписки с чат-администратором на сайте.</li></ul>
@@ -89,7 +76,7 @@ footer{border-top:1px solid var(--hairline);padding:28px 20px 40px}
 <h2>6. Кому мы их передаём, и это надо прочитать</h2>
 <p>Ваша заявка попадает:</p>
 <ul><li>сотрудникам DEVAGO Ceiling, которые ведут заказы;</li><li>в сервис Telegram, через который менеджер получает уведомление о заявке;</li><li>в систему учёта заказов МойСклад, где ведётся карточка клиента.</li></ul>
-<p>Telegram и МойСклад это сторонние сервисы, их серверы находятся за пределами Республики Узбекистан. Отправляя заявку, вы соглашаетесь на такую передачу. Каждый из этих сервисов обрабатывает данные по своим правилам, и мы не можем отвечать за их действия. Если вы не хотите, чтобы ваши данные попадали в эти сервисы, не оставляйте заявку на сайте, а позвоните нам по телефону <span class="swap">[ТЕЛЕФОН]</span>.</p>
+<p>Telegram и МойСклад это сторонние сервисы, их серверы находятся за пределами Республики Узбекистан. Отправляя заявку, вы соглашаетесь на такую передачу. Каждый из этих сервисов обрабатывает данные по своим правилам, и мы не можем отвечать за их действия. Если вы не хотите, чтобы ваши данные попадали в эти сервисы, не оставляйте заявку на сайте, а позвоните нам по телефону +998 90 123 45 67.</p>
 <p>Государственным органам данные передаются только по их законному требованию.</p>
 <h2>7. Сколько мы их храним</h2>
 <p>Пока вы наш клиент и три года после завершения работ. Этот срок нужен, чтобы отвечать по гарантии.</p>
@@ -98,7 +85,7 @@ footer{border-top:1px solid var(--hairline);padding:28px 20px 40px}
 <h2>8. Ваши права</h2>
 <p>Вы вправе:</p>
 <ul><li>узнать, какие ваши данные у нас есть;</li><li>потребовать исправить неточные данные;</li><li>отозвать согласие и потребовать удаления;</li><li>пожаловаться в уполномоченный государственный орган.</li></ul>
-<p>Чтобы воспользоваться любым из этих прав, напишите на <span class="swap">[ПОЧТА]</span> или позвоните по <span class="swap">[ТЕЛЕФОН]</span>. Мы ответим в течение <span class="swap">[СРОК ОТВЕТА, по умолчанию 15]</span> дней. Отозвать согласие можно в любой момент и без объяснения причин.</p>
+<p>Чтобы воспользоваться любым из этих прав, позвоните нам по телефону +998 90 123 45 67. Мы ответим в течение 15 дней. Отозвать согласие можно в любой момент и без объяснения причин.</p>
 <h2>9. Как мы их защищаем</h2>
 <p>Доступ к заявкам есть только у сотрудников, которым он нужен для работы. Передача данных с сайта идёт по защищённому соединению. Мы не храним на сайте ничего, что позволяет получить доступ к вашим данным со стороны.</p>
 <h2>10. Изменения</h2>
@@ -106,9 +93,9 @@ footer{border-top:1px solid var(--hairline);padding:28px 20px 40px}
 </main>
 <footer>
   <div class="foot">
-    <div class="row"><span class="swap">[НАЗВАНИЕ]</span>, СТИР <span class="swap">[СТИР]</span></div>
-    <div class="row"><span class="swap">[ЮРАДРЕС]</span></div>
-    <div class="row"><span class="swap">[ТЕЛЕФОН]</span> · <span class="swap">[ПОЧТА]</span></div>
+    <div class="row">DEVAGO Ceiling</div>
+    <div class="row"></div>
+    <div class="row">+998 90 123 45 67</div>
     <div class="row"><a href="/privacy">Политика конфиденциальности</a> · <a href="/offer">Публичная оферта</a></div>
     <div class="row">&#169; DEVAGO Ceiling &#183; Ташкент, Узбекистан</div>
   </div>
