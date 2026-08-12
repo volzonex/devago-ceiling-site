@@ -1880,7 +1880,11 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
    уезжала на СВОЮ СТРОКУ под числом на всех ширинах от 600. Отступа тоже нет:
    в разметке между числом и единицей пробела нет намеренно (чтобы не переносилось),
    и без margin получалось «16лет». На телефоне зазор даёт flex gap, выше он нужен свой. */
-.facts .f b .fu{display:inline;margin-left:.26em;font-size:.48em;font-weight:400;
+/* Единица («лет опыта», «м²», «бригад», «цехов») заметно крупнее по правке Тахира
+   12.08: .48em от числа читалось как сноска. .68em держит иерархию (единица всё
+   ещё меньше числа), но перестаёт теряться. Кегль задан ОТ ЧИСЛА, поэтому ступень
+   полосы на 360 и 380 продолжает работать сама. */
+.facts .f b .fu{display:inline;margin-left:.26em;font-size:.68em;font-weight:400;
   color:var(--gold);letter-spacing:.02em}
 @media(max-width:599px){.facts .f b .fu{margin-left:0}}
 /* ЗАДАЧА 1. Телефон: спецификация в одну колонку, число слева, ярлык справа. */
@@ -2340,6 +2344,31 @@ footer{padding-bottom:104px}
 @media(max-width:899px){
   .hero{padding-top:28px}
 }
+
+/* ---- ГАЛЕРЕЯ ОБЪЕКТА ВНУТРИ ОКНА (12.08) --------------------------------------
+   Это НЕ возврат навигации между карточками: её удалили в v12 намеренно, и правило
+   оттуда в силе. Здесь листаются кадры ОДНОГО объекта, то есть галерея, а галерее
+   по правилу v7 листание положено. Механика взята у карусели стандартов: едет сам
+   вьюпорт через scrollTo, активный кадр считается из scrollLeft. IntersectionObserver
+   тут дал бы дребезг на границе двух кадров. */
+.im-gal{position:absolute;inset:0}
+.im-gal-vp{display:flex;height:100%;overflow-x:auto;overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none}
+.im-gal-vp::-webkit-scrollbar{display:none}
+.im-gal-vp img{flex:0 0 100%;width:100%;height:100%;object-fit:cover;scroll-snap-align:center}
+.im-gal-vp:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.im-dots{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:center;
+  align-items:center;pointer-events:none}
+/* Тап-цель 44 на самой КНОПКЕ, видимый кружок в ::before: Lighthouse меряет бокс
+   элемента и накладку через псевдоэлемент не видит (записанная ловушка v8). */
+.im-dot{width:44px;height:44px;min-width:44px;min-height:44px;padding:0;border:none;
+  background:none;cursor:pointer;display:grid;place-items:center;pointer-events:auto}
+.im-dot::before{content:"";width:8px;height:8px;border-radius:50%;
+  background:rgba(237,230,214,.45);box-shadow:0 1px 4px rgba(0,0,0,.6);
+  transition:background .25s,transform .25s}
+.im-dot[aria-current="true"]::before{background:var(--gold-l);transform:scale(1.35)}
+.im-media{position:relative}
+@media(prefers-reduced-motion:reduce){.im-gal-vp{scroll-behavior:auto}}
 </style>
 </head>
 <body>
@@ -2848,7 +2877,11 @@ footer{padding-bottom:104px}
   <div class="modal info-modal">
     <span class="sheet-grip" aria-hidden="true"></span>
     <button class="m-close" id="imClose" aria-label="Закрыть">&#10005;</button>
-    <div class="im-media"><img id="imImg" src="" alt="" width="720" height="450" loading="lazy"></div>
+    <div class="im-media"><img id="imImg" src="" alt="" width="720" height="450" loading="lazy">
+      <div class="im-gal" id="imGal" hidden>
+        <div class="im-gal-vp" id="imGalVp" tabindex="0"></div>
+        <div class="im-dots" id="imDots"></div>
+      </div></div>
     <div class="im-body">
       <div class="kick" id="imKick"></div>
       <h3 id="imTitle"></h3>
@@ -3268,7 +3301,13 @@ var I18N = {
     p:["pp"+_i+"_p","mp_pp"],l:[]};
   /* Отзывы: тело окна это ПОЛНАЯ цитата (в карточке она обрезана до четырёх строк),
      подпись собирается из имени и роли, поэтому отдельных ключей не заводим. */
-  for(var _j=1;_j<=5;_j++) MODALS["prj-"+_j]={k:"p"+_j+"_c",t:"p"+_j+"_o",img:"assets/cn-rev"+_j+".webp",
+  /* НАБОРЫ КАДРОВ ПО ОБЪЕКТАМ. Сюда вписываются дополнительные ракурсы, когда файлы
+     готовы: ключ это номер карточки, значение это список путей, ПЕРВЫМ идёт тот же
+     кадр, что стоит на карточке в ленте. Один файл в списке (или его отсутствие)
+     означает прежнее поведение: одиночная картинка без точек и листания.
+     Пример на будущее: 1:["assets/cn-rev1.webp","assets/cn-rev1-2.webp"] */
+  var PRJ_SHOTS={};
+  for(var _j=1;_j<=5;_j++) MODALS["prj-"+_j]={k:"p"+_j+"_c",t:"p"+_j+"_o",img:"assets/cn-rev"+_j+".webp",imgs:PRJ_SHOTS[_j]||null,
     p:["p"+_j+"_q"],l:[],who:"p"+_j+"_w",role:"p"+_j+"_r"};
 
   var im=document.getElementById("infoModal"),
@@ -3298,10 +3337,67 @@ var I18N = {
     }
     imText.innerHTML=html;
     imList.innerHTML=m.l.map(function(k){return "<li>"+tr(k)+"</li>"}).join("");
-    imImg.setAttribute("src",m.img);
-    imImg.setAttribute("alt",plain(tr(m.t)));
+    imGalRender(m);
     return true;
   }
+
+  /* НАБОР КАДРОВ ОБЪЕКТА. Одиночная картинка остаётся по умолчанию: галерея
+     включается ТОЛЬКО когда в наборе больше одного файла, поэтому карточки без
+     набора работают ровно как раньше. Имя ключа imgs, а не img, чтобы старое поле
+     продолжало работать и правка не потребовала трогать все окна разом. */
+  var imGal=document.getElementById("imGal"),imGalVp=document.getElementById("imGalVp"),
+      imDots=document.getElementById("imDots");
+  function imGalRender(m){
+    var list=(m.imgs&&m.imgs.length>1)?m.imgs:null,alt=plain(tr(m.t));
+    if(!list){
+      imGal.hidden=true;imGalVp.innerHTML="";imDots.innerHTML="";
+      imImg.hidden=false;imImg.setAttribute("src",m.img);imImg.setAttribute("alt",alt);
+      return;
+    }
+    imImg.hidden=true;imGal.hidden=false;
+    imGalVp.innerHTML=list.map(function(src,i){
+      /* loading=lazy у ВСЕХ, кроме первого: остальные кадры за краем экрана и до
+         листания не нужны, иначе окно объекта тянет четыре файла разом. */
+      return '<img src="'+src+'" alt="'+alt+', кадр '+(i+1)+' из '+list.length+'"'+
+             (i?' loading="lazy"':'')+'>';
+    }).join("");
+    imDots.innerHTML=list.map(function(_,i){
+      return '<button type="button" class="im-dot" data-i="'+i+'" aria-label="'+
+             (i+1)+' / '+list.length+'"'+(i?'':' aria-current="true"')+'></button>';
+    }).join("");
+    imGalVp.setAttribute("aria-label",alt+", "+list.length+" кадра");
+    imGalVp.scrollLeft=0;
+  }
+  function imGalMark(){
+    var imgs=imGalVp.children;if(!imgs.length)return;
+    /* ШАГ БЕРЁТСЯ ИЗ РАЗНИЦЫ offsetLeft СОСЕДЕЙ, а не из «ширина плюс gap»: у окна
+       три разные раскладки по ширинам, и числа в CSS и в скрипте разъехались бы. */
+    var step=imgs.length>1?(imgs[1].offsetLeft-imgs[0].offsetLeft):imgs[0].offsetWidth;
+    var i=step?Math.round(imGalVp.scrollLeft/step):0;
+    Array.prototype.forEach.call(imDots.children,function(d,k){
+      if(k===i)d.setAttribute("aria-current","true");else d.removeAttribute("aria-current");
+    });
+  }
+  imGalVp.addEventListener("scroll",function(){
+    if(imGalVp.__t)cancelAnimationFrame(imGalVp.__t);
+    imGalVp.__t=requestAnimationFrame(imGalMark);
+  },{passive:true});
+  imDots.addEventListener("click",function(e){
+    var b=e.target.closest(".im-dot");if(!b)return;
+    var imgs=imGalVp.children,i=+b.getAttribute("data-i");
+    if(!imgs.length)return;
+    var step=imgs.length>1?(imgs[1].offsetLeft-imgs[0].offsetLeft):imgs[0].offsetWidth;
+    imGalVp.scrollTo({left:step*i,behavior:"smooth"});
+  });
+  imGalVp.addEventListener("keydown",function(e){
+    if(e.key!=="ArrowLeft"&&e.key!=="ArrowRight")return;
+    var imgs=imGalVp.children;if(imgs.length<2)return;
+    e.preventDefault();
+    var step=imgs[1].offsetLeft-imgs[0].offsetLeft;
+    var i=Math.round(imGalVp.scrollLeft/step)+(e.key==="ArrowRight"?1:-1);
+    i=Math.max(0,Math.min(imgs.length-1,i));
+    imGalVp.scrollTo({left:step*i,behavior:"smooth"});
+  });
 
   /* Ловушка фокуса: Tab не выпускает из окна, Shift+Tab заворачивается назад. */
   function focusable(root){
