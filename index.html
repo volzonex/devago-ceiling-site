@@ -510,7 +510,6 @@ body.sticky-on .sticky-cta{display:flex}
    остаётся в разметке, его читают поисковики и скринридеры, то есть выдуманные
    отзывы всё равно были бы опубликованы, просто незаметно для глаза. */
 body.no-reviews .prj q,
-body.no-reviews .prj .prj-more,
 body.no-reviews .prj .who,
 body.no-reviews .prj .role{display:none}
 /* Карточка без цитаты становится ниже, поэтому подпираем низ, чтобы фото и текст
@@ -1722,8 +1721,43 @@ section[id],div[id]{scroll-margin-top:80px}
   .ann i{display:none}
   /* 3. Мобильные якоря отдельными значениями. Десктопные проценты НЕ трогаются:
      на них завязана арифметика зазоров из v3.1 и починенные дефекты 3 и 4 из v4. */
-  /* Мобильных якорей больше нет: кадр один и набор координат один. Пара --mx/--my
-     из v8 удалена вместе со вторым кадром. */
+  /* 3. МОБИЛЬНЫЕ ЯКОРЯ ВЕРНУЛИСЬ (13.08, просьба Икрома через Тахира). Десктопные
+     проценты НЕ трогаются: они лежат инлайном в разметке и на них завязана арифметика
+     зазоров из v3.1. Инлайн-стиль перебивает любой селектор, поэтому здесь !important,
+     и это единственный способ развести телефон с десктопом, не дублируя разметку.
+     Цифра 2 переезжает МЕЖДУ двумя световыми линиями, цифра 3 левее, к магнитному
+     треку: проценты сняты с отметок Икрома на живом экране, а не подобраны на глаз. */
+  .combo .ann[data-ann="2"]{left:36%!important;top:21%!important}
+  .combo .ann[data-ann="3"]{left:51.5%!important;top:21%!important}
+
+  /* ЛУЧИ-УКАЗАТЕЛИ. У цифры 2 их ДВА: она стоит между двумя световыми линиями и должна
+     показывать на обе, иначе непонятно, о какой речь. У цифры 3 один, к треку.
+     Узлов не добавляем: луч 1 это существующий .ann i, луч 2 это свободный ::after
+     (накладку с него сняли ещё в v8). Угол и длина задаются переменными, чтобы
+     подгонять числом, а не переписыванием правила. */
+  .combo .ann[data-ann="2"] i,
+  .combo .ann[data-ann="3"] i,
+  .combo .ann[data-ann="2"]::after{
+    content:"";display:block;position:absolute;left:50%;top:50%;
+    width:var(--ray,30px);height:1px;pointer-events:none;
+    background:linear-gradient(90deg,var(--gold-l),rgba(222,188,119,.12));
+    transform-origin:0 50%;transform:rotate(var(--ray-a,0deg)) translateX(15px);
+  }
+  .combo .ann[data-ann="2"] i{--ray-a:146deg;--ray:14px}
+  .combo .ann[data-ann="2"]::after{--ray-a:0deg;--ray:12px}
+  .combo .ann[data-ann="3"] i{--ray-a:26deg;--ray:13px}
+  /* ⚠️ НА 320px НОВЫЕ ТОЧКИ НЕ ПОМЕЩАЮТСЯ, и это арифметика, а не вкус: между
+     отметками Икрома 15.5% ширины кадра, на 320px это 42px, а тап-цель у каждой
+     цифры 44px по правилу v2. Боксы неизбежно перекрываются, и палец начинает
+     промахиваться. Поэтому на самых узких экранах цифры остаются на прежних местах,
+     где зазор есть. Порог 340px, а не 360: на 360 замер даёт зазор 4px, то есть ещё
+     сходится. */
+  @media(max-width:340px){
+    .combo .ann[data-ann="2"]{left:30%!important}
+    .combo .ann[data-ann="3"]{left:58.5%!important}
+    .combo .ann[data-ann="2"] i,.combo .ann[data-ann="3"] i,
+    .combo .ann[data-ann="2"]::after{display:none}
+  }
   /* 4. Легенда это второй, БОЛЬШИЙ способ нажать: строка около 160x44 против
      кружка 44x44, то есть втрое больше по площади. */
   .ann-legend li{align-items:center}
@@ -2674,7 +2708,7 @@ footer{padding-bottom:104px}
             <div class="obj" data-i18n="p1_o">Пентхаус</div>
             <div class="city" data-i18n="p1_c"><span class='dt'>Ташкент</span><span class='mb'>Tashkent City</span></div>
             <q data-i18n="p1_q">Искали подрядчика, который сможет объединить разные потолочные решения в единую концепцию. Результат превзошёл ожидания.</q>
-            <button type="button" class="prj-more" data-modal="prj-1"><span data-i18n="read_more">Читать полностью</span></button>
+            <button type="button" class="prj-more" data-modal="prj-1"><span data-i18n="read_more">Смотреть фотографии</span></button>
             <div class="who" data-i18n="p1_w">Александр и Мария</div>
             <div class="role" data-i18n="p1_r">Владельцы пентхауса</div>
           </div>
@@ -2688,7 +2722,7 @@ footer{padding-bottom:104px}
             <div class="obj" data-i18n="p2_o">Квартира в многоэтажном доме</div>
             <div class="city" data-i18n="p2_c">Ташкент</div>
             <q data-i18n="p2_q">DEVAGO предложили решение, которое полностью изменило восприятие пространства. Качество исполнения на высочайшем уровне.</q>
-            <button type="button" class="prj-more" data-modal="prj-2"><span data-i18n="read_more">Читать полностью</span></button>
+            <button type="button" class="prj-more" data-modal="prj-2"><span data-i18n="read_more">Смотреть фотографии</span></button>
             <div class="who" data-i18n="p2_w">Бахром Р.</div>
             <div class="role" data-i18n="p2_r">Владелец дома</div>
           </div>
@@ -2702,7 +2736,7 @@ footer{padding-bottom:104px}
             <div class="obj" data-i18n="p3_o">Квартира</div>
             <div class="city" data-i18n="p3_c">Tashkent City</div>
             <q data-i18n="p3_q">Безупречное качество, аккуратность и внимание к деталям. Световые решения идеально подчеркнули архитектуру интерьера.</q>
-            <button type="button" class="prj-more" data-modal="prj-3"><span data-i18n="read_more">Читать полностью</span></button>
+            <button type="button" class="prj-more" data-modal="prj-3"><span data-i18n="read_more">Смотреть фотографии</span></button>
             <div class="who" data-i18n="p3_w">Дильноза К.</div>
             <div class="role" data-i18n="p3_r">Владелица квартиры</div>
           </div>
@@ -2716,7 +2750,7 @@ footer{padding-bottom:104px}
             <div class="obj" data-i18n="p5_o">SPA-зона</div>
             <div class="city" data-i18n="p5_c">Частный проект</div>
             <q data-i18n="p5_q">Световые линии и скрытый карниз создали идеальную атмосферу релакса и уюта.</q>
-            <button type="button" class="prj-more" data-modal="prj-5"><span data-i18n="read_more">Читать полностью</span></button>
+            <button type="button" class="prj-more" data-modal="prj-5"><span data-i18n="read_more">Смотреть фотографии</span></button>
             <div class="who" data-i18n="p5_w">Бахром Р.</div>
             
           </div>
@@ -3005,7 +3039,7 @@ var I18N = {
  p_kick:"Реализованные проекты",
  /* Заголовок секции на время, пока живых фото нет. Формулировка Тахира 11.08.
     Возвращается к p_kick снятием RENDERS_ARE_VISUALS. */
- p_kick_v:"Галерея наших работ",
+ p_kick_v:"Визуализация возможностей",
  p1_o:"Пентхаус",p1_c:"<span class='dt'>Ташкент</span><span class='mb'>Tashkent City</span>",
  p1_q:"Искали подрядчика, который сможет объединить <span class='dt'>разные потолочные</span><span class='mb'>световые</span> решения в единую концепцию. Результат превзошёл ожидания.<span class='dt'> Пространство стало совершенно другим.</span>",
  p1_w:"Александр и Мария",p1_r:"Владельцы пентхауса",
@@ -3019,7 +3053,7 @@ var I18N = {
  fin_p:"<span class='dt'>Получите консультацию и расчёт стоимости вашего проекта бесплатно.</span><span class='mb'>Получите консультацию специалиста и расчёт стоимости вашего проекта.</span>",
  fin_city:"Узбекистан",fin_tag:"Архитектура света и пространства",
 
- nav_pp:"Фотопечать",read_more:"Читать полностью",skip:"К содержимому",lang_group:"Язык сайта",ann_hint:"нажмите на цифры",pop_more:"подробнее",
+ nav_pp:"Фотопечать",read_more:"Смотреть фотографии",skip:"К содержимому",lang_group:"Язык сайта",ann_hint:"нажмите на цифры",pop_more:"подробнее",
  fact1_n:"16<span class='fu'>лет опыта</span>",fact1_t:"2010-2022 Москва<br>с 2022 года Узбекистан",fact2_n:"18 500+",fact2_t:"выполненных объектов",fact3_n:"600 000<span class='fu'>м²</span>",fact3_t:"натянутого полотна",fact4_n:"9<span class='fu'>бригад</span>",fact4_t:"укомплектованных монтажников",fact5_n:"5<span class='fu'>цехов</span>",fact5_t:"Ташкент, Самарканд, Навои, Бухара, Кашкадарья",/* facts_hist и facts_geo НЕ ИСПОЛЬЗУЮТСЯ С 11.08: история уехала в первую плитку, города в пятую. Оставлены на случай возврата примечания. */facts_hist:"2010-2022 Москва, с 2022 Узбекистан",facts_geo:"Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья",call_lbl:"Позвонить",inst_lbl:"Instagram",arrow_lbl:"К следующему разделу",
  pp_kick:"Варианты фотопечати",pp_title:"Варианты фотопечати на потолке",pp_sub:"Современная фотопечать с подсветкой и парящим профилем",
  pp1_h:"Мрамор / оникс с подсветкой",pp1_p:"Эффект полупрозрачного камня",
@@ -3090,7 +3124,7 @@ var I18N = {
  std5_h:"Sifat nazorati",std5_p:"Har bosqichda koʻp pogʻonali tekshiruv",
  std6_h:"Natija kafolati",std6_p:"Barcha ish va materiallarga 10 yilgacha kafolat",
  p_kick:"Amalga oshirilgan loyihalar",
- p_kick_v:"Ishlarimiz galereyasi",
+ p_kick_v:"Imkoniyatlar vizualizatsiyasi",
  p1_o:"Pentxaus",p1_c:"<span class='dt'>Toshkent</span><span class='mb'>Tashkent City</span>",
  p1_q:"Turli shift yechimlarini yagona konsepsiyaga birlashtira oladigan pudratchi izladik. Natija kutilganidan oshdi.<span class='dt'> Makon butunlay oʻzgardi.</span>",
  p1_w:"Aleksandr va Mariya",p1_r:"Pentxaus egalari",
@@ -3104,7 +3138,7 @@ var I18N = {
  fin_p:"<span class='dt'>Konsultatsiya va loyihangiz narxining hisob-kitobini bepul oling.</span><span class='mb'>Mutaxassis konsultatsiyasi va loyihangiz narxining hisob-kitobini oling.</span>",
  fin_city:"Oʻzbekiston",fin_tag:"Yorugʻlik va makon arxitekturasi",
 
- nav_pp:"Fotopechat",read_more:"Toʻliq oʻqish",skip:"Mazmunga oʻtish",lang_group:"Sayt tili",ann_hint:"raqamlarni bosing",pop_more:"batafsil",
+ nav_pp:"Fotopechat",read_more:"Suratlarni koʻrish",skip:"Mazmunga oʻtish",lang_group:"Sayt tili",ann_hint:"raqamlarni bosing",pop_more:"batafsil",
  /* УЗБЕКСКИЕ ПОДПИСИ ПОЛОСЫ ЦИФР, ЧЕРНОВИК. Финальные формулировки за копирайтером. */
  /* ⚠️ ПОДПИСИ УЗБЕКСКОГО ЖДУТ КОПИРАЙТЕРА, я их не сочиняю. Обновлены ТОЛЬКО цифры,
     они от языка не зависят. Устарели по смыслу и вынесены в recap: fact2_t и fact3_t
@@ -3317,7 +3351,9 @@ var I18N = {
     5:["assets/cn-rev5.webp","assets/cn-rev5-2.webp","assets/cn-rev5-3.webp","assets/cn-rev5-4.webp"]
   };
   for(var _j=1;_j<=5;_j++) MODALS["prj-"+_j]={k:"p"+_j+"_c",t:"p"+_j+"_o",img:"assets/cn-rev"+_j+".webp",imgs:PRJ_SHOTS[_j]||null,
-    p:["p"+_j+"_q"],l:[],who:"p"+_j+"_w",role:"p"+_j+"_r"};
+    p:(ENABLE_PRJ_CARD_QUOTES?["p"+_j+"_q"]:[]),l:[],
+    who:(ENABLE_PRJ_CARD_QUOTES?"p"+_j+"_w":null),
+    role:(ENABLE_PRJ_CARD_QUOTES?"p"+_j+"_r":null)};
 
   var im=document.getElementById("infoModal"),
       imImg=document.getElementById("imImg"),imKick=document.getElementById("imKick"),
