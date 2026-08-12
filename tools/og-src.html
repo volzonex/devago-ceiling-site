@@ -1,0 +1,36 @@
+<!doctype html>
+<meta charset="utf-8">
+<!-- ИСХОДНИК КАРТИНКИ ПРЕВЬЮ. Снимается скриншотом 1200x630 в assets/og-image.jpg.
+     Файл временный: лежит в корне сайта только потому, что Chrome не пускает
+     file:// к соседнему file:// из другой папки, а логотип нужен настоящий. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1200px;height:630px}
+  body{background:#0B0A08;font-family:'Jost',system-ui,sans-serif;color:#EDE6D6;
+       display:flex;align-items:center;gap:64px;padding:0 96px;overflow:hidden;position:relative}
+  /* тёплый свет из левого верхнего угла, тот же приём, что на сайте */
+  body::before{content:"";position:absolute;inset:0;
+       background:radial-gradient(120% 90% at 22% 18%,rgba(222,188,119,.10),transparent 60%);}
+  .mark{width:230px;height:230px;object-fit:contain;flex:none;position:relative}
+  .tx{position:relative}
+  .lock b{display:block;font-weight:400;font-size:76px;line-height:1;letter-spacing:.34em;
+       margin-right:-.34em;padding-bottom:14px;border-bottom:1px solid #C9A24B}
+  .lock small{display:block;text-align:center;font-weight:400;font-size:26px;line-height:1;
+       letter-spacing:.39em;text-indent:.39em;color:#C9A24B;margin-top:14px}
+  .h{margin-top:46px;font-size:38px;font-weight:400;letter-spacing:.01em}
+  .s{margin-top:12px;font-size:27px;font-weight:300;color:#B0A691;letter-spacing:.02em}
+  .rule{width:190px;height:1px;background:linear-gradient(90deg,#C9A24B,rgba(201,162,75,0));margin:30px 0 26px}
+  .c{font-size:30px;font-weight:500;color:#DEBC77;letter-spacing:.04em}
+  .c i{font-style:normal;color:#8D8373;margin:0 16px}
+</style>
+<img class="mark" src="../assets/logo.png" alt="">
+<div class="tx">
+  <div class="lock"><b>DEVAGO</b><small>CEILING</small></div>
+  <div class="h">Премиальные натяжные потолки</div>
+  <div class="s">Архитектура света и пространства</div>
+  <div class="rule"></div>
+  <div class="c">+998 90 123 45 67<i>·</i>Узбекистан</div>
+</div>
