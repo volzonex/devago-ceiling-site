@@ -40,8 +40,13 @@
 <link rel="alternate" hreflang="uz" href="https://devago.uz/uz">
 <link rel="alternate" hreflang="x-default" href="https://devago.uz/">
 <meta name="theme-color" content="#0B0A08">
-<link rel="icon" type="image/png" href="assets/favicon.png">
-<link rel="apple-touch-icon" href="assets/apple-touch.png">
+<!-- ?v=2 не украшение: иконки кэшируются браузером цепко и переживают обычное
+     обновление страницы, поэтому клиент видел прежний знак с V ещё долго после
+     замены файла. Версия в адресе заставляет браузер забрать иконку заново.
+     Отдельно заведён /favicon.ico: его запрашивают сами, без ссылки в head. -->
+<link rel="icon" type="image/png" href="assets/favicon.png?v=2">
+<link rel="icon" type="image/x-icon" href="/favicon.ico?v=2">
+<link rel="apple-touch-icon" href="assets/apple-touch.png?v=2">
 <!-- ШРИФТЫ ЛЕЖАТ У НАС, а не грузятся с Google. Решение Тахира 04.08, причина замерена:
      пять внешних запросов к Google Fonts (CSS 329 мс плюс четыре файла по 310-440 мс)
      держали LCP на 3.7 c и не давали взять порог производительности. Теперь ноль
