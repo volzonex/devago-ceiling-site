@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Свап-точка [ДОМЕН] заменяется на боевой домен перед публикацией. -->
+<!-- Свап-точка devago.uz заменяется на боевой домен перед публикацией. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://[ДОМЕН]/</loc>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://[ДОМЕН]/"/>
-    <xhtml:link rel="alternate" hreflang="uz" href="https://[ДОМЕН]/uz"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://[ДОМЕН]/"/>
+    <loc>https://devago.uz/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://devago.uz/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://devago.uz/uz"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://devago.uz/"/>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://[ДОМЕН]/uz</loc>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://[ДОМЕН]/"/>
-    <xhtml:link rel="alternate" hreflang="uz" href="https://[ДОМЕН]/uz"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://[ДОМЕН]/"/>
+    <loc>https://devago.uz/uz</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://devago.uz/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://devago.uz/uz"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://devago.uz/"/>
     <priority>1.0</priority>
   </url>
-  <url><loc>https://[ДОМЕН]/privacy</loc><priority>0.3</priority></url>
-  <url><loc>https://[ДОМЕН]/offer</loc><priority>0.3</priority></url>
+  <url><loc>https://devago.uz/privacy</loc><priority>0.3</priority></url>
+  <url><loc>https://devago.uz/offer</loc><priority>0.3</priority></url>
 </urlset>
