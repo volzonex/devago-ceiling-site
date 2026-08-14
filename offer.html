@@ -15,15 +15,17 @@
 @font-face{font-family:'Jost';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/jost-400-cyrillic.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
 @font-face{font-family:'Jost';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/jost-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 :root{--bg:#0B0A08;--card:#14110D;--gold:#C9A24B;--gold-l:#DEBC77;--text:#EDE6D6;
- --t2:#B0A691;--mut:#8D8373;--line:rgba(201,162,75.28);--hairline:rgba(237,230,214.1);
+ --t2:#B0A691;--mut:#8D8373;--line:rgba(201,162,75,.28);--hairline:rgba(237,230,214,.1);
  --sans:'Jost',system-ui,sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--text);font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
 a{color:var(--gold-l)}
 header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--hairline)}.nav{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;
- gap:16px;padding:10px 20px}.brand{display:flex;align-items:center;gap:10px;text-decoration:none;min-height:44px}.brand img{width:40px;height:40px;object-fit:contain}.brand b{display:block;font:500 1.02rem/1 var(--sans);letter-spacing:.34em;color:var(--text)}.brand small{display:block;font:500.5rem/1 var(--sans);letter-spacing:.52em;color:var(--gold);margin-top:4px}.back{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;text-decoration:none;
- font:500.72rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--t2);white-space:nowrap}.back:hover{color:var(--gold-l)}
+ gap:16px;padding:10px 20px}.brand{display:flex;align-items:center;gap:10px;text-decoration:none;min-height:44px}.brand img{width:40px;height:40px;object-fit:contain}.brand b{display:block;font:500 1.02rem/1 var(--sans);letter-spacing:.34em;color:var(--text)}/* Локап приведён к главной странице: там CEILING подняли с 8 до 14.7px, и если
+   оставить прежний, на правовых страницах логотип выглядит другим. */
+.brand small{display:block;font:500 .8rem/1 var(--sans);letter-spacing:.42em;color:var(--gold);margin-top:4px}.back{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;text-decoration:none;
+ font:500 .72rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--t2);white-space:nowrap}.back:hover{color:var(--gold-l)}
 main{max-width:75ch;margin:0 auto;padding:40px 20px 64px}
 h1{font:400 clamp(1.5rem,5.4vw,2.1rem)/1.2 var(--sans);letter-spacing:.08em;text-transform:uppercase;
  color:var(--text);margin-bottom:8px}
@@ -38,6 +40,22 @@ li{margin-bottom:6px}
  font-size:.86rem;line-height:1.55;color:var(--mut)}
 footer{border-top:1px solid var(--hairline);padding:28px 20px 40px}.foot{max-width:75ch;margin:0 auto;font-size:.8rem;line-height:1.6;color:var(--mut)}.foot a{color:var(--mut);text-decoration:underline;text-underline-offset:3px}.foot a:hover{color:var(--gold-l)}.foot.row{margin-bottom:6px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* --- ТЕЛЕФОН (добавлено 14.08). Страницы правовые, их читают с телефона и по ссылке
+   из переписки, поэтому мера строки и иерархия заголовков важнее декора.
+   Замер ДО: на 390 в строке 34 знака при вилке чтения 45-75, h2 равен обычному
+   тексту по кеглю и отличается только цветом. --- */
+@media(max-width:520px){
+  main{padding:28px 16px 48px}          /* поля 20 -> 16: строка длиннее на 3-4 знака */
+  h1{letter-spacing:.05em;margin-bottom:6px}
+  h2{font-size:1.08rem;margin:26px 0 8px}   /* заголовок раздела снова крупнее текста */
+  p{margin:0 0 12px}
+  ul,ol{margin-left:18px}
+  li{margin-bottom:5px}
+  .note{padding:10px 12px;margin-bottom:22px}
+  footer{padding:22px 16px 32px}
+  .nav{padding:8px 16px}
+}
 </style>
 </head>
 <body>
@@ -51,8 +69,7 @@ footer{border-top:1px solid var(--hairline);padding:28px 20px 40px}.foot{max-wid
   </div>
 </header>
 <main>
-<p class="note">Документ опубликован в редакции от 12 августа 2026 года.
-Поля в рамке это данные, которые подставляются перед публикацией.</p>
+<p class="note">Документ опубликован в редакции от 12 августа 2026 года.</p>
 <h1>ПУБЛИЧНАЯ ОФЕРТА</h1>
 <p>Дата публикации: 12 августа 2026 года</p>
 <h2>1. Что это за документ</h2>
