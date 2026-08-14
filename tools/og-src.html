@@ -14,7 +14,11 @@
   /* тёплый свет из левого верхнего угла, тот же приём, что на сайте */
   body::before{content:"";position:absolute;inset:0;
        background:radial-gradient(120% 90% at 22% 18%,rgba(222,188,119,.10),transparent 60%);}
-  .mark{width:230px;height:230px;object-fit:contain;flex:none;position:relative}
+  /* 186px это НАТИВНАЯ высота assets/logo.png (164x186). Вектора у клиента нет и не
+     будет (решение Тахира 14.08), поэтому знак нигде не показываем крупнее: при 230px
+     здесь был апскейл в 1.24 раза, и на превью ссылки это единственное место, где
+     мягкость краёв реально заметна. */
+  .mark{width:186px;height:186px;object-fit:contain;flex:none;position:relative}
   .tx{position:relative}
   .lock b{display:block;font-weight:400;font-size:76px;line-height:1;letter-spacing:.34em;
        margin-right:-.34em;padding-bottom:14px;border-bottom:1px solid #C9A24B}
