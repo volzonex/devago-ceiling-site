@@ -266,20 +266,9 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
 .hero-btns{display:flex;flex-direction:column;gap:12px;margin-top:26px;max-width:440px}
 .pc{width:34px;height:34px;flex:none;border:1px solid var(--gold);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:var(--gold)}
 .pc svg{width:12px;height:12px;margin-left:2px}
-.hero-arrow{margin-top:22px;text-align:center;max-width:440px}
-.hero-arrow-b{display:inline-flex;align-items:center;justify-content:center;width:48px;min-height:44px;color:var(--gold)}
-.hero-arrow svg{width:14px;height:30px;color:var(--gold)}
-/* Стрелка живая (задание Тахира 04.08). Движение намеренно медленное и с паузой:
-   цикл 2.6 c, из которых больше половины стрелка стоит на месте. Дёрганый пульс на
-   премиум-сайте читается как баннер. Двигается и слегка гаснет на возврате, поэтому
-   заметна периферийным зрением, но не тянет внимание на себя.
-   Отключается системной настройкой «меньше движения», общее правило ниже по файлу. */
-@keyframes devagoArrow{
-  0%,60%,100%{transform:translateY(0);opacity:.75}
-  25%{transform:translateY(7px);opacity:1}
-  45%{transform:translateY(0);opacity:.75}
-}
-.hero-arrow svg{animation:devagoArrow 2.6s cubic-bezier(.4,0,.2,1) infinite;will-change:transform}
+/* Стрелка первого экрана УДАЛЕНА ЦЕЛИКОМ (правка Тахира 18.08): узел, ссылка,
+   ключ arrow_lbl и её вечная анимация devagoArrow, которая заодно подвешивала
+   измерительный стенд с --virtual-time-budget (см. CLAUDE.md 3.1). */
 @media(min-width:900px){
   .hero{align-items:center}
   .hero-bg::after{background:linear-gradient(90deg,rgba(11,10,8,.96) 0%,rgba(11,10,8,.74) 30%,rgba(11,10,8,.16) 60%,rgba(11,10,8,0) 100%),linear-gradient(180deg,transparent 60%,rgba(11,10,8,.7) 100%)}
@@ -287,7 +276,6 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
   .hero-btns{flex-direction:row;align-items:center;gap:28px;max-width:none}
   .btn-video{border:none;padding:0;letter-spacing:.18em;color:var(--text)}
   .btn-video:hover{color:var(--gold-l)}
-  .hero-arrow{display:none}
 }
 
 /* ==================== 2 · SOLUTIONS ==================== */
@@ -332,7 +320,16 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
    изображения и доли контейнера не совпадали, и координаты выносок, снятые с файла,
    попадали мимо объектов. При совпадении соотношений cover ничего не режет, а
    object-position становится не нужен. */
-.combo img{width:100%;aspect-ratio:2456/908;object-fit:cover;height:auto}
+/* КАДР РАСКРЫТ (Тахир 18.08). Исходник 2456x908 без запаса по вертикали, поэтому
+   высота добирается кадрированием БОКОВ через cover. Пределы посчитаны от контента,
+   а не от вкуса: выноски живут на x=13%..88% кадра, парящая подсветка у левого
+   края, карниз у правого. Десктоп 2.2:1 (видно 9.3%..90.7% ширины кадра, обе
+   крайние выноски внутри). Телефон 16:10 (видно 20.45%..79.55%): полоска 144px
+   стала 244px, а выноски 1 и 4 переставлены на видимые участки ТЕХ ЖЕ элементов,
+   потому что их прежние точки кадрированием отрезаны. Все якоря пересчитаны
+   заменой окна: cx=(img%-окно0)/ширина_окна, вертикаль cover не трогает. */
+.combo img{width:100%;aspect-ratio:2456/1116;object-fit:cover;height:auto}
+@media(max-width:560px){.combo img{aspect-ratio:16/10}}
 /* ⚠️ КООРДИНАТА СТАВИТ ТОЧКУ НА ОБЪЕКТ, а не подпись. Подпись отводится в сторону и
    соединяется с точкой горизонтальной линией, которая кончается на подписи.
    Порядок в строке задаётся order, потому что ::before в потоке флекса идёт первым,
@@ -604,7 +601,6 @@ h2.title{letter-spacing:.18em;line-height:1.26}
 .hero .sub2{margin-top:var(--s4)}
 .hero .sub{margin-top:var(--s5)}
 .hero-btns{margin-top:var(--s7);gap:var(--s3)}
-.hero-arrow{margin-top:var(--s6)}
 @media(min-width:900px){.hero-btns{gap:var(--s6)}}
 .nav{padding:var(--s4) var(--gutter)}
 .brand{gap:14px}
@@ -1182,10 +1178,15 @@ body.no-scroll{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .prj .city{font-size:.86rem;color:var(--t2);margin-top:3px}
 .prj q{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;
   font-size:.88rem;line-height:1.6;color:var(--t2);margin:14px 0 0;quotes:"\00ab" "\00bb"}
-.prj-more{align-self:flex-start;background:none;border:none;padding:10px 0;min-height:44px;cursor:pointer;
-  font:500 .68rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);
-  border-bottom:1px solid transparent;transition:border-color .3s,color .3s}
-.prj-more:hover{color:var(--gold-l);border-bottom-color:var(--gold)}
+/* Кнопка «Смотреть фотографии» удалена (Тахир 18.08): окно открывает вся карточка.
+   Честная кнопка-растяжка поверх: тап-цель это весь бокс карточки (сотни пикселей
+   против прежних 44), возврат фокуса после закрытия окна идёт на неё же, потому что
+   именно с неё окно и открылось. Цитата под ней перестаёт выделяться, решение
+   Тахира. z-index 2: фото и текст лежат в потоке ниже. */
+.prj{position:relative}
+.prj .prj-open{position:absolute;inset:0;z-index:2;background:none;border:none;
+  padding:0;cursor:pointer}
+.prj .prj-open:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
 .prj .who{font:500 .72rem/1.3 var(--sans);letter-spacing:.1em;color:var(--gold-l);margin-top:auto;padding-top:12px}
 .prj .role{display:block;font-size:.68rem;color:var(--mut);margin-top:3px}
 /* до 600px: горизонтальная лента, нативный свайп через scroll-snap, ноль скрипта */
@@ -1306,7 +1307,7 @@ footer{text-align:left}
 .sol-list,.steps,.pp-grid,.ann-legend,.final-wrap,.combo-wrap{min-width:0}
 @media(min-width:900px){.sol-list{grid-template-columns:repeat(6,minmax(0,1fr))}}
 @media(min-width:1200px){.combo-wrap{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)}}
-.sol,.step,.pp,.prj,.ann,.btn,.dnav a,.lang :is(button,a),.prj-more,.car-ctl button{
+.sol,.step,.pp,.prj,.ann,.btn,.dnav a,.lang :is(button,a),.prj-open,.car-ctl button{
   -webkit-tap-highlight-color:rgba(201,162,75,.18)}
 /* Минимальный кегль 14px: ниже него вес не опускаем. */
 .pp .bx b,.step .tx b,.sol .tx b,.prj .obj{font-weight:500}
@@ -1358,9 +1359,7 @@ footer{text-align:left}
    прежние bottom:2px увели бы линию на 14px ниже текста. */
 .dnav a{display:inline-flex;align-items:center;min-height:44px;padding:0}
 .dnav a::after{bottom:14px}
-/* D. Кнопка «Читать полностью» недотягивала доли пикселя из-за нижней границы,
-   которая входит в бокс. Считаем высоту явно. */
-.prj-more{min-height:46px;box-sizing:border-box}
+/* D. Правило про кнопку «Читать полностью» снято 18.08 вместе с самой кнопкой. */
 
 /* E. ТОЧКИ КАРУСЕЛИ РАЗДУЛИСЬ ДО 44x44. Старое правило .car-ctl button из канона
    задаёт min-width и min-height 44px ВСЕМ кнопкам блока. Мой .car-ctl .dot выигрывает
@@ -1697,7 +1696,6 @@ section[id],div[id]{scroll-margin-top:80px}
 }
 
 /* ================= CDO v8: МОБИЛЬНЫЕ ВЫНОСКИ КОМБО-ФОТО ================= */
-.ann-hint{display:none}
 @media(max-width:560px){
   /* 1. Маркер это честная кнопка 44x44 БЕЗ учёта псевдоэлементов: размер перенесён
      на сам элемент, видимый кружок ушёл в ::before. Сдвиг на половину бокса нужен,
@@ -1726,14 +1724,22 @@ section[id],div[id]{scroll-margin-top:80px}
   .ann i{display:none}
   /* 3. Мобильные якоря отдельными значениями. Десктопные проценты НЕ трогаются:
      на них завязана арифметика зазоров из v3.1 и починенные дефекты 3 и 4 из v4. */
-  /* 3. МОБИЛЬНЫЕ ЯКОРЯ ВЕРНУЛИСЬ (13.08, просьба Икрома через Тахира). Десктопные
-     проценты НЕ трогаются: они лежат инлайном в разметке и на них завязана арифметика
-     зазоров из v3.1. Инлайн-стиль перебивает любой селектор, поэтому здесь !important,
-     и это единственный способ развести телефон с десктопом, не дублируя разметку.
-     Цифра 2 переезжает МЕЖДУ двумя световыми линиями, цифра 3 левее, к магнитному
-     треку: проценты сняты с отметок Икрома на живом экране, а не подобраны на глаз. */
-  .combo .ann[data-ann="2"]{left:36%!important;top:21%!important}
-  .combo .ann[data-ann="3"]{left:51.5%!important;top:21%!important}
+  /* 3. МОБИЛЬНЫЕ ЯКОРЯ (13.08 отметки Икрома, 18.08 пересчитаны под кадр 16:10).
+     Кадрирование cover показывает 20.45%..79.55% ширины исходника, поэтому каждый
+     якорь пересчитан заменой окна: отметки Икрома для 2 и 3 стоят на ТОЙ ЖЕ точке
+     фотографии (img 36/21 и 51.5/21). Точки 1 и 4 прежним положением ОТРЕЗАНЫ
+     кадром (img 13% и 88%), переставлены на видимые участки тех же элементов:
+     1 на полосу парящей подсветки у левого края кадра, 4 на светящийся карниз над
+     шторами ближе к столовой. Инлайн-стиль перебивает любой селектор, поэтому
+     !important, это единственный способ развести телефон с десктопом без дублей. */
+  .combo .ann[data-ann="2"]{left:26.3%!important;top:21%!important}
+  .combo .ann[data-ann="3"]{left:52.5%!important;top:21%!important}
+  /* 4 и 5 выставлены ПО ПИКСЕЛЯМ снимка кадра 16:10, не пересчётом на глаз:
+     светящийся карниз в перспективе лежит на 42-45%% высоты кадра (замер по
+     столбцам 85-97%%), полоса парящей подсветки проходит через (10%%, 16%%).
+     Первая прикидка (87/14 и 8/27) ставила обе точки в пустой тёмный потолок. */
+  .combo .ann[data-ann="4"]{left:89%!important;top:43%!important}
+  .combo .ann[data-ann="5"]{left:10%!important;top:16%!important}
 
   /* ЛУЧИ-УКАЗАТЕЛИ. У цифры 2 их ДВА: она стоит между двумя световыми линиями и должна
      показывать на обе, иначе непонятно, о какой речь. У цифры 3 один, к треку.
@@ -1748,21 +1754,13 @@ section[id],div[id]{scroll-margin-top:80px}
     background:linear-gradient(90deg,var(--gold-l),rgba(222,188,119,.12));
     transform-origin:0 50%;transform:rotate(var(--ray-a,0deg)) translateX(15px);
   }
+  /* Углы лучей не пересчитываются: cover масштабирует кадр равномерно, локальная
+     геометрия вокруг точки сохраняется, меняется только положение окна. */
   .combo .ann[data-ann="2"] i{--ray-a:146deg;--ray:14px}
   .combo .ann[data-ann="2"]::after{--ray-a:0deg;--ray:12px}
   .combo .ann[data-ann="3"] i{--ray-a:26deg;--ray:13px}
-  /* ⚠️ НА 320px НОВЫЕ ТОЧКИ НЕ ПОМЕЩАЮТСЯ, и это арифметика, а не вкус: между
-     отметками Икрома 15.5% ширины кадра, на 320px это 42px, а тап-цель у каждой
-     цифры 44px по правилу v2. Боксы неизбежно перекрываются, и палец начинает
-     промахиваться. Поэтому на самых узких экранах цифры остаются на прежних местах,
-     где зазор есть. Порог 340px, а не 360: на 360 замер даёт зазор 4px, то есть ещё
-     сходится. */
-  @media(max-width:340px){
-    .combo .ann[data-ann="2"]{left:30%!important}
-    .combo .ann[data-ann="3"]{left:58.5%!important}
-    .combo .ann[data-ann="2"] i,.combo .ann[data-ann="3"] i,
-    .combo .ann[data-ann="2"]::after{display:none}
-  }
+  /* Прежний откат до 340px удалён (18.08): в кадре 16:10 зазор между точками 2 и 3
+     стал 26.2% ширины, на 320px это 84px при тап-цели 44, перекрытия больше нет. */
   /* 4. Легенда это второй, БОЛЬШИЙ способ нажать: строка около 160x44 против
      кружка 44x44, то есть втрое больше по площади. */
   .ann-legend li{align-items:center}
@@ -1772,9 +1770,8 @@ section[id],div[id]{scroll-margin-top:80px}
   .lg-btn b{font-weight:500;color:var(--gold);flex:none;min-width:12px}
   .lg-btn.on{color:var(--text)}
   .lg-btn.on b{color:var(--gold-l)}
-  /* 5. Подсказка, что цифры нажимаются. */
-  .ann-hint{display:block;margin:12px 0 0;text-align:center;
-       font:400 .68rem/1.3 var(--sans);color:var(--mut)}
+  /* Подсказка «нажмите на цифры» удалена (Тахир 18.08): узел, CSS, ключ ann_hint.
+     Пульсация кольца остаётся, она и есть сигнал нажимаемости. */
   /* Разовая пульсация кольца, РОВНО ТРИ раза. Бесконечный цикл запрещён: в CLAUDE.md
      записано, что вечная анимация подвесила --virtual-time-budget и сломала стенд. */
   @keyframes annPulse{0%,100%{box-shadow:0 0 0 0 rgba(201,162,75,0)}
@@ -1905,13 +1902,22 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
    прописных держит крупный кегль лучше антиквы, но требует ДРУГИХ метрик: трекинг
    срезан почти вдвое (у Futura прописные и так широкие, прежний .19em разваливал бы
    слово), интерлиньяж поджат до 0.95, иначе две строки расходятся дырой. */
+/* Ещё ступень крупнее (правка Тахира 18.08): +15% на обоих концах вилки,
+   48 -> 55.2px на телефоне, 99.2 -> 113.6px на десктопе. Предел проверен замером:
+   две строки в RU и UZ на 360-1440, кнопки видны на коротком окне 390x717. */
 .hero h1{font-family:'Futura','Futura PT','Jost','UzApos',system-ui,sans-serif;
-  font-size:clamp(3rem,9vw,6.2rem);font-weight:500;
+  font-size:clamp(3.45rem,10.4vw,7.1rem);font-weight:500;
   letter-spacing:.05em;line-height:.98}
 @media(min-width:900px){.hero h1{letter-spacing:.03em;line-height:.95}}
 
 /* ================= CDO, 07.08: полоса цифр, мобильная раскладка и разделители ============ */
 #facts{border-top:1px solid rgba(201,162,75,.10);border-bottom:1px solid rgba(201,162,75,.10)}
+/* Вордмарк секции цифр (Тахир 18.08): кегль и трекинг как у шапки (.34em), плоское
+   золото --gold-l (на тёмном фоне контраст 9.6, замерен). text-indent компенсирует
+   хвостовой трекинг последней буквы, иначе строка стоит на .34em левее центра. */
+.facts-brand{margin:0 0 clamp(26px,4vw,40px);text-align:center;text-transform:uppercase;
+  font:400 clamp(1.05rem,4.5vw,1.7rem)/1.25 var(--wordmark);
+  letter-spacing:.34em;text-indent:.34em;color:var(--gold-l);white-space:nowrap}
 /* ЗАДАЧА 3. Цифра и единица разного веса: раньше «600 000 м²» шло одним кеглем целиком,
    и единица весила столько же, сколько факт, а широкие строки распирали колонку. */
 /* display:inline и отступ ОБЯЗАТЕЛЬНЫ, их в спеке нет. Базовое правило
@@ -2259,7 +2265,6 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
    порядком. Дочерний комбинатор здесь ОБЯЗАТЕЛЕН: без него правило ловит ещё и
    вложенный span.fu внутри числа, это записанная ловушка из раздела 13. */
 .ann-legend .lg-btn{font-size:.88rem;line-height:1.4}
-.ann-hint{font-size:.88rem;line-height:1.4}
 .facts .f > span{font-size:.88rem;line-height:1.4}
 
 /* Строка доверия вплотную к кнопкам финального блока (усиление 5 из брифа 11.08).
@@ -2499,10 +2504,6 @@ footer{padding-bottom:104px}
       <a class="btn btn-gold btn-w form-open" href="#form" data-goal="hero_form_click" data-i18n="cta_form">Оставить заявку</a>
       <a class="btn btn-out btn-w tg-link" href="#" data-goal="hero_tg_click" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.6l-3.1 14.5c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-.9.5l.3-4.6L18.2 7c.4-.3-.1-.5-.6-.2L7.3 13.3 2.9 12c-1-.3-1-1 .2-1.4l17.5-6.7c.8-.3 1.5.2 1.3 1.7z"/></svg><span data-i18n="cta_tg">Связаться в Telegram</span></a>
     </div>
-    <!-- Стрелка перестала быть украшением и стала ссылкой на следующий раздел.
-         Обёртка нужна, чтобы ссылка была ровно 48x44 (правило тап-целей), а не
-         во всю ширину колонки 342px: широкая цель ловила бы промахи по фону. -->
-    <div class="hero-arrow reveal"><a class="hero-arrow-b" href="#facts" data-i18n-label="arrow_lbl" aria-label="К следующему разделу"><svg viewBox="0 0 14 30" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M7 1v25M2 21l5 6 5-6"/></svg></a></div>
   </div>
 </section>
 
@@ -2514,6 +2515,10 @@ footer{padding-bottom:104px}
      В числах стоят НЕРАЗРЫВНЫЕ пробелы (U+00A0) и знак «²» (U+00B2) символом. -->
 <section id="facts">
   <div class="wrap reveal">
+    <!-- Вордмарк над цифрами (правка Тахира 18.08). Латиница одинакова в RU и UZ,
+         поэтому ключа словаря нет намеренно. Гарнитура через var(--wordmark),
+         переменную не трогать: ловушка вордмарка из CLAUDE.md, раздел 3. -->
+    <h2 class="facts-brand">DEVAGO CEILING</h2>
     <div class="facts">
       <!-- ⚠️ ТЕКСТ В РАЗМЕТКЕ ОБЯЗАН СОВПАДАТЬ СО СЛОВАРЁМ ДОСЛОВНО, включая span.fu
            и НЕРАЗРЫВНЫЙ пробел в разрядах. Механика: i18n делает e.innerHTML=d[k] при
@@ -2535,12 +2540,15 @@ footer{padding-bottom:104px}
   <div class="wrap reveal">
     <div class="sec-head"><span class="kick" data-i18n="s_kick">Наши решения</span></div>
     <div class="sol-list">
-      <button type="button" class="sol" data-modal="sol-1"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 12h28M8 12v8h9v-8"/><path d="M17 20h19" stroke-opacity=".5"/></svg></span><span class="tx"><b data-i18n="s1_h">Теневые системы</b><span data-i18n="s1_p">Идеально ровные стыки и чистая геометрия</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <button type="button" class="sol" data-modal="sol-2"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14h28" stroke-opacity=".4"/><path d="M12 14h9M27 14h8" stroke-width="2.4" stroke-linecap="round"/><path d="M14 20l3 12M30 20l2 12" stroke-opacity=".3" stroke-dasharray="2 3"/></svg></span><span class="tx"><b data-i18n="s2_h">Световые линии</b><span data-i18n="s2_p">Чистый свет. Любые конфигурации</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <button type="button" class="sol" data-modal="sol-3"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="10" y="12" width="24" height="5" rx="1"/><circle cx="16" cy="26" r="3"/><circle cx="28" cy="26" r="3"/><path d="M16 29v6M28 29v6" stroke-opacity=".3" stroke-dasharray="2 3"/></svg></span><span class="tx"><b data-i18n="s3_h">Магнитные треки</b><span data-i18n="s3_p">Гибкое освещение под ваши задачи</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <!-- Иконки 1, 2, 3 и 5 отрисованы заново (Тахир 18.08, референсов нет, рисунок свой).
+           Стиль строго как у эталонных sol-6 и sol-4: штрих 1.3, currentColor, без заливки,
+           второстепенные линии через stroke-opacity. -->
+      <button type="button" class="sol" data-modal="sol-1"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="8" y="8" width="28" height="28"/><rect x="15" y="15" width="14" height="14"/><path d="M8 8l7 7M36 8l-7 7M8 36l7-7M36 36l-7-7" stroke-opacity=".45"/></svg></span><span class="tx"><b data-i18n="s1_h">Теневые системы</b><span data-i18n="s1_p">Идеально ровные стыки и чистая геометрия</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button type="button" class="sol" data-modal="sol-2"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 10h20l6 24H6z" stroke-opacity=".35"/><path d="M18 14l4 16M27 14l4 16" stroke-linecap="round"/><path d="M15.5 15.5l2.6 12M31.2 17l2.2 10" stroke-opacity=".4" stroke-linecap="round"/></svg></span><span class="tx"><b data-i18n="s2_h">Световые линии</b><span data-i18n="s2_p">Чистый свет. Любые конфигурации</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button type="button" class="sol" data-modal="sol-3"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M7 11h30"/><path d="M7 13.6h30" stroke-opacity=".45"/><path d="M13 13.6v3.4"/><rect x="10.5" y="17" width="5" height="8" rx="1.5"/><path d="M22 13.6v3.4"/><rect x="19.5" y="17" width="5" height="8" rx="1.5"/><path d="M31 13.6l1.4 3.1"/><rect x="29.6" y="16.4" width="5" height="8" rx="1.5" transform="rotate(-24 32.1 20.4)"/><path d="M13 29v7M22 29v7M33.5 27.5l3 6.4" stroke-opacity=".35" stroke-dasharray="2 3"/></svg></span><span class="tx"><b data-i18n="s3_h">Магнитные треки</b><span data-i18n="s3_p">Гибкое освещение под ваши задачи</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       <button type="button" class="sol" data-modal="sol-6"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M22 8l12 7v14l-12 7-12-7V15z"/><path d="M22 8v14M10 15l12 7 12-7M22 36V22" stroke-opacity=".5"/></svg></span><span class="tx"><b data-i18n="s6_h">Световой короб</b><span data-i18n="s6_p">Светящаяся панель из полупрозрачного полотна</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       <button type="button" class="sol" data-modal="sol-4"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 12h28M30 12v7h6"/><path d="M14 16v16M19 16v13M24 16v16" stroke-opacity=".5"/></svg></span><span class="tx"><b data-i18n="s4_h">Скрытые карнизы</b><span data-i18n="s4_p">Эстетика без компромиссов. Шторы «из потолка»</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <button type="button" class="sol" data-modal="sol-5"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M22 8v6M22 30v6M8 22h6M30 22h6M12 12l4 4M28 28l4 4M32 12l-4 4M16 28l-4 4" stroke-linecap="round"/><circle cx="22" cy="22" r="3.4"/></svg></span><span class="tx"><b data-i18n="s5_h">Звёздное небо</b><span data-i18n="s5_p">Премиальные инсталляции эффектного неба</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button type="button" class="sol" data-modal="sol-5"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M10 12h.01M31 9h.01M37 20h.01M15 25h.01M25 31h.01M8 31h.01" stroke-width="2.6" stroke-linecap="round"/><path d="M18 8h.01M36 31h.01M28 17h.01M12 19h.01M33 25.5h.01M20 35h.01M30 36h.01M14 36.5h.01M38 13h.01M24 22h.01" stroke-width="1.6" stroke-linecap="round" stroke-opacity=".55"/><path d="M19 19v5M16.5 21.5h5" stroke-linecap="round"/></svg></span><span class="tx"><b data-i18n="s5_h">Звёздное небо</b><span data-i18n="s5_p">Премиальные инсталляции эффектного неба</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </div>
   </div>
 </section>
@@ -2565,12 +2573,14 @@ footer{padding-bottom:104px}
           <source type="image/webp"
             srcset="assets/cn-combo-1228.webp 1228w, assets/cn-combo-1840.webp 1840w, assets/cn-combo.webp 2456w"
             sizes="(min-width:900px) 60vw, 100vw">
-          <img src="assets/cn-combo.jpg" alt="Комбинированное потолочное решение: теневой профиль, световые линии, магнитные треки и скрытый карниз в одном интерьере" width="1228" height="454" loading="lazy">
+          <img src="assets/cn-combo.jpg" alt="Комбинированное потолочное решение: теневой профиль, световые линии, магнитные треки и скрытый карниз в одном интерьере" width="1228" height="558" loading="lazy">
         </picture>
-        <button type="button" data-n="2" data-ann="2" class="ann" style="left:30%;top:22%" aria-label="Световые линии"><i></i><span data-i18n="a2">Световые линии</span></button>
-        <button type="button" data-n="3" data-ann="3" class="ann" style="left:58.5%;top:23.5%" aria-label="Магнитные трековые системы"><i></i><span data-i18n="a3">Магнитные трековые системы</span></button>
-        <button type="button" data-n="4" data-ann="4" class="ann ann--l" style="left:88%;top:25%" aria-label="Скрытый карниз"><i></i><span data-i18n="a4">Скрытый карниз</span></button>
-        <button type="button" data-n="1" data-ann="5" class="ann" style="left:13%;top:22%" aria-label="Парящая подсветка"><i></i><span data-i18n="a5">Парящая подсветка</span></button>
+        <!-- Якоря пересчитаны под кадр 2.2:1 (18.08): прежние проценты считались от
+             полного кадра 2.7:1, точки на том же месте ФОТОГРАФИИ, что и раньше. -->
+        <button type="button" data-n="2" data-ann="2" class="ann" style="left:25.5%;top:22%" aria-label="Световые линии"><i></i><span data-i18n="a2">Световые линии</span></button>
+        <button type="button" data-n="3" data-ann="3" class="ann" style="left:60.5%;top:23.5%" aria-label="Магнитные трековые системы"><i></i><span data-i18n="a3">Магнитные трековые системы</span></button>
+        <button type="button" data-n="4" data-ann="4" class="ann ann--l" style="left:96.8%;top:25%" aria-label="Скрытый карниз"><i></i><span data-i18n="a4">Скрытый карниз</span></button>
+        <button type="button" data-n="1" data-ann="5" class="ann" style="left:4.5%;top:22%" aria-label="Парящая подсветка"><i></i><span data-i18n="a5">Парящая подсветка</span></button>
         <!-- ПОПОВЕР ВЫНОСКИ (CDO v4, пункт 4). Один на все пять точек, от 900px.
              Ниже 900px точки открывают общее модальное окно, поповера там нет. -->
         <div class="pop" id="annPop" role="dialog" aria-modal="false" aria-labelledby="popTitle" hidden>
@@ -2583,7 +2593,6 @@ footer{padding-bottom:104px}
       <!-- ЛЕГЕНДА ВЫНОСОК, видна только ниже 560px. Ключи data-i18n те же, что у подписей
            на фото, поэтому штатный переключатель языка обновляет и её. Контент не
            меняется, меняется только подача на узком экране. -->
-      <p class="ann-hint" data-i18n="ann_hint">нажмите на цифры</p>
       <ol class="ann-legend" aria-hidden="false">
         <!-- Цифры идут ПО ЛЕГЕНДЕ, а не по положению на фото. Номер в <b> и data-n на
              маркере это ОТОБРАЖАЕМАЯ цифра, data-ann это личность выноски: по ней ходят
@@ -2728,12 +2737,14 @@ footer{padding-bottom:104px}
           </picture></div>
           <div class="bx">
             <div class="obj" data-i18n="p1_o">Пентхаус</div>
-            <div class="city" data-i18n="p1_c"><span class='dt'>Ташкент</span><span class='mb'>Tashkent City</span></div>
+            <div class="city" data-i18n="p1_c">Центр Ташкента</div>
             <q data-i18n="p1_q">Искали подрядчика, который сможет объединить разные потолочные решения в единую концепцию. Результат превзошёл ожидания.</q>
-            <button type="button" class="prj-more" data-modal="prj-1"><span data-i18n="read_more">Смотреть фотографии</span></button>
             <div class="who" data-i18n="p1_w">Александр и Мария</div>
             <div class="role" data-i18n="p1_r">Владельцы пентхауса</div>
           </div>
+          <!-- Окно открывает ВСЯ карточка (Тахир 18.08): растянутая кнопка поверх.
+               Выделение текста цитаты при этом теряется, решение принято им же. -->
+          <button type="button" class="prj-open" data-modal="prj-1" data-i18n-label="prj1_lbl" aria-label="Смотреть фотографии: Пентхаус"></button>
         </article>
         <article class="prj">
           <div class="ph"><picture>
@@ -2744,10 +2755,10 @@ footer{padding-bottom:104px}
             <div class="obj" data-i18n="p2_o">Квартира в многоэтажном доме</div>
             <div class="city" data-i18n="p2_c">Ташкент</div>
             <q data-i18n="p2_q">DEVAGO предложили решение, которое полностью изменило восприятие пространства. Качество исполнения на высочайшем уровне.</q>
-            <button type="button" class="prj-more" data-modal="prj-2"><span data-i18n="read_more">Смотреть фотографии</span></button>
             <div class="who" data-i18n="p2_w">Бахром Р.</div>
             <div class="role" data-i18n="p2_r">Владелец дома</div>
           </div>
+          <button type="button" class="prj-open" data-modal="prj-2" data-i18n-label="prj2_lbl" aria-label="Смотреть фотографии: Квартира в многоэтажном доме"></button>
         </article>
         <article class="prj">
           <div class="ph"><picture>
@@ -2755,13 +2766,13 @@ footer{padding-bottom:104px}
             <img src="assets/cn-rev3-560.webp" alt="Проект: световые решения в квартире 180 м²" width="560" height="350" loading="lazy">
           </picture></div>
           <div class="bx">
-            <div class="obj" data-i18n="p3_o">Квартира</div>
-            <div class="city" data-i18n="p3_c">Tashkent City</div>
+            <div class="obj" data-i18n="p3_o">Квартира в новостройке</div>
+            <div class="city" data-i18n="p3_c">Ташкент</div>
             <q data-i18n="p3_q">Безупречное качество, аккуратность и внимание к деталям. Световые решения идеально подчеркнули архитектуру интерьера.</q>
-            <button type="button" class="prj-more" data-modal="prj-3"><span data-i18n="read_more">Смотреть фотографии</span></button>
             <div class="who" data-i18n="p3_w">Дильноза К.</div>
             <div class="role" data-i18n="p3_r">Владелица квартиры</div>
           </div>
+          <button type="button" class="prj-open" data-modal="prj-3" data-i18n-label="prj3_lbl" aria-label="Смотреть фотографии: Квартира в новостройке"></button>
         </article>
         <article class="prj">
           <div class="ph"><picture>
@@ -2772,10 +2783,10 @@ footer{padding-bottom:104px}
             <div class="obj" data-i18n="p5_o">SPA-зона</div>
             <div class="city" data-i18n="p5_c">Частный проект</div>
             <q data-i18n="p5_q">Световые линии и скрытый карниз создали идеальную атмосферу релакса и уюта.</q>
-            <button type="button" class="prj-more" data-modal="prj-5"><span data-i18n="read_more">Смотреть фотографии</span></button>
             <div class="who" data-i18n="p5_w">Бахром Р.</div>
-            
+
           </div>
+          <button type="button" class="prj-open" data-modal="prj-5" data-i18n-label="prj5_lbl" aria-label="Смотреть фотографии: SPA-зона"></button>
         </article>
       </div>
     </div>
@@ -3066,11 +3077,11 @@ var I18N = {
  /* Заголовок секции на время, пока живых фото нет. Формулировка Тахира 11.08.
     Возвращается к p_kick снятием RENDERS_ARE_VISUALS. */
  p_kick_v:"Визуализация возможностей",
- p1_o:"Пентхаус",p1_c:"<span class='dt'>Ташкент</span><span class='mb'>Tashkent City</span>",
+ p1_o:"Пентхаус",p1_c:"Центр Ташкента",
  p1_q:"Искали подрядчика, который сможет объединить <span class='dt'>разные потолочные</span><span class='mb'>световые</span> решения в единую концепцию. Результат превзошёл ожидания.<span class='dt'> Пространство стало совершенно другим.</span>",
  p1_w:"Александр и Мария",p1_r:"Владельцы пентхауса",
  p2_o:"Квартира в многоэтажном доме",p2_c:"Ташкент",p2_q:"DEVAGO предложили решение, которое полностью изменило восприятие пространства. Качество исполнения на высочайшем уровне.",p2_w:"Бахром Р.",p2_r:"Владелец дома",
- p3_o:"Квартира",p3_c:"Tashkent City",p3_q:"Безупречное качество, аккуратность и внимание к деталям. Световые решения идеально подчеркнули архитектуру интерьера.",p3_w:"Дильноза К.",p3_r:"Владелица квартиры",
+ p3_o:"Квартира в новостройке",p3_c:"Ташкент",p3_q:"Безупречное качество, аккуратность и внимание к деталям. Световые решения идеально подчеркнули архитектуру интерьера.",p3_w:"Дильноза К.",p3_r:"Владелица квартиры",
  p5_o:"SPA-зона",p5_c:"Частный проект",p5_q:"Световые линии и скрытый карниз создали идеальную атмосферу релакса и уюта.",p5_w:"Бахром Р.",
  w_kick:"Почему выбирают DEVAGO",
  w1:"Архитектурный подход к каждому проекту",w2:"Премиальные материалы и комплектующие",
@@ -3079,8 +3090,9 @@ var I18N = {
  fin_p:"<span class='dt'>Получите консультацию и расчёт стоимости вашего проекта бесплатно.</span><span class='mb'>Получите консультацию специалиста и расчёт стоимости вашего проекта.</span>",
  fin_city:"Узбекистан",fin_tag:"Архитектура света и пространства",
 
- nav_pp:"Фотопечать",read_more:"Смотреть фотографии",skip:"К содержимому",lang_group:"Язык сайта",ann_hint:"нажмите на цифры",pop_more:"подробнее",
- fact1_n:"16<span class='fu'>лет опыта</span>",fact1_t:"2010-2022 Москва<br>с 2022 года Узбекистан",fact2_n:"18 500+",fact2_t:"выполненных объектов",fact3_n:"600 000<span class='fu'>м²</span>",fact3_t:"натянутого полотна",fact4_n:"9<span class='fu'>бригад</span>",fact4_t:"укомплектованных монтажников",fact5_n:"5<span class='fu'>цехов</span>",fact5_t:"Ташкент, Самарканд, Навои, Бухара, Кашкадарья",/* facts_hist и facts_geo НЕ ИСПОЛЬЗУЮТСЯ С 11.08: история уехала в первую плитку, города в пятую. Оставлены на случай возврата примечания. */facts_hist:"2010-2022 Москва, с 2022 Узбекистан",facts_geo:"Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья",call_lbl:"Позвонить",inst_lbl:"Instagram",arrow_lbl:"К следующему разделу",
+ nav_pp:"Фотопечать",skip:"К содержимому",lang_group:"Язык сайта",pop_more:"подробнее",
+ prj1_lbl:"Смотреть фотографии: Пентхаус",prj2_lbl:"Смотреть фотографии: Квартира в многоэтажном доме",prj3_lbl:"Смотреть фотографии: Квартира в новостройке",prj5_lbl:"Смотреть фотографии: SPA-зона",
+ fact1_n:"16<span class='fu'>лет опыта</span>",fact1_t:"2010-2022 Москва<br>с 2022 года Узбекистан",fact2_n:"18 500+",fact2_t:"выполненных объектов",fact3_n:"600 000<span class='fu'>м²</span>",fact3_t:"натянутого полотна",fact4_n:"9<span class='fu'>бригад</span>",fact4_t:"укомплектованных монтажников",fact5_n:"5<span class='fu'>цехов</span>",fact5_t:"Ташкент, Самарканд, Навои, Бухара, Кашкадарья",/* facts_hist и facts_geo НЕ ИСПОЛЬЗУЮТСЯ С 11.08: история уехала в первую плитку, города в пятую. Оставлены на случай возврата примечания. */facts_hist:"2010-2022 Москва, с 2022 Узбекистан",facts_geo:"Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья",call_lbl:"Позвонить",inst_lbl:"Instagram",
  pp_kick:"Варианты фотопечати",pp_title:"Варианты фотопечати на потолке",pp_sub:"Современная фотопечать с подсветкой и парящим профилем",
  pp1_h:"Мрамор / оникс с подсветкой",pp1_p:"Эффект полупрозрачного камня",
  pp2_h:"Бетон",pp2_p:"Современная текстура для стильных интерьеров",
@@ -3151,11 +3163,11 @@ var I18N = {
  std6_h:"Natija kafolati",std6_p:"Barcha ish va materiallarga 10 yilgacha kafolat",
  p_kick:"Amalga oshirilgan loyihalar",
  p_kick_v:"Imkoniyatlar vizualizatsiyasi",
- p1_o:"Pentxaus",p1_c:"<span class='dt'>Toshkent</span><span class='mb'>Tashkent City</span>",
+ p1_o:"Pentxaus",p1_c:"Toshkent markazi",
  p1_q:"Turli shift yechimlarini yagona konsepsiyaga birlashtira oladigan pudratchi izladik. Natija kutilganidan oshdi.<span class='dt'> Makon butunlay oʻzgardi.</span>",
  p1_w:"Aleksandr va Mariya",p1_r:"Pentxaus egalari",
  p2_o:"Koʻp qavatli uydagi kvartira",p2_c:"Toshkent",p2_q:"DEVAGO makon idrokini butunlay oʻzgartirgan yechimni taklif qildi. Ijro sifati eng yuqori darajada.",p2_w:"Bahrom R.",p2_r:"Uy egasi",
- p3_o:"Kvartira",p3_c:"Tashkent City",p3_q:"Benuqson sifat, ozodalik va detallarga eʼtibor. Yorugʻlik yechimlari interyer arxitekturasini ideal taʼkidladi.",p3_w:"Dilnoza K.",p3_r:"Kvartira egasi",
+ p3_o:"Yangi binodagi kvartira",p3_c:"Toshkent",p3_q:"Benuqson sifat, ozodalik va detallarga eʼtibor. Yorugʻlik yechimlari interyer arxitekturasini ideal taʼkidladi.",p3_w:"Dilnoza K.",p3_r:"Kvartira egasi",
  p5_o:"SPA-zona",p5_c:"Xususiy loyiha",p5_q:"Yorugʻlik chiziqlari va yashirin karniz relaks va shinamlikning ideal muhitini yaratdi.",p5_w:"Bahrom R.",
  w_kick:"Nega DEVAGO tanlashadi",
  w1:"Har bir loyihaga arxitektura yondashuvi",w2:"Premium materiallar va butlovchilar",
@@ -3164,7 +3176,8 @@ var I18N = {
  fin_p:"<span class='dt'>Konsultatsiya va loyihangiz narxining hisob-kitobini bepul oling.</span><span class='mb'>Mutaxassis konsultatsiyasi va loyihangiz narxining hisob-kitobini oling.</span>",
  fin_city:"Oʻzbekiston",fin_tag:"Yorugʻlik va makon arxitekturasi",
 
- nav_pp:"Fotopechat",read_more:"Suratlarni koʻrish",skip:"Mazmunga oʻtish",lang_group:"Sayt tili",ann_hint:"raqamlarni bosing",pop_more:"batafsil",
+ nav_pp:"Fotopechat",skip:"Mazmunga oʻtish",lang_group:"Sayt tili",pop_more:"batafsil",
+ prj1_lbl:"Suratlarni koʻrish: Pentxaus",prj2_lbl:"Suratlarni koʻrish: Koʻp qavatli uydagi kvartira",prj3_lbl:"Suratlarni koʻrish: Yangi binodagi kvartira",prj5_lbl:"Suratlarni koʻrish: SPA-zona",
  /* УЗБЕКСКИЕ ПОДПИСИ ПОЛОСЫ ЦИФР, ЧЕРНОВИК. Финальные формулировки за копирайтером. */
  /* ⚠️ ПОДПИСИ УЗБЕКСКОГО ЖДУТ КОПИРАЙТЕРА, я их не сочиняю. Обновлены ТОЛЬКО цифры,
     они от языка не зависят. Устарели по смыслу и вынесены в recap: fact2_t и fact3_t
@@ -3174,7 +3187,7 @@ var I18N = {
     решения: «цех» это ishlab chiqarish.
     ⚠️ sexlar НЕ ВОЗВРАЩАТЬ ни в каком виде: на латинице читается не так, меняли 07.08
     по замечанию Тахира. */
- fact1_n:"16<span class='fu'>yillik tajriba</span>",fact1_t:"2010-2022 Moskva<br>2022 yildan Oʻzbekiston",fact2_n:"18 500+",fact2_t:"bajarilgan obyekt",fact3_n:"600 000<span class='fu'>m²</span>",fact3_t:"tortilgan polotno",fact4_n:"9<span class='fu'>brigada</span>",fact4_t:"toʻliq tarkibli montajchilar",fact5_n:"5<span class='fu'>ishlab chiqarish</span>",fact5_t:"Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",facts_hist:"2010-2022 Moskva, 2022 dan Oʻzbekiston",facts_geo:"Oʻz ishlab chiqarishimiz: Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",call_lbl:"Qoʻngʻiroq",inst_lbl:"Instagram",arrow_lbl:"Keyingi boʻlimga",
+ fact1_n:"16<span class='fu'>yillik tajriba</span>",fact1_t:"2010-2022 Moskva<br>2022 yildan Oʻzbekiston",fact2_n:"18 500+",fact2_t:"bajarilgan obyekt",fact3_n:"600 000<span class='fu'>m²</span>",fact3_t:"tortilgan polotno",fact4_n:"9<span class='fu'>brigada</span>",fact4_t:"toʻliq tarkibli montajchilar",fact5_n:"5<span class='fu'>ishlab chiqarish</span>",fact5_t:"Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",facts_hist:"2010-2022 Moskva, 2022 dan Oʻzbekiston",facts_geo:"Oʻz ishlab chiqarishimiz: Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",call_lbl:"Qoʻngʻiroq",inst_lbl:"Instagram",
  pp_kick:"Fotopechat variantlari",pp_title:"Shiftdagi fotopechat variantlari",pp_sub:"Yoritish va parvoz profili bilan zamonaviy fotopechat",
  pp1_h:"Marmar / oniks yoritish bilan",pp1_p:"Yarim shaffof tosh effekti",
  pp2_h:"Beton",pp2_p:"Zamonaviy interyerlar uchun tekstura",
