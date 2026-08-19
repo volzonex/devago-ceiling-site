@@ -2430,6 +2430,19 @@ footer{padding-bottom:104px}
 .im-arw--n{right:4px}
 .im-arw[disabled]{opacity:.35;cursor:default}
 .im-arw[hidden]{display:none}
+
+/* ===== ЦИФРЫ ПО МАКЕТУ ИКРОМА 19.08: подзаголовок и строка городов ===== */
+/* white-space:normal вместо nowrap: заголовок стал длиннее, на телефоне ему
+   разрешён перенос, balance делит его на осмысленные строки. */
+.facts-brand{margin-bottom:10px;white-space:normal;text-wrap:balance}
+.facts-sub{margin:0 0 clamp(26px,4vw,40px);text-align:center;color:var(--t2);
+  font-size:clamp(.82rem,2.5vw,.95rem);letter-spacing:.05em}
+.facts-geo{margin:clamp(18px,3vw,26px) 0 0;text-align:center;color:var(--t2);
+  font-size:clamp(.72rem,2.3vw,.85rem);letter-spacing:.16em;text-transform:uppercase}
+/* Легенда выносок капсом (Икром 19.08, «как на втором фото») */
+.ann-legend .lg-btn span{text-transform:uppercase;letter-spacing:.06em}
+/* Кнопка «Посмотреть все варианты» фотопечати */
+.pp-more-wrap{margin-top:28px;text-align:center}
 </style>
 </head>
 <body>
@@ -2515,10 +2528,11 @@ footer{padding-bottom:104px}
      В числах стоят НЕРАЗРЫВНЫЕ пробелы (U+00A0) и знак «²» (U+00B2) символом. -->
 <section id="facts">
   <div class="wrap reveal">
-    <!-- Вордмарк над цифрами (правка Тахира 18.08). Латиница одинакова в RU и UZ,
-         поэтому ключа словаря нет намеренно. Гарнитура через var(--wordmark),
-         переменную не трогать: ловушка вордмарка из CLAUDE.md, раздел 3. -->
-    <h2 class="facts-brand">DEVAGO CEILING</h2>
+    <!-- Заголовок по макету Икрома 19.08. «В ЦИФРАХ» переводится, поэтому появился
+         ключ facts_title. Гарнитура через var(--wordmark), переменную не трогать:
+         ловушка вордмарка из CLAUDE.md, раздел 3. -->
+    <h2 class="facts-brand" data-i18n="facts_title">DEVAGO CEILING В ЦИФРАХ</h2>
+    <p class="facts-sub" data-i18n="facts_sub">С 2010 по 2022 год в Москве. С 2022 года в Узбекистане</p>
     <div class="facts">
       <!-- ⚠️ ТЕКСТ В РАЗМЕТКЕ ОБЯЗАН СОВПАДАТЬ СО СЛОВАРЁМ ДОСЛОВНО, включая span.fu
            и НЕРАЗРЫВНЫЙ пробел в разрядах. Механика: i18n делает e.innerHTML=d[k] при
@@ -2526,12 +2540,13 @@ footer{padding-bottom:104px}
            уже стоило разбора: в разметке лежал длинный вариант, в словаре короткий, и
            правка выглядела несделанной. Правишь цифру, правь в ТРЁХ местах: здесь и в
            обоих словарях. -->
-      <div class="f"><b data-i18n="fact1_n">16<span class="fu">лет опыта</span></b><span data-i18n="fact1_t">2010-2022 Москва<br>с 2022 года Узбекистан</span></div>
-      <div class="f"><b data-i18n="fact2_n">18 500+</b><span data-i18n="fact2_t">выполненных объектов</span></div>
-      <div class="f"><b data-i18n="fact3_n">600 000<span class="fu">м²</span></b><span data-i18n="fact3_t">натянутого полотна</span></div>
-      <div class="f"><b data-i18n="fact4_n">9<span class="fu">бригад</span></b><span data-i18n="fact4_t">укомплектованных монтажников</span></div>
-      <div class="f f--geo"><b data-i18n="fact5_n">5<span class="fu">цехов</span></b><span data-i18n="fact5_t">Ташкент, Самарканд, Навои, Бухара, Кашкадарья</span></div>
+      <div class="f"><b data-i18n="fact1_n">16</b><span data-i18n="fact1_t">лет опыта</span></div>
+      <div class="f"><b data-i18n="fact2_n">18 500+</b><span data-i18n="fact2_t">объектов</span></div>
+      <div class="f"><b data-i18n="fact3_n">500 000+<span class="fu">м²</span></b><span data-i18n="fact3_t">натянутой площади</span></div>
+      <div class="f"><b data-i18n="fact4_n">10</b><span data-i18n="fact4_t">монтажных бригад</span></div>
+      <div class="f f--geo"><b data-i18n="fact5_n">4</b><span data-i18n="fact5_t">производственных цеха</span></div>
     </div>
+    <p class="facts-geo" data-i18n="facts_geo2">Ташкент • Самарканд • Навои • Бухара • Карши</p>
   </div>
 </section>
 
@@ -2543,12 +2558,12 @@ footer{padding-bottom:104px}
       <!-- Иконки 1, 2, 3 и 5 отрисованы заново (Тахир 18.08, референсов нет, рисунок свой).
            Стиль строго как у эталонных sol-6 и sol-4: штрих 1.3, currentColor, без заливки,
            второстепенные линии через stroke-opacity. -->
-      <button type="button" class="sol" data-modal="sol-1"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="8" y="8" width="28" height="28"/><rect x="15" y="15" width="14" height="14"/><path d="M8 8l7 7M36 8l-7 7M8 36l7-7M36 36l-7-7" stroke-opacity=".45"/></svg></span><span class="tx"><b data-i18n="s1_h">Теневые системы</b><span data-i18n="s1_p">Идеально ровные стыки и чистая геометрия</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <button type="button" class="sol" data-modal="sol-2"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 10h20l6 24H6z" stroke-opacity=".35"/><path d="M18 14l4 16M27 14l4 16" stroke-linecap="round"/><path d="M15.5 15.5l2.6 12M31.2 17l2.2 10" stroke-opacity=".4" stroke-linecap="round"/></svg></span><span class="tx"><b data-i18n="s2_h">Световые линии</b><span data-i18n="s2_p">Чистый свет. Любые конфигурации</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <button type="button" class="sol" data-modal="sol-3"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M7 11h30"/><path d="M7 13.6h30" stroke-opacity=".45"/><path d="M13 13.6v3.4"/><rect x="10.5" y="17" width="5" height="8" rx="1.5"/><path d="M22 13.6v3.4"/><rect x="19.5" y="17" width="5" height="8" rx="1.5"/><path d="M31 13.6l1.4 3.1"/><rect x="29.6" y="16.4" width="5" height="8" rx="1.5" transform="rotate(-24 32.1 20.4)"/><path d="M13 29v7M22 29v7M33.5 27.5l3 6.4" stroke-opacity=".35" stroke-dasharray="2 3"/></svg></span><span class="tx"><b data-i18n="s3_h">Магнитные треки</b><span data-i18n="s3_p">Гибкое освещение под ваши задачи</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <button type="button" class="sol" data-modal="sol-6"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M22 8l12 7v14l-12 7-12-7V15z"/><path d="M22 8v14M10 15l12 7 12-7M22 36V22" stroke-opacity=".5"/></svg></span><span class="tx"><b data-i18n="s6_h">Световой короб</b><span data-i18n="s6_p">Светящаяся панель из полупрозрачного полотна</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <button type="button" class="sol" data-modal="sol-4"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 12h28M30 12v7h6"/><path d="M14 16v16M19 16v13M24 16v16" stroke-opacity=".5"/></svg></span><span class="tx"><b data-i18n="s4_h">Скрытые карнизы</b><span data-i18n="s4_p">Эстетика без компромиссов. Шторы «из потолка»</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <button type="button" class="sol" data-modal="sol-5"><span class="ic"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M10 12h.01M31 9h.01M37 20h.01M15 25h.01M25 31h.01M8 31h.01" stroke-width="2.6" stroke-linecap="round"/><path d="M18 8h.01M36 31h.01M28 17h.01M12 19h.01M33 25.5h.01M20 35h.01M30 36h.01M14 36.5h.01M38 13h.01M24 22h.01" stroke-width="1.6" stroke-linecap="round" stroke-opacity=".55"/><path d="M19 19v5M16.5 21.5h5" stroke-linecap="round"/></svg></span><span class="tx"><b data-i18n="s5_h">Звёздное небо</b><span data-i18n="s5_p">Премиальные инсталляции эффектного неба</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button type="button" class="sol" data-modal="sol-1"><span class="ic"><svg viewBox="0 0 64 64" fill="none"><g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10v44M12 14h33M20 22v32M20 22h25"/><path d="M20 30h8v-8"/><path d="M29 22h16" opacity=".38"/></g></svg></span><span class="tx"><b data-i18n="s1_h">Теневые системы</b><span data-i18n="s1_p">Идеально ровные стыки и чистая геометрия</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button type="button" class="sol" data-modal="sol-2"><span class="ic"><svg viewBox="0 0 64 64" fill="none"><g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 18h48M14 24h36" opacity=".5"/><path d="M14 21h36" stroke-width="4"/><path d="M20 31l-3 13M32 31v15M44 31l3 13" opacity=".65"/></g></svg></span><span class="tx"><b data-i18n="s2_h">Световые линии</b><span data-i18n="s2_p">Чистый свет. Любые конфигурации</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button type="button" class="sol" data-modal="sol-3"><span class="ic"><svg viewBox="0 0 64 64" fill="none"><g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 14h48v10H8zM14 19h36"/><path d="M15 24v9l17-3v-6M45 24v8"/><path d="M39 32h12l-2 8a4 4 0 0 1-8 0z"/><path d="M15 33l17-3 1 7-17 3z"/></g></svg></span><span class="tx"><b data-i18n="s3_h">Магнитные треки</b><span data-i18n="s3_p">Гибкое освещение под ваши задачи</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button type="button" class="sol" data-modal="sol-6"><span class="ic"><svg viewBox="0 0 64 64" fill="none"><g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="17" width="38" height="30" rx="2"/><rect x="19" y="23" width="26" height="18" rx="1" opacity=".62"/><path d="M32 9v4M32 51v4M5 32h4M55 32h4M11 11l3 3M50 50l3 3M53 11l-3 3M14 50l-3 3" opacity=".7"/></g></svg></span><span class="tx"><b data-i18n="s6_h">Световой короб</b><span data-i18n="s6_p">Светящаяся панель из полупрозрачного полотна</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button type="button" class="sol" data-modal="sol-4"><span class="ic"><svg viewBox="0 0 64 64" fill="none"><g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13h50M7 20h18v12h9V20h23"/><path d="M39 24h14" opacity=".55"/><path d="M41 27v25M49 27v25"/><path d="M41 31c3 3 5 3 8 0M41 39c3 3 5 3 8 0M41 47c3 3 5 3 8 0" opacity=".72"/></g></svg></span><span class="tx"><b data-i18n="s4_h">Скрытые карнизы</b><span data-i18n="s4_p">Эстетика без компромиссов. Шторы «из потолка»</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button type="button" class="sol" data-modal="sol-5"><span class="ic"><svg viewBox="0 0 64 64" fill="none"><g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15h46l-4 34H13z"/><path d="M22 24v6M19 27h6M42 31v5M39.5 33.5h5"/><circle cx="32" cy="22" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="38" r="1.2" fill="currentColor" stroke="none"/><circle cx="34" cy="41" r="1" fill="currentColor" stroke="none"/><circle cx="47" cy="22" r="1" fill="currentColor" stroke="none"/><circle cx="46" cy="43" r="1.5" fill="currentColor" stroke="none"/></g></svg></span><span class="tx"><b data-i18n="s5_h">Звёздное небо</b><span data-i18n="s5_p">Премиальные инсталляции эффектного неба</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </div>
   </div>
 </section>
@@ -2615,18 +2630,21 @@ footer{padding-bottom:104px}
      получило собственное модальное окно с прежними тезисами st_p / f1-f4. -->
 <section id="photoprint">
   <div class="wrap reveal">
-    <h2 class="title pp-title" data-i18n="pp_title">Варианты фотопечати на потолке</h2>
+    <div class="sec-head"><span class="kick" data-i18n="pp_title">Авторская фотопечать</span></div>
     <p class="lead" data-i18n="pp_sub">Современная фотопечать с подсветкой и парящим профилем</p>
     <div class="pp-grid">
       <button type="button" class="pp" data-modal="pp1"><span class="ph"><picture><source type="image/webp" srcset="assets/pp1-340.webp 340w, assets/pp1.webp 636w" sizes="(min-width:1000px) 292px, 50vw"><img src="assets/pp1-340.webp" alt="Фотопечать на натяжном потолке: мрамор и оникс с подсветкой" width="340" height="255" loading="lazy"></picture></span><span class="bx"><b><i>1.</i><span data-i18n="pp1_h">Мрамор / оникс с подсветкой</span></b><span class="pp-d" data-i18n="pp1_p">Эффект полупрозрачного камня</span></span></button>
       <button type="button" class="pp" data-modal="pp2"><span class="ph"><picture><source type="image/webp" srcset="assets/pp2-340.webp 340w, assets/pp2.webp 636w" sizes="(min-width:1000px) 292px, 50vw"><img src="assets/pp2-340.webp" alt="Фотопечать на натяжном потолке: бетонная текстура" width="340" height="255" loading="lazy"></picture></span><span class="bx"><b><i>2.</i><span data-i18n="pp2_h">Бетон</span></b><span class="pp-d" data-i18n="pp2_p">Современная текстура для стильных интерьеров</span></span></button>
       <button type="button" class="pp" data-modal="pp3"><span class="ph"><picture><source type="image/webp" srcset="assets/pp3-340.webp 340w, assets/pp3.webp 636w" sizes="(min-width:1000px) 292px, 50vw"><img src="assets/pp3-340.webp" alt="Фотопечать на натяжном потолке: художественная абстракция" width="340" height="255" loading="lazy"></picture></span><span class="bx"><b><i>3.</i><span data-i18n="pp3_h">Абстракция</span></b><span class="pp-d" data-i18n="pp3_p">Художественные абстракции в интерьерной гамме</span></span></button>
-      <button type="button" class="pp" data-modal="pp4"><span class="ph"><picture><source type="image/webp" srcset="assets/pp4-340.webp 340w, assets/pp4.webp 636w" sizes="(min-width:1000px) 292px, 50vw"><img src="assets/pp4-340.webp" alt="Фотопечать на натяжном потолке: природные мотивы, дерево" width="340" height="255" loading="lazy"></picture></span><span class="bx"><b><i>4.</i><span data-i18n="pp4_h">Природа</span></b><span class="pp-d" data-i18n="pp4_p">Натуральные мотивы для атмосферных интерьеров</span></span></button>
-      <button type="button" class="pp" data-modal="pp5"><span class="ph"><picture><source type="image/webp" srcset="assets/pp5-340.webp 340w, assets/pp5.webp 636w" sizes="(min-width:1000px) 292px, 50vw"><img src="assets/pp5-340.webp" alt="Фотопечать на натяжном потолке: геометрическая композиция" width="340" height="255" loading="lazy"></picture></span><span class="bx"><b><i>5.</i><span data-i18n="pp5_h">Геометрия</span></b><span class="pp-d" data-i18n="pp5_p">Стильные геометрические композиции</span></span></button>
-      <button type="button" class="pp" data-modal="pp6"><span class="ph"><picture><source type="image/webp" srcset="assets/pp6-340.webp 340w, assets/pp6.webp 636w" sizes="(min-width:1000px) 292px, 50vw"><img src="assets/pp6-340.webp" alt="Фотопечать на натяжном потолке: флоральные мотивы, листья" width="340" height="255" loading="lazy"></picture></span><span class="bx"><b><i>6.</i><span data-i18n="pp6_h">Флоральные мотивы</span></b><span class="pp-d" data-i18n="pp6_p">Деликатные растительные узоры в современном исполнении</span></span></button>
-      <button type="button" class="pp" data-modal="pp7"><span class="ph"><picture><source type="image/webp" srcset="assets/pp7-340.webp 340w, assets/pp7.webp 636w" sizes="(min-width:1000px) 292px, 50vw"><img src="assets/pp7-340.webp" alt="Фотопечать на натяжном потолке: космос, млечный путь" width="340" height="255" loading="lazy"></picture></span><span class="bx"><b><i>7.</i><span data-i18n="pp7_h">Космос</span></b><span class="pp-d" data-i18n="pp7_p">Глубина вселенной для уникальных интерьеров</span></span></button>
-      <button type="button" class="pp" data-modal="pp8"><span class="ph"><picture><source type="image/webp" srcset="assets/pp8-340.webp 340w, assets/pp8.webp 636w" sizes="(min-width:1000px) 292px, 50vw"><img src="assets/pp8-340.webp" alt="Фотопечать на натяжном потолке: архитектура, небоскрёбы" width="340" height="255" loading="lazy"></picture></span><span class="bx"><b><i>8.</i><span data-i18n="pp8_h">Архитектура</span></b><span class="pp-d" data-i18n="pp8_p">Городские мотивы и архитектурные композиции</span></span></button>
+      <button type="button" class="pp" data-modal="pp5"><span class="ph"><picture><source type="image/webp" srcset="assets/pp5-340.webp 340w, assets/pp5.webp 636w" sizes="(min-width:1000px) 292px, 50vw"><img src="assets/pp5-340.webp" alt="Фотопечать на натяжном потолке: геометрическая композиция" width="340" height="255" loading="lazy"></picture></span><span class="bx"><b><i>4.</i><span data-i18n="pp5_h">Геометрия</span></b><span class="pp-d" data-i18n="pp5_p">Стильные геометрические композиции</span></span></button>
+      <button type="button" class="pp" data-modal="pp4" hidden><span class="ph"><picture><source type="image/webp" srcset="assets/pp4-340.webp 340w, assets/pp4.webp 636w" sizes="(min-width:1000px) 292px, 50vw"><img src="assets/pp4-340.webp" alt="Фотопечать на натяжном потолке: природные мотивы, дерево" width="340" height="255" loading="lazy"></picture></span><span class="bx"><b><i>5.</i><span data-i18n="pp4_h">Природа</span></b><span class="pp-d" data-i18n="pp4_p">Натуральные мотивы для атмосферных интерьеров</span></span></button>
+      <button type="button" class="pp" data-modal="pp6" hidden><span class="ph"><picture><source type="image/webp" srcset="assets/pp6-340.webp 340w, assets/pp6.webp 636w" sizes="(min-width:1000px) 292px, 50vw"><img src="assets/pp6-340.webp" alt="Фотопечать на натяжном потолке: флоральные мотивы, листья" width="340" height="255" loading="lazy"></picture></span><span class="bx"><b><i>6.</i><span data-i18n="pp6_h">Флоральные мотивы</span></b><span class="pp-d" data-i18n="pp6_p">Деликатные растительные узоры в современном исполнении</span></span></button>
+      <button type="button" class="pp" data-modal="pp7" hidden><span class="ph"><picture><source type="image/webp" srcset="assets/pp7-340.webp 340w, assets/pp7.webp 636w" sizes="(min-width:1000px) 292px, 50vw"><img src="assets/pp7-340.webp" alt="Фотопечать на натяжном потолке: космос, млечный путь" width="340" height="255" loading="lazy"></picture></span><span class="bx"><b><i>7.</i><span data-i18n="pp7_h">Космос</span></b><span class="pp-d" data-i18n="pp7_p">Глубина вселенной для уникальных интерьеров</span></span></button>
+      <button type="button" class="pp" data-modal="pp8" hidden><span class="ph"><picture><source type="image/webp" srcset="assets/pp8-340.webp 340w, assets/pp8.webp 636w" sizes="(min-width:1000px) 292px, 50vw"><img src="assets/pp8-340.webp" alt="Фотопечать на натяжном потолке: архитектура, небоскрёбы" width="340" height="255" loading="lazy"></picture></span><span class="bx"><b><i>8.</i><span data-i18n="pp8_h">Архитектура</span></b><span class="pp-d" data-i18n="pp8_p">Городские мотивы и архитектурные композиции</span></span></button>
     </div>
+    <!-- Первые четыре варианта видимы (Икром 19.08), остальные раскрываются кнопкой.
+         hidden снимается скриптом ppMoreBtn в конце body. -->
+    <div class="pp-more-wrap"><button type="button" class="btn btn-out" id="ppMoreBtn" data-i18n="pp_more_btn">Посмотреть все варианты</button></div>
   </div>
 </section>
 
@@ -2643,21 +2661,19 @@ footer{padding-bottom:104px}
     <div class="stdc" role="group" aria-roledescription="carousel" aria-label="Этапы работ DEVAGO" data-i18n-label="stdc_lbl">
       <div class="stdc-vp" id="stdcVp" tabindex="0" role="group" aria-label="Этапы работ" data-i18n-label="stdc_vp" aria-live="polite">
         <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="1 из 6">
-          <div class="stdc-ph"><img src="assets/cn-std1.webp" alt="Проектирование световых сценариев: чертёж потолка" width="678" height="360" loading="eager" decoding="async"></div>
+          <div class="stdc-ph"><img src="assets/cn-std2.webp" alt="Точные замеры помещения лазерным дальномером" width="678" height="360" loading="eager" decoding="async"></div>
           <div class="stdc-tx">
             <span class="no">01</span>
-            <h3 data-i18n="std1_h">Проектирование</h3>
-            <p class="sp" data-i18n="std1_p">Детальная проработка световых сценариев</p>
-            <p class="mp" data-i18n="mp_std">Этап обязателен на каждом объекте, независимо от площади. Результат фиксируем и передаём заказчику до перехода к следующему шагу.</p>
+            <h3 data-i18n="std2_h">Точные замеры</h3>
+            <p class="sp" data-i18n="std2_p">Учитываем каждый миллиметр и все технические узлы</p>
           </div>
         </article>
         <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="2 из 6">
-          <div class="stdc-ph"><img src="assets/cn-std2.webp" alt="Точные замеры помещения лазерным дальномером" width="678" height="360" loading="lazy" decoding="async"></div>
+          <div class="stdc-ph"><img src="assets/cn-std1.webp" alt="Проектирование световых сценариев: чертёж потолка" width="678" height="360" loading="lazy" decoding="async"></div>
           <div class="stdc-tx">
             <span class="no">02</span>
-            <h3 data-i18n="std2_h">Точные замеры</h3>
-            <p class="sp" data-i18n="std2_p">Миллиметровая точность для идеального результата</p>
-            <p class="mp" data-i18n="mp_std">Этап обязателен на каждом объекте, независимо от площади. Результат фиксируем и передаём заказчику до перехода к следующему шагу.</p>
+            <h3 data-i18n="std1_h">Проектирование</h3>
+            <p class="sp" data-i18n="std1_p">Продумываем потолок и свет до начала монтажа</p>
           </div>
         </article>
         <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="3 из 6">
@@ -2665,8 +2681,7 @@ footer{padding-bottom:104px}
           <div class="stdc-tx">
             <span class="no">03</span>
             <h3 data-i18n="std3_h">Подготовка объекта</h3>
-            <p class="sp" data-i18n="std3_p">Чистота и защита вашего интерьера</p>
-            <p class="mp" data-i18n="mp_std">Этап обязателен на каждом объекте, независимо от площади. Результат фиксируем и передаём заказчику до перехода к следующему шагу.</p>
+            <p class="sp" data-i18n="std3_p">Защищаем интерьер и организуем чистую рабочую зону</p>
           </div>
         </article>
         <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="4 из 6">
@@ -2674,8 +2689,7 @@ footer{padding-bottom:104px}
           <div class="stdc-tx">
             <span class="no">04</span>
             <h3 data-i18n="std4_h">Профессиональный монтаж</h3>
-            <p class="sp" data-i18n="std4_p">Опытные мастера и качественные материалы</p>
-            <p class="mp" data-i18n="mp_std">Этап обязателен на каждом объекте, независимо от площади. Результат фиксируем и передаём заказчику до перехода к следующему шагу.</p>
+            <p class="sp" data-i18n="std4_p">Опытные мастера, точная технология и качественные материалы</p>
           </div>
         </article>
         <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="5 из 6">
@@ -2683,8 +2697,7 @@ footer{padding-bottom:104px}
           <div class="stdc-tx">
             <span class="no">05</span>
             <h3 data-i18n="std5_h">Контроль качества</h3>
-            <p class="sp" data-i18n="std5_p">Многоступенчатая проверка на каждом этапе</p>
-            <p class="mp" data-i18n="mp_std">Этап обязателен на каждом объекте, независимо от площади. Результат фиксируем и передаём заказчику до перехода к следующему шагу.</p>
+            <p class="sp" data-i18n="std5_p">Проверяем геометрию, свет и каждый узел перед сдачей</p>
           </div>
         </article>
         <article class="stdc-slide" role="group" aria-roledescription="slide" aria-label="6 из 6">
@@ -2692,8 +2705,7 @@ footer{padding-bottom:104px}
           <div class="stdc-tx">
             <span class="no">06</span>
             <h3 data-i18n="std6_h">Гарантия результата</h3>
-            <p class="sp" data-i18n="std6_p">Гарантия до 10 лет на все работы и материалы</p>
-            <p class="mp" data-i18n="mp_std">Этап обязателен на каждом объекте, независимо от площади. Результат фиксируем и передаём заказчику до перехода к следующему шагу.</p>
+            <p class="sp" data-i18n="std6_p">До 10 лет гарантии на работы и материалы</p>
           </div>
         </article>
       </div>
@@ -2737,7 +2749,7 @@ footer{padding-bottom:104px}
           </picture></div>
           <div class="bx">
             <div class="obj" data-i18n="p1_o">Пентхаус</div>
-            <div class="city" data-i18n="p1_c">Центр Ташкента</div>
+            <div class="city" data-i18n="p1_c">Элитный ЖК в Ташкенте</div>
             <q data-i18n="p1_q">Искали подрядчика, который сможет объединить разные потолочные решения в единую концепцию. Результат превзошёл ожидания.</q>
             <div class="who" data-i18n="p1_w">Александр и Мария</div>
             <div class="role" data-i18n="p1_r">Владельцы пентхауса</div>
@@ -3064,12 +3076,12 @@ var I18N = {
  r3_q:"Плейсхолдер 3. Здесь встанет реальный отзыв клиента: что заказывали, что было важно и как прошла работа. Текст даёт копирайтер.",
  r3_w:"Имя клиента",r3_r:"Тип объекта, город",
  std_kick:"Стандарты DEVAGO",
- std1_h:"Проектирование",std1_p:"Детальная проработка световых сценариев",
- std2_h:"Точные замеры",std2_p:"Миллиметровая точность для идеального результата",
- std3_h:"Подготовка объекта",std3_p:"Чистота и защита вашего интерьера",
- std4_h:"Профессиональный монтаж",std4_p:"Опытные мастера и качественные материалы",
- std5_h:"Контроль качества",std5_p:"Многоступенчатая проверка на каждом этапе",
- std6_h:"Гарантия результата",std6_p:"Гарантия до 10 лет на все работы и материалы",
+ std1_h:"Проектирование",std1_p:"Продумываем потолок и свет до начала монтажа",
+ std2_h:"Точные замеры",std2_p:"Учитываем каждый миллиметр и все технические узлы",
+ std3_h:"Подготовка объекта",std3_p:"Защищаем интерьер и организуем чистую рабочую зону",
+ std4_h:"Профессиональный монтаж",std4_p:"Опытные мастера, точная технология и качественные материалы",
+ std5_h:"Контроль качества",std5_p:"Проверяем геометрию, свет и каждый узел перед сдачей",
+ std6_h:"Гарантия результата",std6_p:"До 10 лет гарантии на работы и материалы",
  /* Запасной заголовок, показывается при снятом RENDERS_ARE_VISUALS. Слова «и отзывы»
     сняты 11.08: отзывы уехали в собственную секцию #reviews, и обещать их здесь значит
     обещать то, чего в секции нет. */
@@ -3077,7 +3089,7 @@ var I18N = {
  /* Заголовок секции на время, пока живых фото нет. Формулировка Тахира 11.08.
     Возвращается к p_kick снятием RENDERS_ARE_VISUALS. */
  p_kick_v:"Визуализация возможностей",
- p1_o:"Пентхаус",p1_c:"Центр Ташкента",
+ p1_o:"Пентхаус",p1_c:"Элитный ЖК в Ташкенте",
  p1_q:"Искали подрядчика, который сможет объединить <span class='dt'>разные потолочные</span><span class='mb'>световые</span> решения в единую концепцию. Результат превзошёл ожидания.<span class='dt'> Пространство стало совершенно другим.</span>",
  p1_w:"Александр и Мария",p1_r:"Владельцы пентхауса",
  p2_o:"Квартира в многоэтажном доме",p2_c:"Ташкент",p2_q:"DEVAGO предложили решение, которое полностью изменило восприятие пространства. Качество исполнения на высочайшем уровне.",p2_w:"Бахром Р.",p2_r:"Владелец дома",
@@ -3092,8 +3104,8 @@ var I18N = {
 
  nav_pp:"Фотопечать",skip:"К содержимому",lang_group:"Язык сайта",pop_more:"подробнее",
  prj1_lbl:"Смотреть фотографии: Пентхаус",prj2_lbl:"Смотреть фотографии: Квартира в многоэтажном доме",prj3_lbl:"Смотреть фотографии: Квартира в новостройке",prj5_lbl:"Смотреть фотографии: SPA-зона",
- fact1_n:"16<span class='fu'>лет опыта</span>",fact1_t:"2010-2022 Москва<br>с 2022 года Узбекистан",fact2_n:"18 500+",fact2_t:"выполненных объектов",fact3_n:"600 000<span class='fu'>м²</span>",fact3_t:"натянутого полотна",fact4_n:"9<span class='fu'>бригад</span>",fact4_t:"укомплектованных монтажников",fact5_n:"5<span class='fu'>цехов</span>",fact5_t:"Ташкент, Самарканд, Навои, Бухара, Кашкадарья",/* facts_hist и facts_geo НЕ ИСПОЛЬЗУЮТСЯ С 11.08: история уехала в первую плитку, города в пятую. Оставлены на случай возврата примечания. */facts_hist:"2010-2022 Москва, с 2022 Узбекистан",facts_geo:"Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья",call_lbl:"Позвонить",inst_lbl:"Instagram",
- pp_kick:"Варианты фотопечати",pp_title:"Варианты фотопечати на потолке",pp_sub:"Современная фотопечать с подсветкой и парящим профилем",
+ facts_title:"DEVAGO CEILING В ЦИФРАХ",facts_sub:"С 2010 по 2022 год в Москве. С 2022 года в Узбекистане",facts_geo2:"Ташкент • Самарканд • Навои • Бухара • Карши",fact1_n:"16",fact1_t:"лет опыта",fact2_n:"18 500+",fact2_t:"объектов",fact3_n:"500 000+<span class='fu'>м²</span>",fact3_t:"натянутой площади",fact4_n:"10",fact4_t:"монтажных бригад",fact5_n:"4",fact5_t:"производственных цеха",/* facts_hist и facts_geo НЕ ИСПОЛЬЗУЮТСЯ С 11.08: история уехала в первую плитку, города в пятую. Оставлены на случай возврата примечания. */facts_hist:"2010-2022 Москва, с 2022 Узбекистан",facts_geo:"Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья",call_lbl:"Позвонить",inst_lbl:"Instagram",
+ pp_kick:"Авторская фотопечать",pp_title:"Авторская фотопечать",pp_more_btn:"Посмотреть все варианты",pp_sub:"Современная фотопечать с подсветкой и парящим профилем",
  pp1_h:"Мрамор / оникс с подсветкой",pp1_p:"Эффект полупрозрачного камня",
  pp2_h:"Бетон",pp2_p:"Современная текстура для стильных интерьеров",
  pp3_h:"Абстракция",pp3_p:"Художественные абстракции в интерьерной гамме",
@@ -3155,15 +3167,15 @@ var I18N = {
  r3_q:"Plelsxolder 3. Bu yerda mijozning haqiqiy fikri turadi: nima buyurtma qilingani, nima muhim boʻlgani va ish qanday oʻtgani. Matnni kopirayter beradi.",
  r3_w:"Mijoz ismi",r3_r:"Obyekt turi, shahar",
  std_kick:"DEVAGO standartlari",
- std1_h:"Loyihalash",std1_p:"Yorugʻlik stsenariylarini batafsil ishlab chiqish",
- std2_h:"Aniq oʻlchovlar",std2_p:"Ideal natija uchun millimetr aniqligi",
- std3_h:"Obyektni tayyorlash",std3_p:"Interyeringiz tozaligi va himoyasi",
- std4_h:"Professional montaj",std4_p:"Tajribali ustalar va sifatli materiallar",
- std5_h:"Sifat nazorati",std5_p:"Har bosqichda koʻp pogʻonali tekshiruv",
- std6_h:"Natija kafolati",std6_p:"Barcha ish va materiallarga 10 yilgacha kafolat",
+ std1_h:"Loyihalash",std1_p:"Montajgacha shift va yorugʻlikni oʻylab chiqamiz",
+ std2_h:"Aniq oʻlchovlar",std2_p:"Har bir millimetr va barcha texnik tugunlarni hisobga olamiz",
+ std3_h:"Obyektni tayyorlash",std3_p:"Interyerni himoya qilamiz va toza ish zonasini tashkil etamiz",
+ std4_h:"Professional montaj",std4_p:"Tajribali ustalar, aniq texnologiya va sifatli materiallar",
+ std5_h:"Sifat nazorati",std5_p:"Topshirishdan oldin geometriya, yorugʻlik va har bir tugunni tekshiramiz",
+ std6_h:"Natija kafolati",std6_p:"Ish va materiallarga 10 yilgacha kafolat",
  p_kick:"Amalga oshirilgan loyihalar",
  p_kick_v:"Imkoniyatlar vizualizatsiyasi",
- p1_o:"Pentxaus",p1_c:"Toshkent markazi",
+ p1_o:"Pentxaus",p1_c:"Toshkentdagi elit turar-joy majmuasi",
  p1_q:"Turli shift yechimlarini yagona konsepsiyaga birlashtira oladigan pudratchi izladik. Natija kutilganidan oshdi.<span class='dt'> Makon butunlay oʻzgardi.</span>",
  p1_w:"Aleksandr va Mariya",p1_r:"Pentxaus egalari",
  p2_o:"Koʻp qavatli uydagi kvartira",p2_c:"Toshkent",p2_q:"DEVAGO makon idrokini butunlay oʻzgartirgan yechimni taklif qildi. Ijro sifati eng yuqori darajada.",p2_w:"Bahrom R.",p2_r:"Uy egasi",
@@ -3187,8 +3199,8 @@ var I18N = {
     решения: «цех» это ishlab chiqarish.
     ⚠️ sexlar НЕ ВОЗВРАЩАТЬ ни в каком виде: на латинице читается не так, меняли 07.08
     по замечанию Тахира. */
- fact1_n:"16<span class='fu'>yillik tajriba</span>",fact1_t:"2010-2022 Moskva<br>2022 yildan Oʻzbekiston",fact2_n:"18 500+",fact2_t:"bajarilgan obyekt",fact3_n:"600 000<span class='fu'>m²</span>",fact3_t:"tortilgan polotno",fact4_n:"9<span class='fu'>brigada</span>",fact4_t:"toʻliq tarkibli montajchilar",fact5_n:"5<span class='fu'>ishlab chiqarish</span>",fact5_t:"Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",facts_hist:"2010-2022 Moskva, 2022 dan Oʻzbekiston",facts_geo:"Oʻz ishlab chiqarishimiz: Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",call_lbl:"Qoʻngʻiroq",inst_lbl:"Instagram",
- pp_kick:"Fotopechat variantlari",pp_title:"Shiftdagi fotopechat variantlari",pp_sub:"Yoritish va parvoz profili bilan zamonaviy fotopechat",
+ facts_title:"DEVAGO CEILING RAQAMLARDA",facts_sub:"2010-2022-yillarda Moskvada. 2022-yildan Oʻzbekistonda",facts_geo2:"Toshkent • Samarqand • Navoiy • Buxoro • Qarshi",fact1_n:"16",fact1_t:"yil tajriba",fact2_n:"18 500+",fact2_t:"obyekt",fact3_n:"500 000+<span class='fu'>m²</span>",fact3_t:"tortilgan maydon",fact4_n:"10",fact4_t:"montaj brigadasi",fact5_n:"4",fact5_t:"ishlab chiqarish sexi",facts_hist:"2010-2022 Moskva, 2022 dan Oʻzbekiston",facts_geo:"Oʻz ishlab chiqarishimiz: Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",call_lbl:"Qoʻngʻiroq",inst_lbl:"Instagram",
+ pp_kick:"Mualliflik fotopechati",pp_title:"Mualliflik fotopechati",pp_more_btn:"Barcha variantlarni koʻrish",pp_sub:"Yoritish va parvoz profili bilan zamonaviy fotopechat",
  pp1_h:"Marmar / oniks yoritish bilan",pp1_p:"Yarim shaffof tosh effekti",
  pp2_h:"Beton",pp2_p:"Zamonaviy interyerlar uchun tekstura",
  pp3_h:"Abstraksiya",pp3_p:"Interyer gammasida badiiy abstraksiyalar",
@@ -4040,5 +4052,6 @@ var I18N = {
      Отключается удалением одной строки, вёрстка от этого не меняется.
      ⚠️ Заявки сейчас копятся на сервере: чат менеджера клиент пока не дал. -->
 <script src="https://ai-admin-production.up.railway.app/widget.js" data-client="devago" defer></script>
+<script>document.getElementById("ppMoreBtn").addEventListener("click",function(){document.querySelectorAll(".pp-grid .pp[hidden]").forEach(function(b){b.removeAttribute("hidden")});this.closest(".pp-more-wrap").remove()});</script>
 </body>
 </html>
