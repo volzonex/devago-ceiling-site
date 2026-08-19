@@ -328,7 +328,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,10,8,.97);border-bott
    стала 244px, а выноски 1 и 4 переставлены на видимые участки ТЕХ ЖЕ элементов,
    потому что их прежние точки кадрированием отрезаны. Все якоря пересчитаны
    заменой окна: cx=(img%-окно0)/ширина_окна, вертикаль cover не трогает. */
-.combo img{width:100%;aspect-ratio:2456/1116;object-fit:cover;height:auto}
+.combo img{width:100%;aspect-ratio:1586/992;object-fit:cover;height:auto}
 @media(max-width:560px){.combo img{aspect-ratio:16/10}}
 /* ⚠️ КООРДИНАТА СТАВИТ ТОЧКУ НА ОБЪЕКТ, а не подпись. Подпись отводится в сторону и
    соединяется с точкой горизонтальной линией, которая кончается на подписи.
@@ -1722,24 +1722,10 @@ section[id],div[id]{scroll-margin-top:80px}
   /* 2. Хвостик-указатель: маркер стал крупнее и закрывал бы саму линию на кадре.
      Берём уже существующий .ann i, новых узлов не заводим. */
   .ann i{display:none}
-  /* 3. Мобильные якоря отдельными значениями. Десктопные проценты НЕ трогаются:
-     на них завязана арифметика зазоров из v3.1 и починенные дефекты 3 и 4 из v4. */
-  /* 3. МОБИЛЬНЫЕ ЯКОРЯ (13.08 отметки Икрома, 18.08 пересчитаны под кадр 16:10).
-     Кадрирование cover показывает 20.45%..79.55% ширины исходника, поэтому каждый
-     якорь пересчитан заменой окна: отметки Икрома для 2 и 3 стоят на ТОЙ ЖЕ точке
-     фотографии (img 36/21 и 51.5/21). Точки 1 и 4 прежним положением ОТРЕЗАНЫ
-     кадром (img 13% и 88%), переставлены на видимые участки тех же элементов:
-     1 на полосу парящей подсветки у левого края кадра, 4 на светящийся карниз над
-     шторами ближе к столовой. Инлайн-стиль перебивает любой селектор, поэтому
-     !important, это единственный способ развести телефон с десктопом без дублей. */
-  .combo .ann[data-ann="2"]{left:26.3%!important;top:21%!important}
-  .combo .ann[data-ann="3"]{left:52.5%!important;top:21%!important}
-  /* 4 и 5 выставлены ПО ПИКСЕЛЯМ снимка кадра 16:10, не пересчётом на глаз:
-     светящийся карниз в перспективе лежит на 42-45%% высоты кадра (замер по
-     столбцам 85-97%%), полоса парящей подсветки проходит через (10%%, 16%%).
-     Первая прикидка (87/14 и 8/27) ставила обе точки в пустой тёмный потолок. */
-  .combo .ann[data-ann="4"]{left:89%!important;top:43%!important}
-  .combo .ann[data-ann="5"]{left:10%!important;top:16%!important}
+  /* 3. Мобильных якорей с 19.08 НЕТ: новый кадр 1586x992 (1.599:1) практически
+     совпадает и с телефонным 16:10, и с десктопным aspect, cover ничего не режет,
+     поэтому инлайновые проценты одни на все ширины. Возвращать отдельные мобильные
+     значения только если кадрирование снова разойдётся с исходником. */
 
   /* ЛУЧИ-УКАЗАТЕЛИ. У цифры 2 их ДВА: она стоит между двумя световыми линиями и должна
      показывать на обе, иначе непонятно, о какой речь. У цифры 3 один, к треку.
@@ -2559,6 +2545,7 @@ footer{padding-bottom:104px}
            Стиль строго как у эталонных sol-6 и sol-4: штрих 1.3, currentColor, без заливки,
            второстепенные линии через stroke-opacity. -->
       <button type="button" class="sol" data-modal="sol-1"><span class="ic"><svg viewBox="0 0 64 64" fill="none"><g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10v44M12 14h33M20 22v32M20 22h25"/><path d="M20 30h8v-8"/><path d="M29 22h16" opacity=".38"/></g></svg></span><span class="tx"><b data-i18n="s1_h">Теневые системы</b><span data-i18n="s1_p">Идеально ровные стыки и чистая геометрия</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button type="button" class="sol" data-modal="sol-7"><span class="ic"><svg viewBox="0 0 64 64" fill="none"><g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h48" opacity=".4"/><path d="M16 20h32v6H16z"/><path d="M8 24c3 4 6 6 10 7M56 24c-3 4-6 6-10 7" opacity=".6"/></g></svg></span><span class="tx"><b data-i18n="s7_h">Парящий профиль</b><span data-i18n="s7_p">Мягкое свечение по контуру потолка</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       <button type="button" class="sol" data-modal="sol-2"><span class="ic"><svg viewBox="0 0 64 64" fill="none"><g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 18h48M14 24h36" opacity=".5"/><path d="M14 21h36" stroke-width="4"/><path d="M20 31l-3 13M32 31v15M44 31l3 13" opacity=".65"/></g></svg></span><span class="tx"><b data-i18n="s2_h">Световые линии</b><span data-i18n="s2_p">Чистый свет. Любые конфигурации</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       <button type="button" class="sol" data-modal="sol-3"><span class="ic"><svg viewBox="0 0 64 64" fill="none"><g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 14h48v10H8zM14 19h36"/><path d="M15 24v9l17-3v-6M45 24v8"/><path d="M39 32h12l-2 8a4 4 0 0 1-8 0z"/><path d="M15 33l17-3 1 7-17 3z"/></g></svg></span><span class="tx"><b data-i18n="s3_h">Магнитные треки</b><span data-i18n="s3_p">Гибкое освещение под ваши задачи</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       <button type="button" class="sol" data-modal="sol-6"><span class="ic"><svg viewBox="0 0 64 64" fill="none"><g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="17" width="38" height="30" rx="2"/><rect x="19" y="23" width="26" height="18" rx="1" opacity=".62"/><path d="M32 9v4M32 51v4M5 32h4M55 32h4M11 11l3 3M50 50l3 3M53 11l-3 3M14 50l-3 3" opacity=".7"/></g></svg></span><span class="tx"><b data-i18n="s6_h">Световой короб</b><span data-i18n="s6_p">Светящаяся панель из полупрозрачного полотна</span></span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path class="am" d="M9 5l7 7-7 7"/><path class="ad" d="M5 12h14M13 6l6 6-6 6"/></svg></button>
@@ -2586,16 +2573,16 @@ footer{padding-bottom:104px}
         <picture>
           <!-- Три ширины: на телефоне блок занимает всю ширину, на десктопе половину. -->
           <source type="image/webp"
-            srcset="assets/cn-combo-1228.webp 1228w, assets/cn-combo-1840.webp 1840w, assets/cn-combo.webp 2456w"
+            srcset="assets/cn-combo-1228.webp 1228w, assets/cn-combo.webp 1586w"
             sizes="(min-width:900px) 60vw, 100vw">
-          <img src="assets/cn-combo.jpg" alt="Комбинированное потолочное решение: теневой профиль, световые линии, магнитные треки и скрытый карниз в одном интерьере" width="1228" height="558" loading="lazy">
+          <img src="assets/cn-combo.jpg" alt="Комбинированное потолочное решение: парящая подсветка, световые линии, магнитные треки и скрытый карниз в светлой гостиной" width="1228" height="768" loading="lazy">
         </picture>
         <!-- Якоря пересчитаны под кадр 2.2:1 (18.08): прежние проценты считались от
              полного кадра 2.7:1, точки на том же месте ФОТОГРАФИИ, что и раньше. -->
-        <button type="button" data-n="2" data-ann="2" class="ann" style="left:25.5%;top:22%" aria-label="Световые линии"><i></i><span data-i18n="a2">Световые линии</span></button>
-        <button type="button" data-n="3" data-ann="3" class="ann" style="left:60.5%;top:23.5%" aria-label="Магнитные трековые системы"><i></i><span data-i18n="a3">Магнитные трековые системы</span></button>
-        <button type="button" data-n="4" data-ann="4" class="ann ann--l" style="left:96.8%;top:25%" aria-label="Скрытый карниз"><i></i><span data-i18n="a4">Скрытый карниз</span></button>
-        <button type="button" data-n="1" data-ann="5" class="ann" style="left:4.5%;top:22%" aria-label="Парящая подсветка"><i></i><span data-i18n="a5">Парящая подсветка</span></button>
+        <button type="button" data-n="2" data-ann="2" class="ann" style="left:20%;top:19%" aria-label="Световые линии"><i></i><span data-i18n="a2">Световые линии</span></button>
+        <button type="button" data-n="3" data-ann="3" class="ann" style="left:73%;top:12%" aria-label="Магнитные трековые системы"><i></i><span data-i18n="a3">Магнитные трековые системы</span></button>
+        <button type="button" data-n="4" data-ann="4" class="ann ann--l" style="left:92%;top:30%" aria-label="Скрытый карниз"><i></i><span data-i18n="a4">Скрытый карниз</span></button>
+        <button type="button" data-n="1" data-ann="5" class="ann" style="left:11%;top:44%" aria-label="Парящая подсветка"><i></i><span data-i18n="a5">Парящая подсветка</span></button>
         <!-- ПОПОВЕР ВЫНОСКИ (CDO v4, пункт 4). Один на все пять точек, от 900px.
              Ниже 900px точки открывают общее модальное окно, поповера там нет. -->
         <div class="pop" id="annPop" role="dialog" aria-modal="false" aria-labelledby="popTitle" hidden>
@@ -3050,7 +3037,7 @@ var I18N = {
  h_kick:"Премиальные",h_h1:"Натяжные<br><span class='g'>потолки</span>",h_sub2:"Архитектура света и&nbsp;пространства",
  h_sub:"Создаём уникальные интерьеры с помощью современных потолочных решений и безупречного света.",
  s_kick:"Наши решения",
- s1_h:"<span class='dt'>Теневые потолочные системы</span><span class='mb'>Теневые системы</span>",s1_p:"Идеально ровные стыки и чистая геометрия",
+ s1_h:"<span class='dt'>Теневые потолочные системы</span><span class='mb'>Теневые системы</span>",s1_p:"Идеально ровные стыки и чистая геометрия",s7_h:"<span class='dt'>Парящий потолочный профиль</span><span class='mb'>Парящий профиль</span>",s7_p:"Мягкое свечение по контуру потолка",
  s2_h:"Световые линии",s2_p:"Чистый свет. Любые конфигурации",
  s3_h:"<span class='dt'>Магнитные трековые системы</span><span class='mb'>Магнитные треки</span>",s3_p:"Гибкое освещение под ваши задачи",
  s4_h:"Скрытые карнизы",s4_p:"Эстетика без компромиссов. Шторы «из потолка»",
@@ -3145,7 +3132,7 @@ var I18N = {
  h_kick:"Premium",h_h1:"Tarang<br><span class='g'>shiftlar</span>",h_sub2:"Yorugʻlik va makon arxitekturasi",
  h_sub:"Zamonaviy shift yechimlari va benuqson yorugʻlik bilan betakror interyerlar yaratamiz.",
  s_kick:"Bizning yechimlar",
- s1_h:"<span class='dt'>Soya shift tizimlari</span><span class='mb'>Soya tizimlari</span>",s1_p:"Mukammal tekis choklar va toza geometriya",
+ s1_h:"<span class='dt'>Soya shift tizimlari</span><span class='mb'>Soya tizimlari</span>",s1_p:"Mukammal tekis choklar va toza geometriya",s7_h:"<span class='dt'>Muallaq shift profili</span><span class='mb'>Muallaq profil</span>",s7_p:"Shift konturi boʻylab mayin yorugʻlik",
  s2_h:"Yorugʻlik chiziqlari",s2_p:"Toza yorugʻlik. Istalgan konfiguratsiya",
  s3_h:"<span class='dt'>Magnitli trek tizimlari</span><span class='mb'>Magnitli treklar</span>",s3_p:"Vazifangizga mos moslashuvchan yoritish",
  s4_h:"Yashirin karnizlar",s4_p:"Murosasiz estetika. Pardalar «shiftdan»",
@@ -3365,6 +3352,7 @@ var I18N = {
      Грузятся ТОЛЬКО при открытии окна, на загрузку страницы не влияют. */
   var MODALS={
    "sol-1":{k:"s_kick",t:"s1_h",img:"assets/cn-sol1.webp",p:["s1_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
+   "sol-7":{k:"s_kick",t:"s7_h",img:"assets/cn-sol7.webp",p:["s7_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
    "sol-2":{k:"s_kick",t:"s2_h",img:"assets/cn-sol2.webp",p:["s2_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
    "sol-3":{k:"s_kick",t:"s3_h",img:"assets/cn-sol3.webp",p:["s3_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
    "sol-4":{k:"s_kick",t:"s4_h",img:"assets/cn-sol4.webp",p:["s4_p","mp_sol"],l:["mp_l1","mp_l2","mp_l3"]},
