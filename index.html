@@ -1772,7 +1772,7 @@ section[id],div[id]{scroll-margin-top:80px}
 
 /* --- ЗАДАЧА 1. Полоса цифр. Без заголовка и без орнамента: это полоса доверия. --- */
 #facts{padding:clamp(44px,5vw,68px) var(--gutter)}
-#facts .sec-head{display:none}
+/* #facts .sec-head{display:none} снято 20.08: у секции снова есть кикер-заголовок */
 .facts{display:grid;gap:0;grid-template-columns:1fr 1fr}
 .facts .f{padding:22px 16px;text-align:center;position:relative}
 .facts .f b{display:block;font:500 clamp(1.7rem,7vw,2rem)/1 var(--sans);
@@ -1898,12 +1898,6 @@ body.sticky-on.no-scroll .sticky-cta{display:none}
 
 /* ================= CDO, 07.08: полоса цифр, мобильная раскладка и разделители ============ */
 #facts{border-top:1px solid rgba(201,162,75,.10);border-bottom:1px solid rgba(201,162,75,.10)}
-/* Вордмарк секции цифр (Тахир 18.08): кегль и трекинг как у шапки (.34em), плоское
-   золото --gold-l (на тёмном фоне контраст 9.6, замерен). text-indent компенсирует
-   хвостовой трекинг последней буквы, иначе строка стоит на .34em левее центра. */
-.facts-brand{margin:0 0 clamp(26px,4vw,40px);text-align:center;text-transform:uppercase;
-  font:400 clamp(1.05rem,4.5vw,1.7rem)/1.25 var(--wordmark);
-  letter-spacing:.34em;text-indent:.34em;color:var(--gold-l);white-space:nowrap}
 /* ЗАДАЧА 3. Цифра и единица разного веса: раньше «600 000 м²» шло одним кеглем целиком,
    и единица весила столько же, сколько факт, а широкие строки распирали колонку. */
 /* display:inline и отступ ОБЯЗАТЕЛЬНЫ, их в спеке нет. Базовое правило
@@ -2417,14 +2411,17 @@ footer{padding-bottom:104px}
 .im-arw[disabled]{opacity:.35;cursor:default}
 .im-arw[hidden]{display:none}
 
-/* ===== ЦИФРЫ ПО МАКЕТУ ИКРОМА 19.08: подзаголовок и строка городов ===== */
-/* white-space:normal вместо nowrap: заголовок стал длиннее, на телефоне ему
-   разрешён перенос, balance делит его на осмысленные строки. */
-.facts-brand{margin-bottom:10px;white-space:normal;text-wrap:balance}
+/* ===== ЦИФРЫ 19-20.08 (Икром): кикер, капс, выделенные города ===== */
+#facts .sec-head{margin-bottom:14px}
+/* Подзаголовок капсом, две строки задаёт <br> в ключе facts_sub */
 .facts-sub{margin:0 0 clamp(26px,4vw,40px);text-align:center;color:var(--t2);
-  font-size:clamp(.82rem,2.5vw,.95rem);letter-spacing:.05em}
-.facts-geo{margin:clamp(18px,3vw,26px) 0 0;text-align:center;color:var(--t2);
-  font-size:clamp(.72rem,2.3vw,.85rem);letter-spacing:.16em;text-transform:uppercase}
+  font-size:clamp(.72rem,2.2vw,.85rem);letter-spacing:.14em;text-transform:uppercase;line-height:1.7}
+/* Подписи плиток капсом. Прямой потомок: вложенный .fu (м²) капсить нельзя,
+   в узбекском m² превратился бы в M². */
+.facts .f > span{text-transform:uppercase;letter-spacing:.08em}
+/* Города отличаются от подписей плиток ЦВЕТОМ и весом: золото, 500 */
+.facts-geo{margin:clamp(18px,3vw,26px) 0 0;text-align:center;color:var(--gold);
+  font-weight:500;font-size:clamp(.72rem,2.3vw,.85rem);letter-spacing:.2em;text-transform:uppercase}
 /* Легенда выносок капсом (Икром 19.08, «как на втором фото») */
 .ann-legend .lg-btn span{text-transform:uppercase;letter-spacing:.06em}
 /* Кнопка «Посмотреть все варианты» фотопечати */
@@ -2514,11 +2511,10 @@ footer{padding-bottom:104px}
      В числах стоят НЕРАЗРЫВНЫЕ пробелы (U+00A0) и знак «²» (U+00B2) символом. -->
 <section id="facts">
   <div class="wrap reveal">
-    <!-- Заголовок по макету Икрома 19.08. «В ЦИФРАХ» переводится, поэтому появился
-         ключ facts_title. Гарнитура через var(--wordmark), переменную не трогать:
-         ловушка вордмарка из CLAUDE.md, раздел 3. -->
-    <h2 class="facts-brand" data-i18n="facts_title">DEVAGO CEILING В ЦИФРАХ</h2>
-    <p class="facts-sub" data-i18n="facts_sub">С 2010 по 2022 год в Москве. С 2022 года в Узбекистане</p>
+    <!-- 20.08 (Икром): заголовок приведён к стилистике кикеров остальных секций.
+         Значения ключа facts_title в словарях уже капсом, CSS kick капсит сам. -->
+    <div class="sec-head"><span class="kick" data-i18n="facts_title">DEVAGO CEILING В ЦИФРАХ</span></div>
+    <p class="facts-sub" data-i18n="facts_sub">С 2010 по 2022 год в Москве.<br>С 2022 года в Узбекистане</p>
     <div class="facts">
       <!-- ⚠️ ТЕКСТ В РАЗМЕТКЕ ОБЯЗАН СОВПАДАТЬ СО СЛОВАРЁМ ДОСЛОВНО, включая span.fu
            и НЕРАЗРЫВНЫЙ пробел в разрядах. Механика: i18n делает e.innerHTML=d[k] при
@@ -3091,7 +3087,7 @@ var I18N = {
 
  nav_pp:"Фотопечать",skip:"К содержимому",lang_group:"Язык сайта",pop_more:"подробнее",
  prj1_lbl:"Смотреть фотографии: Пентхаус",prj2_lbl:"Смотреть фотографии: Квартира в многоэтажном доме",prj3_lbl:"Смотреть фотографии: Квартира в новостройке",prj5_lbl:"Смотреть фотографии: SPA-зона",
- facts_title:"DEVAGO CEILING В ЦИФРАХ",facts_sub:"С 2010 по 2022 год в Москве. С 2022 года в Узбекистане",facts_geo2:"Ташкент • Самарканд • Навои • Бухара • Карши",fact1_n:"16",fact1_t:"лет опыта",fact2_n:"18 500+",fact2_t:"объектов",fact3_n:"500 000+<span class='fu'>м²</span>",fact3_t:"натянутой площади",fact4_n:"10",fact4_t:"монтажных бригад",fact5_n:"4",fact5_t:"производственных цеха",/* facts_hist и facts_geo НЕ ИСПОЛЬЗУЮТСЯ С 11.08: история уехала в первую плитку, города в пятую. Оставлены на случай возврата примечания. */facts_hist:"2010-2022 Москва, с 2022 Узбекистан",facts_geo:"Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья",call_lbl:"Позвонить",inst_lbl:"Instagram",
+ facts_title:"DEVAGO CEILING В ЦИФРАХ",facts_sub:"С 2010 по 2022 год в Москве.<br>С 2022 года в Узбекистане",facts_geo2:"Ташкент • Самарканд • Навои • Бухара • Карши",fact1_n:"16",fact1_t:"лет опыта",fact2_n:"18 500+",fact2_t:"объектов",fact3_n:"500 000+<span class='fu'>м²</span>",fact3_t:"натянутой площади",fact4_n:"10",fact4_t:"монтажных бригад",fact5_n:"4",fact5_t:"производственных цеха",/* facts_hist и facts_geo НЕ ИСПОЛЬЗУЮТСЯ С 11.08: история уехала в первую плитку, города в пятую. Оставлены на случай возврата примечания. */facts_hist:"2010-2022 Москва, с 2022 Узбекистан",facts_geo:"Собственные цеха: Ташкент, Самарканд, Навои, Бухара, Кашкадарья",call_lbl:"Позвонить",inst_lbl:"Instagram",
  pp_kick:"Авторская фотопечать",pp_title:"Авторская фотопечать",pp_more_btn:"Посмотреть все варианты",pp_sub:"Современная фотопечать с подсветкой и парящим профилем",
  pp1_h:"Мрамор / оникс с подсветкой",pp1_p:"Эффект полупрозрачного камня",
  pp2_h:"Бетон",pp2_p:"Современная текстура для стильных интерьеров",
@@ -3186,7 +3182,7 @@ var I18N = {
     решения: «цех» это ishlab chiqarish.
     ⚠️ sexlar НЕ ВОЗВРАЩАТЬ ни в каком виде: на латинице читается не так, меняли 07.08
     по замечанию Тахира. */
- facts_title:"DEVAGO CEILING RAQAMLARDA",facts_sub:"2010-2022-yillarda Moskvada. 2022-yildan Oʻzbekistonda",facts_geo2:"Toshkent • Samarqand • Navoiy • Buxoro • Qarshi",fact1_n:"16",fact1_t:"yil tajriba",fact2_n:"18 500+",fact2_t:"obyekt",fact3_n:"500 000+<span class='fu'>m²</span>",fact3_t:"tortilgan maydon",fact4_n:"10",fact4_t:"montaj brigadasi",fact5_n:"4",fact5_t:"ishlab chiqarish sexi",facts_hist:"2010-2022 Moskva, 2022 dan Oʻzbekiston",facts_geo:"Oʻz ishlab chiqarishimiz: Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",call_lbl:"Qoʻngʻiroq",inst_lbl:"Instagram",
+ facts_title:"DEVAGO CEILING RAQAMLARDA",facts_sub:"2010-2022-yillarda Moskvada.<br>2022-yildan Oʻzbekistonda",facts_geo2:"Toshkent • Samarqand • Navoiy • Buxoro • Qarshi",fact1_n:"16",fact1_t:"yil tajriba",fact2_n:"18 500+",fact2_t:"obyekt",fact3_n:"500 000+<span class='fu'>m²</span>",fact3_t:"tortilgan maydon",fact4_n:"10",fact4_t:"montaj brigadasi",fact5_n:"4",fact5_t:"ishlab chiqarish sexi",facts_hist:"2010-2022 Moskva, 2022 dan Oʻzbekiston",facts_geo:"Oʻz ishlab chiqarishimiz: Toshkent, Samarqand, Navoiy, Buxoro, Qashqadaryo",call_lbl:"Qoʻngʻiroq",inst_lbl:"Instagram",
  pp_kick:"Mualliflik fotopechati",pp_title:"Mualliflik fotopechati",pp_more_btn:"Barcha variantlarni koʻrish",pp_sub:"Yoritish va parvoz profili bilan zamonaviy fotopechat",
  pp1_h:"Marmar / oniks yoritish bilan",pp1_p:"Yarim shaffof tosh effekti",
  pp2_h:"Beton",pp2_p:"Zamonaviy interyerlar uchun tekstura",
